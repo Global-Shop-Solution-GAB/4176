@@ -1,0 +1,2118 @@
+Program.Sub.ScreenSU.Start
+Gui.FormView..Create
+Gui.FormView..Size(16230,8850)
+Gui.FormView..MinX(0)
+Gui.FormView..MinY(0)
+Gui.FormView..Position(0,0)
+Gui.FormView..BackColor(-2147483633)
+Gui.FormView..MousePointer(0)
+Gui.FormView..Event(UnLoad,FormView_UnLoad)
+Gui.FormView..Caption("MRP VIEWER")
+Gui.FormView.frameHeader.Create(Frame)
+Gui.FormView.frameHeader.Size(15990,900)
+Gui.FormView.frameHeader.Position(60,0)
+Gui.FormView.frameHeader.BackColor(6273113)
+Gui.FormView.frameHeader.Anchor(13)
+Gui.FormView.txtLoc.Create(TextBox,"",True,630,300,0,13485,405,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtLoc.Parent("frameHeader")
+Gui.FormView.txtLoc.Anchor(9)
+Gui.FormView.txtLoc.FontStyle(True,False,False,False,False)
+Gui.FormView.txtPart.Create(TextBox,"",True,1650,300,0,11055,405,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtPart.Parent("frameHeader")
+Gui.FormView.txtPart.Anchor(9)
+Gui.FormView.txtPart.FontStyle(True,False,False,False,False)
+Gui.FormView.txtRev.Create(TextBox,"",True,615,300,0,12780,405,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtRev.Parent("frameHeader")
+Gui.FormView.txtRev.Anchor(9)
+Gui.FormView.txtRev.FontStyle(True,False,False,False,False)
+Gui.FormView.lblPart.Create(Label,"Part",True,675,225,0,11055,240,True,0,"Arial",8,6273113,1)
+Gui.FormView.lblPart.Parent("frameHeader")
+Gui.FormView.lblPart.Anchor(9)
+Gui.FormView.lblPart.ForeColor(0)
+Gui.FormView.lblPart.Event(Click,lblPart_Click)
+Gui.FormView.lblPart.FontStyle(True,False,False,False,False)
+Gui.FormView.lblRev.Create(Label,"Rev",True,525,225,0,12780,240,True,0,"Arial",8,6273113,1)
+Gui.FormView.lblRev.Parent("frameHeader")
+Gui.FormView.lblRev.Anchor(9)
+Gui.FormView.lblRev.ForeColor(0)
+Gui.FormView.lblRev.FontStyle(True,False,False,False,False)
+Gui.FormView.lblLoc.Create(Label,"Loc",True,420,225,0,13515,240,True,0,"Arial",8,6273113,1)
+Gui.FormView.lblLoc.Parent("frameHeader")
+Gui.FormView.lblLoc.Anchor(9)
+Gui.FormView.lblLoc.ForeColor(0)
+Gui.FormView.lblLoc.FontStyle(True,False,False,False,False)
+Gui.FormView.cmdBrw.Create(Button)
+Gui.FormView.cmdBrw.Size(360,360)
+Gui.FormView.cmdBrw.Position(14145,375)
+Gui.FormView.cmdBrw.Parent("frameHeader")
+Gui.FormView.cmdBrw.Caption("^")
+Gui.FormView.cmdBrw.Event(Click,cmdBrw_Click)
+Gui.FormView.cmdBrw.Anchor(9)
+Gui.FormView.lblPurMan.Create(Label,"Pur / Mfg",True,1230,255,0,45,195,True,1,"Arial",8,6273113,1)
+Gui.FormView.lblPurMan.Parent("frameHeader")
+Gui.FormView.lblPurMan.FontStyle(True,False,False,False,False)
+Gui.FormView.lblLeadP.Create(Label,"Lead Time: Inv",True,1335,255,0,4770,195,True,1,"Arial",8,6273113,1)
+Gui.FormView.lblLeadP.Parent("frameHeader")
+Gui.FormView.lblLeadP.FontStyle(True,False,False,False,False)
+Gui.FormView.lblProdLine.Create(Label,"Product Line",True,1335,255,0,4710,570,True,1,"Arial",8,6273113,1)
+Gui.FormView.lblProdLine.Parent("frameHeader")
+Gui.FormView.lblProdLine.FontStyle(True,False,False,False,False)
+Gui.FormView.lblSafety.Create(Label,"Safety Stock",True,1200,255,0,45,570,True,1,"Arial",8,6273113,1)
+Gui.FormView.lblSafety.Parent("frameHeader")
+Gui.FormView.lblSafety.FontStyle(True,False,False,False,False)
+Gui.FormView.lblOrdIncrement.Create(Label,"Mfg Qty Multiple",True,1530,255,0,2205,570,True,1,"Arial",8,6273113,1)
+Gui.FormView.lblOrdIncrement.Parent("frameHeader")
+Gui.FormView.lblOrdIncrement.FontStyle(True,False,False,False,False)
+Gui.FormView.lblMinOrder.Create(Label,"Min Order Qty",True,1515,255,0,2235,195,True,1,"Arial",8,6273113,1)
+Gui.FormView.lblMinOrder.Parent("frameHeader")
+Gui.FormView.lblMinOrder.FontStyle(True,False,False,False,False)
+Gui.FormView.txtPurMan.Create(TextBox,"",True,660,300,0,1425,135,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtPurMan.Parent("frameHeader")
+Gui.FormView.txtPurMan.ForeColor(0)
+Gui.FormView.txtPurMan.FontStyle(True,False,False,False,False)
+Gui.FormView.txtSafety.Create(TextBox,"",True,660,300,0,1425,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtSafety.Parent("frameHeader")
+Gui.FormView.txtSafety.ForeColor(0)
+Gui.FormView.txtSafety.FontStyle(True,False,False,False,False)
+Gui.FormView.txtIncrement.Create(TextBox,"",True,660,300,0,3840,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtIncrement.Parent("frameHeader")
+Gui.FormView.txtIncrement.ForeColor(0)
+Gui.FormView.txtIncrement.FontStyle(True,False,False,False,False)
+Gui.FormView.txtMinOrd.Create(TextBox,"",True,660,300,0,3840,135,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtMinOrd.Parent("frameHeader")
+Gui.FormView.txtMinOrd.ForeColor(0)
+Gui.FormView.txtMinOrd.FontStyle(True,False,False,False,False)
+Gui.FormView.txtProdLine.Create(TextBox,"",True,660,300,0,6315,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtProdLine.Parent("frameHeader")
+Gui.FormView.txtProdLine.ForeColor(0)
+Gui.FormView.txtProdLine.FontStyle(True,False,False,False,False)
+Gui.FormView.txtLeadP.Create(TextBox,"",True,660,300,0,6330,135,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtLeadP.Parent("frameHeader")
+Gui.FormView.txtLeadP.ForeColor(0)
+Gui.FormView.txtLeadP.FontStyle(True,False,False,False,False)
+Gui.FormView.cmdRefresh.Create(Button)
+Gui.FormView.cmdRefresh.Size(600,540)
+Gui.FormView.cmdRefresh.Position(15285,165)
+Gui.FormView.cmdRefresh.Parent("frameHeader")
+Gui.FormView.cmdRefresh.Caption("REFRESH")
+Gui.FormView.cmdRefresh.Event(Click,cmdRefresh_Click)
+Gui.FormView.cmdRefresh.Anchor(9)
+Gui.FormView.cmdNext.Create(Button)
+Gui.FormView.cmdNext.Size(600,540)
+Gui.FormView.cmdNext.Position(14580,165)
+Gui.FormView.cmdNext.Parent("frameHeader")
+Gui.FormView.cmdNext.Event(Click,cmdNext_Click)
+Gui.FormView.cmdNext.Anchor(9)
+Gui.FormView.cmdPrevious.Create(Button)
+Gui.FormView.cmdPrevious.Size(600,540)
+Gui.FormView.cmdPrevious.Position(10230,165)
+Gui.FormView.cmdPrevious.Parent("frameHeader")
+Gui.FormView.cmdPrevious.Anchor(9)
+Gui.FormView.cmdPrevious.Event(Click,cmdPrevious_Click)
+Gui.FormView.lblSort.Create(Label,"Sort Code",True,975,255,0,7140,570,True,0,"Arial",8,6273113,1)
+Gui.FormView.lblSort.Parent("frameHeader")
+Gui.FormView.lblSort.FontStyle(True,False,False,False,False)
+Gui.FormView.txtSort.Create(TextBox,"",True,1455,300,0,8190,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtSort.Parent("frameHeader")
+Gui.FormView.txtSort.FontStyle(True,False,False,False,False)
+Gui.FormView.txtBuild.Create(TextBox,"",True,1455,300,0,8190,135,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtBuild.Parent("frameHeader")
+Gui.FormView.txtBuild.FontStyle(True,False,False,False,False)
+Gui.FormView.lblBuildDate.Create(Label,"Build Date",True,915,255,0,7155,195,True,0,"Arial",8,6273113,1)
+Gui.FormView.lblBuildDate.Parent("frameHeader")
+Gui.FormView.lblBuildDate.FontStyle(True,False,False,False,False)
+Gui.FormView.frameViewSettings.Create(Frame)
+Gui.FormView.frameViewSettings.Size(15945,885)
+Gui.FormView.frameViewSettings.Position(105,7380)
+Gui.FormView.frameViewSettings.Anchor(13)
+Gui.FormView.frameViewSettings.Caption("Viewer Column Settings")
+Gui.FormView.lblPer1.Create(Label,"Period 1",True,810,255,0,120,570,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblPer1.Parent("frameViewSettings")
+Gui.FormView.lblPer1.FontStyle(True,False,False,False,False)
+Gui.FormView.txtPer1.Create(TextBox,"",True,525,300,0,975,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtPer1.Parent("frameViewSettings")
+Gui.FormView.ddlPer1.Create(DropDownList)
+Gui.FormView.ddlPer1.Size(1095,330)
+Gui.FormView.ddlPer1.Position(1545,510)
+Gui.FormView.ddlPer1.Parent("frameViewSettings")
+Gui.FormView.lblPer2.Create(Label,"Period 2",True,825,255,0,2835,570,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblPer2.Parent("frameViewSettings")
+Gui.FormView.lblPer2.FontStyle(True,False,False,False,False)
+Gui.FormView.txtPer2.Create(TextBox,"",True,525,300,0,3675,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtPer2.Parent("frameViewSettings")
+Gui.FormView.ddlPer2.Create(DropDownList)
+Gui.FormView.ddlPer2.Size(1095,330)
+Gui.FormView.ddlPer2.Position(4260,510)
+Gui.FormView.ddlPer2.Parent("frameViewSettings")
+Gui.FormView.txtPer3.Create(TextBox,"",True,525,300,0,6390,510,True,0,"Arial",8,-2147483643,1)
+Gui.FormView.txtPer3.Parent("frameViewSettings")
+Gui.FormView.lblPer3.Create(Label,"Period 3",True,855,255,0,5520,570,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblPer3.Parent("frameViewSettings")
+Gui.FormView.lblPer3.FontStyle(True,False,False,False,False)
+Gui.FormView.ddlPer3.Create(DropDownList)
+Gui.FormView.ddlPer3.Size(1095,330)
+Gui.FormView.ddlPer3.Position(6975,510)
+Gui.FormView.ddlPer3.Parent("frameViewSettings")
+Gui.FormView.ddlShowBy.Create(DropDownList)
+Gui.FormView.ddlShowBy.Size(2520,330)
+Gui.FormView.ddlShowBy.Position(13275,510)
+Gui.FormView.ddlShowBy.Parent("frameViewSettings")
+Gui.FormView.ddlShowBy.Anchor(9)
+Gui.FormView.cmdApply.Create(Button)
+Gui.FormView.cmdApply.Size(1290,375)
+Gui.FormView.cmdApply.Position(8220,480)
+Gui.FormView.cmdApply.Parent("frameViewSettings")
+Gui.FormView.cmdApply.Caption("Apply to View")
+Gui.FormView.cmdApply.Event(Click,cmdApply_Click)
+Gui.FormView.cmdSave.Create(Button)
+Gui.FormView.cmdSave.Size(1245,375)
+Gui.FormView.cmdSave.Position(9705,480)
+Gui.FormView.cmdSave.Parent("frameViewSettings")
+Gui.FormView.cmdSave.Caption("Save Settings")
+Gui.FormView.cmdSave.Event(Click,cmdSave_Click)
+Gui.FormView.ddlConsume.Create(DropDownList)
+Gui.FormView.ddlConsume.Size(2115,330)
+Gui.FormView.ddlConsume.Position(11055,510)
+Gui.FormView.ddlConsume.Parent("frameViewSettings")
+Gui.FormView.ddlConsume.Anchor(9)
+Gui.FormView.lblConsume.Create(Label,"Consumption Method",True,2070,255,0,11055,255,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblConsume.Parent("frameViewSettings")
+Gui.FormView.lblConsume.Anchor(9)
+Gui.FormView.lblConsume.FontStyle(True,False,False,False,False)
+Gui.FormView.lblShading.Create(Label,"Column Shading",True,1935,255,0,13485,255,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblShading.Parent("frameViewSettings")
+Gui.FormView.lblShading.Anchor(9)
+Gui.FormView.lblShading.FontStyle(True,False,False,False,False)
+Gui.FormView.chkLock.Create(CheckBox)
+Gui.FormView.chkLock.Size(2490,240)
+Gui.FormView.chkLock.Position(8235,195)
+Gui.FormView.chkLock.Caption("Lock Column Settings")
+Gui.FormView.chkLock.FontStyle(True,False,False,False,False)
+Gui.FormView.chkLock.Event(Click,chkLock_Click)
+Gui.FormView.chkLock.Parent("frameViewSettings")
+Gui.FormView.frameView.Create(Frame)
+Gui.FormView.frameView.Size(15900,6450)
+Gui.FormView.frameView.Position(90,870)
+Gui.FormView.frameView.Anchor(13)
+Gui.FormView.picChart.Create(PictureBox)
+Gui.FormView.picChart.Size(15780,4935)
+Gui.FormView.picChart.Position(30,450)
+Gui.FormView.picChart.Anchor(13)
+Gui.FormView.picChart.Visible(False)
+Gui.FormView.picChart.Parent("frameView")
+Gui.FormView.ggcMrp.Create(GsGridControl)
+Gui.FormView.ggcMrp.Size(15780,5910)
+Gui.FormView.ggcMrp.Position(30,450)
+Gui.FormView.ggcMrp.Anchor(13)
+Gui.FormView.ggcMrp.Visible(False)
+Gui.FormView.ggcMrp.Parent("frameView")
+Gui.FormView.lblGraphic.Create(Label,"Graphic View",True,1335,255,0,1440,180,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblGraphic.BorderStyle(2)
+Gui.FormView.lblGraphic.FontStyle(True,False,False,False,False)
+Gui.FormView.lblGraphic.Event(Click,lblGraphic_Click)
+Gui.FormView.lblGraphic.Parent("frameView")
+Gui.FormView.lblForView.Create(Label,"Forecast View",True,1380,255,0,30,180,True,0,"Arial",8,-2147483633,0)
+Gui.FormView.lblForView.BorderStyle(2)
+Gui.FormView.lblForView.FontStyle(True,False,False,False,False)
+Gui.FormView.lblForView.Event(Click,lblForView_Click)
+Gui.FormView.lblForView.Parent("frameView")
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+'vertical view is used for building dates and values row by row
+f.Data.DataTable.Create("verticalview",True)
+F.Data.DataTable.AddColumn("verticalview","ColumnKey","STRING")
+f.Data.DataTable.AddColumn("verticalview","DateStamp","Date")
+f.Data.DataTable.AddColumn("verticalview","BeginFilter","Date")
+f.Data.DataTable.AddColumn("verticalview","EndFilter","Date")
+f.Data.DataTable.AddColumn("verticalview","BeginOnHand","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","FORECAST","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","CUST_ORDERS","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","DEP_DEM","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","SCH_RECEIPTS","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","PLANNED","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","PLANNED_START","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","MONTH","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","PERIOD","LONG")
+F.Data.DataTable.AddColumn("verticalview","ZONE","LONG")
+F.Data.DataTable.AddColumn("verticalview","UNCONSUMED","FLOAT")
+f.Data.DataTable.AddColumn("verticalview","consumption_bucket","FLOAT")
+F.Data.DataTable.AddColumn("verticalview","TotalSales","FLOAT",0)
+F.Data.DataTable.AddColumn("verticalview","TotalForecast","FLOAT",0)
+
+'dictionary used for the period type settings
+f.Data.Dictionary.Create("TYPES")
+F.Data.Dictionary.AddItem("TYPES","D","DAYS")
+F.Data.Dictionary.AddItem("TYPES","W","WEEKS")
+F.Data.Dictionary.AddItem("TYPES","M","MONTHS")
+
+
+v.Global.sPast.Declare
+v.Global.sZone1Start.Declare
+v.Global.sZone1End.Declare
+v.Global.sZone2End.Declare
+v.Global.sZone3End.Declare
+v.Global.sView1End.Declare
+v.Global.sView2Start.Declare
+v.Global.sView2End.Declare
+v.Global.sView3Start.Declare
+v.Global.sView3End.Declare
+v.Global.fForecast.Declare
+
+v.Global.bLock.Declare
+v.Global.sType.Declare
+v.Global.iZone.Declare
+v.Global.dCheckDate.Declare
+v.Global.dStartDate.Declare
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sSql.Declare
+
+'check the build status
+f.Intrinsic.Control.CallSub(check_build)
+
+f.ODBC.Connection!coredb.opencompanyconnection
+
+f.Intrinsic.UI.InvokeWaitDialog("Building Dictionary Settings...")
+f.Intrinsic.Control.CallSub(getsettings)
+
+F.Intrinsic.Control.CallSub(form_settings)
+
+f.Intrinsic.UI.ChangeWaitStatus("Retrieving Forecast Data...")
+f.Intrinsic.Control.CallSub(getdata)
+
+F.ODBC.Connection!coredb.close
+
+f.Intrinsic.UI.CloseWaitDialog
+gui.FormView..Show
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.check_build.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sRet.Declare
+v.Local.dRet.Declare
+V.Local.dBuildDate.Declare
+v.Local.dDate.Declare
+v.Local.sFile.Declare
+v.Local.iRet.Declare
+
+
+f.ODBC.Connection!coredb.opencompanyconnection
+'get the last build date of the MRP_Planning table
+f.ODBC.Connection!coredb.executeandreturn("select top 1 BuildDate from MRP_Planning order by BuildDate Desc",v.Local.sRet)
+f.Intrinsic.String.Replace(v.Local.sRet,":00.000","",v.Local.sRet)
+f.Intrinsic.String.Format(v.Local.sRet,"mm/dd/yyyy",V.Local.dBuildDate)
+f.Intrinsic.Date.ConvertDString(v.Local.dBuildDate,"mm/dd/yyyy",V.Local.dBuildDate)
+F.Intrinsic.String.Format(v.Ambient.Date,"mm/dd/yyyy",V.Local.dDate)
+'if the build date is < today, give the user an option to build now.
+F.Intrinsic.Control.If(V.Local.dDate,>,V.Local.dBuildDate)
+	F.Intrinsic.UI.Msgbox("The MRP Build is out of date.  Rebuild Now?","MRP Build Status",4,v.Local.sRet)
+	'yes - launch the build script
+	f.Intrinsic.Control.If(v.Local.sRet,=,6)
+		f.Intrinsic.UI.InvokeWaitDialog("Rebuilding MRP.  Please wait...")
+		f.Intrinsic.String.Build("{0}\GCG_4176_MRP_BUILD.g2u",v.Caller.GasDir,v.Local.sFile)
+		f.Global.Task.CallSyncGas(v.Local.sFile,"",2)
+		f.ODBC.Connection!coredb.executeandreturn("select top 1 BuildDate from MRP_Planning order by BuildDate Desc",v.Local.sRet)
+		f.Intrinsic.String.Replace(v.Local.sRet,":00.000","",v.Local.sRet)
+		f.Intrinsic.String.Format(v.Local.sRet,"mm/dd/yyyy",V.Local.dBuildDate)
+		gui.FormView.txtBuild.Text(v.Local.dBuildDate)
+	f.Intrinsic.Control.ElseIf(v.Local.sRet,=,7)
+	'no - ignore the date but display the date in red on the form
+		gui.FormView.txtBuild.Text(v.Local.dBuildDate)
+		Gui.FormView.txtBuild.ForeColor(255)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.else
+	'we're good, set the date on the form.
+	gui.FormView.txtBuild.Text(v.Local.dBuildDate)
+F.Intrinsic.Control.EndIf
+
+F.ODBC.Connection!coredb.close
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.check_build.End
+
+'get viewer and part settings and build dictionaries.
+Program.Sub.getsettings.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sSql.Declare
+v.Local.dDate.Declare
+v.Local.dStartDate.Declare
+v.Local.bAdmin.Declare
+
+
+'create the onhand dictionary
+f.Data.Dictionary.CreateFromSQL("dOnHand","coredb","SELECT PART, QTY_ONHAND from V_MRP_FIELDS",20)
+'pull in the standard settings - these will be used for all parts that don't have specific settings created for MRP 
+F.Data.Dictionary.CreateFromSQL("dSettings","coredb","SELECT NAME, VALUE FROM MRP_SETTINGS",20)
+'period 1 width it's possible that the specific part settings may not have a width defined.  Replace it with the default width from the settings dictionary.
+f.Intrinsic.String.Build("SELECT PART, if(pd1width > 0, pd1width, {0}) as PD1WIDTH FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTWIDTHPD1,V.Local.sSql)
+f.Data.Dictionary.CreateFromSQL("fcWidth1","coredb",v.Local.sSql,20)
+F.Data.Dictionary.SetDefaultReturn("fcWidth1",v.dictionary.dSettings!DEFAULTWIDTHPD1)
+
+'note that all the following dictionaries have a default return that's established in the dSettings dictionary.
+'this ensures that we either get the part specific setting, or the MRP Default setting for the required option.
+'period 2 width
+f.Intrinsic.String.Build("SELECT PART, if(pd2width > 0, pd2width, {0}) as PD2WIDTH FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTWIDTHPD2,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("fcWidth2","coredb",v.Local.sSql,20)
+F.Data.Dictionary.SetDefaultReturn("fcWidth2",v.dictionary.dSettings!DEFAULTWIDTHPD2)
+'viewer 1 length
+f.Intrinsic.String.Build("SELECT PART, if(viewer1length > 0, viewer1length, {0}) as viewer1length FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTVIEWERWT1,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("dViewLen1","coredb",v.Local.sSql,20)
+f.Data.Dictionary.SetDefaultReturn("dViewLen1",v.dictionary.dSettings!DEFAULTVIEWERWT1)
+'viewer 1 type
+F.Intrinsic.String.Build("SELECT PART, if(viewer1type > '', viewer1type, '{0}') as viewer1type FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTVIEWERTYPE1,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("dViewType1","coredb",v.Local.sSql,20)
+f.Data.Dictionary.SetDefaultReturn("dViewType1",v.dictionary.dSettings!DEFAULTVIEWERTYPE1)
+'viewer 2 length
+f.Intrinsic.String.Build("SELECT PART, if(viewer2length > 0, viewer2length, {0}) as viewer1length FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTVIEWERWT2,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("dViewLen2","coredb",v.Local.sSql,20)
+f.Data.Dictionary.SetDefaultReturn("dViewLen2",v.dictionary.dSettings!DEFAULTVIEWERWT2)
+'viewer 2 type
+F.Intrinsic.String.Build("SELECT PART, if(viewer2type > '', viewer2type, '{0}') as viewer2type FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTVIEWERTYPE2,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("dViewType2","coredb",v.Local.sSql,20)
+f.Data.Dictionary.SetDefaultReturn("dViewType2",v.dictionary.dSettings!DEFAULTVIEWERTYPE2)
+'viewer 3 length
+f.Intrinsic.String.Build("SELECT PART, if(viewer3length > 0, viewer3length, {0}) as viewer3length FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTVIEWERWT3,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("dViewLen3","coredb",v.Local.sSql,20)
+f.Data.Dictionary.SetDefaultReturn("dViewLen3",v.dictionary.dSettings!DEFAULTVIEWERWT3)
+'viewer 3 type
+F.Intrinsic.String.Build("SELECT PART, if(viewer3type > '', viewer3type, '{0}') as viewer1type FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTVIEWERTYPE3,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("dViewType3","coredb",v.Local.sSql,20)
+f.Data.Dictionary.SetDefaultReturn("dViewType3",v.dictionary.dSettings!DEFAULTVIEWERTYPE3)
+'part source
+F.Data.DataTable.CreateFromSQL("FIELDS","coredb","SELECT PART, PRODUCT_LINE, CODE_SORT, CAST(QTY_ORDER AS INTEGER) AS QTY_ORDER, CAST(QTY_REORDER AS INTEGER) AS QTY_REORDER, PURCHASE_LEAD, CODE_SOURCE, CAST(MFG_LEAD AS INTEGER) AS MFG_LEAD, CAST(MFG_QTY_MINIMUM AS INTEGER) AS MFG_QTY_MINIMUM, CAST(MFG_QTY_MULTIPLE AS INTEGER) AS MFG_QTY_MULTIPLE, CAST(0 AS INTEGER) AS PARTKEY FROM V_MRP_FIELDS ORDER BY PART")
+
+f.Data.DataTable.SetSeries("FIELDS","PARTKEY",1,1)
+
+F.Data.Dictionary.CreateFromDatatable("dSource","FIELDS","PART","CODE_SOURCE",20)
+F.Data.Dictionary.SetDefaultReturn("dSource","0")
+'purchased lead days
+F.Data.Dictionary.CreateFromDatatable("dPurLead","FIELDS","PART","PURCHASE_LEAD",20)
+f.Data.Dictionary.SetDefaultReturn("dPurLead","0")
+'manufactured lead days
+F.Data.Dictionary.CreateFromDatatable("dMfgLead","FIELDS","PART","MFG_LEAD",20)
+f.Data.Dictionary.SetDefaultReturn("dMfgLead","0")
+'safety stock
+F.Data.Dictionary.CreateFromDatatable("dSafetyStock","FIELDS","PART","QTY_REORDER",20)
+f.Data.Dictionary.SetDefaultReturn("dSafetyStock","0")
+'min order qty
+F.Data.Dictionary.CreateFromDatatable("dMinQty","FIELDS","PART","QTY_ORDER",20)
+f.Data.Dictionary.SetDefaultReturn("dMinQty","0")
+'Order Increment
+F.Data.Dictionary.CreateFromDatatable("dIncrement","FIELDS","PART","MFG_QTY_MULTIPLE",20)
+f.Data.Dictionary.SetDefaultReturn("dIncrement","0")
+'Product Line
+F.Data.Dictionary.CreateFromDatatable("dProd","FIELDS","PART","PRODUCT_LINE",20)
+F.Data.Dictionary.SetDefaultReturn("dProd","")
+'Sort Code
+f.Data.Dictionary.CreateFromDatatable("dSort","FIELDS","PART","CODE_SORT",20)
+F.Data.Dictionary.SetDefaultReturn("dSort","")
+'Key order
+F.Data.Dictionary.CreateFromDatatable("dKey","FIELDS","PARTKEY","PART")
+F.Data.Dictionary.SetDefaultReturn("dKey","ENDLIST")
+
+f.Data.DataTable.Close("FIELDS")
+
+'this is the default width of each zone.
+F.Intrinsic.Date.DateAddWorkdays(V.Ambient.Date,V.Dictionary.dSettings!DEFAULTWIDTHPD1,v.Dictionary.dSettings!DayFilter,v.Global.sZone1End)
+F.Intrinsic.Date.DateAddWorkdays(v.Global.sZone1End,V.Dictionary.dSettings!DEFAULTWIDTHPD2,v.Dictionary.dSettings!DayFilter,V.Global.sZone2End)
+F.Intrinsic.String.Format(V.Global.sZone1End,"MM/DD/YYYY",V.Global.sZone1End)
+F.Intrinsic.String.Format(V.Global.sZone2End,"MM/DD/YYYY",V.Global.sZone2End)
+
+'values and setting for form drop downs
+gui.FormView.ddlPer1.AddItems("Dictionary","TYPES")
+gui.FormView.ddlPer2.AddItems("Dictionary","TYPES")
+gui.FormView.ddlPer3.AddItems("Dictionary","TYPES")
+gui.FormView.ddlShowBy.AddItem("Forecast Zones")
+gui.FormView.ddlShowBy.AddItem("Viewer Column Buckets")
+gui.FormView.ddlShowBy.Text("Viewer Column Buckets")
+gui.FormView.ddlConsume.AddItem("Zone 2 By Month")
+gui.FormView.ddlConsume.AddItem("Days From Today")
+gui.FormView.ddlConsume.AddItem("Forecast Zone 2")
+gui.FormView.ddlConsume.Text("Zone 2 By Month")
+
+f.Global.Security.IsInGroup(v.Caller.User,"MRPADMIN",V.Local.bAdmin)
+f.Intrinsic.Control.If(v.Local.bAdmin,=,False)
+	gui.FormView.ddlConsume.Enabled(False)
+	gui.FormView.cmdSave.Enabled(False)
+f.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.getsettings.End
+
+Program.Sub.getdata.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sSql.Declare
+v.Local.dStartDate.Declare
+v.Local.dEndDate.Declare
+v.Local.sBaseSql.Declare
+v.Local.sZoneFormula.Declare
+
+f.Intrinsic.Control.If(v.DataTable.plan.Exists)
+	f.Data.DataTable.Close("PLAN")
+f.Intrinsic.Control.EndIf
+
+'this way, a refresh on the view will pickup any changes to core data, including WO's/PO's generated from MRP Data.
+F.Data.DataTable.CreateFromSQL("plan","coredb","select fid, pid, part, datestart, datedue, period as zone, cast(if(entrytype = 'S',DEMAND,0) as double) AS FORECAST, cast(IF(entrytype = '6',DEMAND,0) as double) AS CUST_ORDERS, cast(IF(entrytype in ('7','8','9','F'),DEMAND,0)as double) AS DEP_DEM, cast(IF(ENTRYTYPE IN ('1','2'),SUPPLY,0) as double) AS SCH_RECEIPTS, cast(IF(ENTRYTYPE IN ('3','P'),SUPPLY,0) as double) AS PLANNED FROM MRP_PLANNING WHERE PID > -1 AND JOB IS NULL AND PURCHASE_ORDER IS NULL ORDER BY DATEDUE;",True)
+
+'select from sales order lines (CUST_ORDERS  column)
+f.Data.DataTable.CreateFromSQL("Sales","coredb","select cast(0 as integer) as FID, (ORDER_NO + '-' + RECORD_NO) AS Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, Location, DATE_ITEM_PROM as DateDue, Qty_BO as CUST_ORDERS, cast('6' as CHAR(1)) as EntryType, 'Firm SO Demand' as TypeDesc, -1 as PID from V_ORDER_LINES where QTY_BO > 0",True)
+
+'select from work order commitments (DEP_DEM column)
+f.Data.DataTable.CreateFromSQL("JobReqs","coredb","select cast(0 as integer) as FID, (JOB + '-' + SUFFIX + '-' + SEQUENCE) AS Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, LOCATION, DATE_DUE AS DateDue, (QTY_COMMITTED - QTY_ISSUED) AS DEP_DEM, cast('7' as CHAR(1)) as EntryType, 'Firm WO Demand' as TypeDesc, -1 as PID, 0 as LLC from V_JOB_COMMITMENTS",True)
+
+'select from open purchase orders (SCH_RECEIPTS column)
+f.Data.DataTable.CreateFromSQL("POReceipts","coredb","select cast(0 as integer) as FID, (PURCHASE_ORDER + '-' + RECORD_NO) AS Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, Location, DUE_DATE_L as DateDue, (QTY_ORDER - QTY_RECEIVED) as SCH_RECEIPTS, cast('1' as CHAR(1)) as EntryType, 'PO Receipts' as TypeDesc, -1 as PID, 0 as LLC from V_PO_LINES where FLAG_RECV_CLOSE <> 'Y' and (QTY_ORDER - QTY_RECEIVED) > 0",True)
+
+'select from open work orders (SCH_RECEIPTS column)
+f.Data.DataTable.CreateFromSQL("WOReceipts","coredb","select cast(0 as integer) as FID, (JOB + '-' + SUFFIX) as Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, Location, DATE_DUE as DateDue, (QTY_ORDER - QTY_COMPLETED) as SCH_RECEIPTS, cast('2' as CHAR(1)) as EntryType, 'WO Receipts' as TypeDesc, -1 as PID, 0 as LLC from V_Job_Header where (QTY_ORDER - QTY_COMPLETED) > 0 and Part != '' and date_closed = '1900-01-01'",True)
+
+F.Intrinsic.String.Build("IIF(DATEDUE < #{0}#,0,IIF(DATEDUE >= #{0}# AND DATEDUE <= #{1}#,1,IIF(DATEDUE > #{1}# AND DATEDUE <= #{2}#,2,3)))",V.Ambient.Date,V.Global.sZone1End,V.Global.sZone2End,V.Local.sZoneFormula)
+
+f.Data.DataTable.AddExpressionColumn("sales","zone","long",v.Local.sZoneFormula)
+f.Data.DataTable.AddExpressionColumn("JobReqs","zone","long",v.Local.sZoneFormula)
+f.Data.DataTable.AddExpressionColumn("POReceipts","zone","long",v.Local.sZoneFormula)
+f.Data.DataTable.AddExpressionColumn("WOReceipts","zone","long",v.Local.sZoneFormula)
+
+f.Data.DataTable.Merge("Sales","PLAN",True,2)
+f.Data.DataTable.Merge("JobReqs","PLAN",True,2)
+f.Data.DataTable.Merge("POReceipts","PLAN",True,2)
+f.Data.DataTable.Merge("WOReceipts","PLAN",True,2)
+
+f.Data.DataTable.Close("Sales")
+f.Data.DataTable.Close("JobReqs")
+f.Data.DataTable.Close("POReceipts")
+f.Data.DataTable.Close("WOReceipts")
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.getdata.End
+
+Program.Sub.Catching.Start
+v.Local.sError.declare(string)
+F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}","GCG_4176_MRP_Viewer.g2u",V.Ambient.NewLine,v.Args.sub,V.Args.errorno,V.args.errordesc,V.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+F.Intrinsic.Control.CallSub(formview_unload)
+Program.Sub.Catching.End
+
+Program.Sub.set_filters.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sFilter.Declare
+v.Local.iLength.Declare
+v.Local.iViewLen1.Declare
+v.Local.sViewType1.Declare
+v.Local.iViewLen2.Declare
+v.Local.sViewType2.Declare
+v.Local.iViewLen3.Declare
+v.Local.sViewType3.Declare
+v.Local.sPart.Declare
+v.Local.dWeek.Declare
+v.Local.bARGS.Declare
+
+gui.FormView.ggcMrp.visible(False)
+'Function.Intrinsic.Debug.InvokeDebugger
+'Function.Intrinsic.Debug.Stop
+
+'Create the part from passed args part and rev.
+f.Intrinsic.String.GSSPartString(v.Args.PART,V.Args.REV,V.Local.sPart)
+F.Intrinsic.String.RPad(V.Local.sPart," ",20,V.Local.sPart)
+
+'if part datatable exists, close it and clear the records from both veritcalview and tableview
+f.Intrinsic.Control.If(v.DataTable.part.Exists)
+	f.Data.DataTable.Close("PART")
+	F.Data.DataTable.Close("VIEWER")
+	F.Data.DataTable.DeleteRow("verticalview")
+	F.Data.DataTable.AcceptChanges("verticalview")
+	gui.FormView.tabMain.Visible("False")
+	f.Data.DataTable.RemoveColumn("verticalview","EndOnHand")
+	f.Data.DataTable.RemoveColumn("verticalview","TotalDemand")
+	f.Data.DataTable.RemoveColumn("verticalview","TotalSupply")
+'	f.Data.DataTable.RemoveColumn("verticalview","Unconsumed")
+'	F.Data.DataTable.RemoveColumn("verticalview","consumption_bucket")
+'	F.Data.DataTable.RemoveColumn("verticalview","TotalSales")
+'	F.Data.DataTable.RemoveColumn("verticalview","TotalForecast")
+	
+f.Intrinsic.Control.EndIf
+
+'get the part viewer settings (this should return either part specific or the default settings)
+f.Intrinsic.Control.If(v.Global.bLock,=,False)
+	v.Local.iViewLen1.Set(v.dictionary.DVIEWLEN1![V.Local.sPart])
+	V.Local.sViewType1.Set(v.dictionary.DVIEWTYPE1![V.Local.sPart])
+	v.Local.iViewLen2.Set(v.dictionary.DVIEWLEN2![V.Local.sPart])
+	V.Local.sViewType2.Set(v.dictionary.DVIEWTYPE2![V.Local.sPart])
+	V.Local.iViewLen3.Set(v.dictionary.DVIEWLEN3![V.Local.sPart])
+	V.Local.sViewType3.Set(v.dictionary.DVIEWTYPE3![V.Local.sPart])
+f.Intrinsic.Control.Else
+	v.Local.iViewLen1.Set(v.Screen.FormView!txtPer1.text)
+	v.Local.iViewLen2.Set(v.Screen.FormView!txtPer2.text)
+	v.Local.iViewLen3.Set(v.Screen.FormView!txtPer3.text)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer1.TEXT,v.Local.sViewType1)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer2.TEXT,v.Local.sViewType2)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer3.TEXT,v.Local.sViewType3)
+f.Intrinsic.Control.EndIf
+
+f.Intrinsic.String.Build("PART = '{0}'",v.Local.sPart,v.Local.sFilter)
+
+'date filter
+f.Intrinsic.String.Build("DATEDUE < '{0}'",V.Ambient.Date,v.Global.sPast)
+
+
+'create a view for the part and convert to a datatable
+f.Intrinsic.Control.If(v.DataView.plan!vPlan.Exists,=,False)
+	f.Data.DataView.Create("plan","vPlan",22)
+f.Intrinsic.Control.EndIf
+F.Data.DataView.SetFilter("plan","vPlan",V.Local.sFilter)
+'create a datatable of just the filtered part
+f.Data.DataView.ToDataTable("plan","vPlan","Part",True)
+
+
+'To calculate D, it's just D + Days.
+'To calculate W, it's Today to the end of this week (= week 1). Sunday of the following week, + (width of weeks - 1)
+'viewer 1 length generates the end date of the first column settings.
+f.Intrinsic.Control.SelectCase(v.Local.sViewType1)
+	f.Intrinsic.Control.Case("D")
+		f.Intrinsic.Math.Sub(v.Local.iViewLen1,1,v.Local.iViewLen1)
+		F.Intrinsic.Date.DateAddWorkdays(V.Ambient.Date,V.Local.iViewLen1,v.dictionary.dSettings!DAYFILTER,v.Global.sView1End)
+	F.Intrinsic.Control.Case("W")
+		'calculate from today to the end of the week
+		f.Intrinsic.Date.EndOfWeek(v.Ambient.Date,v.Local.dWeek)		
+		'if the width is 4 weeks, we subtract one from the width because week 1 was arleady addressed on the previous line "EndOfWeek".
+		f.Intrinsic.Math.Sub(v.Local.iViewLen1,1,v.Local.iViewLen1)
+		f.Intrinsic.Date.DateAdd("WW",v.Local.iViewLen1,v.Local.dWeek,v.Global.sView1End)
+		'f.Intrinsic.Date.DateAdd("D",1,v.Local.dWeek,v.Local.dWeek)
+		'subtract 1 day from the end range so we always end on a Saturday
+		'f.Intrinsic.Date.DateAdd("D",-1,v.Global.sView1End,v.Global.sView1End)
+	F.Intrinsic.Control.Case("M")
+		f.Intrinsic.Date.DateAdd("M",V.Local.iViewLen1,V.Ambient.Date,V.Global.sView1End)
+f.Intrinsic.Control.EndSelect
+'viewer 2 length generates the end date of the second column settings.
+f.Intrinsic.Control.SelectCase(v.Local.sViewType2)
+	f.Intrinsic.Control.Case("D")
+		f.Intrinsic.Math.Sub(v.Local.iViewLen2,1,v.Local.iViewLen2)
+		F.Intrinsic.Date.DateAddWorkdays(v.Global.sView1End,V.Local.iViewLen2,v.dictionary.dSettings!DAYFILTER,v.Global.sView2End)
+	F.Intrinsic.Control.Case("W")
+		'get the end of the week from period 1 end date
+		f.Intrinsic.Date.EndOfWeek(v.Global.sView1End,v.Local.dWeek)
+		'if period 1 end is = v.local.dWeek, period 1 was claculated in weeks.  Add 1 day to start on Sunday
+		f.Intrinsic.Control.If(v.Global.sView1End,=,v.Local.dWeek)
+			f.Intrinsic.Date.DateAdd("D",1,v.Local.dWeek,v.Local.dWeek)
+		f.Intrinsic.Control.Else
+			'if they're not equal, that means period 1 was in days.  Subtract 1 from the length because the 1st week has already been accounted for
+			f.Intrinsic.Math.Sub(v.Local.iViewLen2,1,v.Local.iViewLen2)
+		f.Intrinsic.Control.EndIf
+		'set and format the global period 2 start
+		f.Intrinsic.String.Format(v.Local.dWeek,"MM/DD/YYYY",V.Global.sView2Start)
+		'add the remaining width
+		f.Intrinsic.Date.DateAdd("WW",v.Local.iViewLen2,v.Local.dWeek,v.Global.sView2End)
+		'subtract 1 day to end on a Saturday
+		f.Intrinsic.Date.DateAdd("D",-1,v.Global.sView2End,v.Global.sView2End)
+	F.Intrinsic.Control.Case("M")
+		'set the global start date for period 2
+		f.Intrinsic.Date.DateAdd("D",1,v.Global.sView1End,v.Global.sView2Start)
+		'use period 1 end date to calculate by months so the end on the same day of the month
+		f.Intrinsic.Date.DateAdd("M",V.Local.iViewLen2,v.Global.sView1End,V.Global.sView2End)
+f.Intrinsic.Control.EndSelect
+'viewer 3 length generates the end date of the third column settings
+f.Intrinsic.Control.SelectCase(v.Local.sViewType3)
+	f.Intrinsic.Control.Case("D")
+		F.Intrinsic.Date.DateAdd("D",1,V.Global.sView2End,V.Global.sView3Start)
+		f.Intrinsic.Math.Sub(v.Local.iViewLen3,1,v.Local.iViewLen3)
+		F.Intrinsic.Date.DateAddWorkdays(v.Global.sView2End,V.Local.iViewLen3,v.dictionary.dSettings!DAYFILTER,v.Global.sView3End)
+	F.Intrinsic.Control.Case("W")
+		f.Intrinsic.Date.DateAdd("D",1,V.Global.sView2End,V.Global.sView3Start)
+		f.Intrinsic.Date.DateAdd("WW",v.Local.iViewLen3,v.Global.sView2End,v.Global.sView3End)
+	F.Intrinsic.Control.Case("M")
+		f.Intrinsic.Date.DateAdd("D",1,v.Global.sView2End,v.Global.sView3Start)
+		f.Intrinsic.Date.DateAdd("M",V.Local.iViewLen3,v.Global.sView2End,V.Global.sView3End)
+f.Intrinsic.Control.EndSelect
+
+'format the dates so they look pretty in the debugger
+f.Intrinsic.String.Format(v.Global.sView1End,"MM/DD/YYYY",V.Global.sView1End)
+f.Intrinsic.String.Format(v.Global.sView2Start,"MM/DD/YYYY",V.Global.sView2Start)
+f.Intrinsic.String.Format(v.Global.sView2End,"MM/DD/YYYY",V.Global.sView2End)
+F.Intrinsic.String.Format(V.Global.sView3Start,"MM/DD/YYYY",V.Global.sView3Start)
+F.Intrinsic.String.Format(V.Global.sView3End,"MM/DD/YYYY",V.Global.sView3End)
+v.Global.sZone3End.Set(v.Global.sView3End)
+
+
+'===============================================DATES HAVE BEEN DETERMINED==CALCULATE CONSUMPTION QUANTITIES AND TOTAL DEMAND================================
+f.Intrinsic.Control.CallSub(set_buckets_by_line,"PART",V.Local.sPart)
+
+'=================================================DATES AND CONSUMPTION ARE DONE==MOVE IN TO CALC QUANTITIES PER BUCKET======================================
+'do we include the PAST column in the viewer?
+f.Intrinsic.Control.If(v.dictionary.dSettings!PASTCOLUMN,=,"TRUE")
+	f.Intrinsic.Control.CallSub(viewer_past,"FILTER",V.Local.sFilter,"PART",V.Local.sPart)
+f.Intrinsic.Control.EndIf
+
+
+'call to calculate period 1 values
+f.Intrinsic.Control.CallSub(viewer_period,"FILTER",V.Local.sFilter,"TYPE",V.Local.sViewType1,"START",V.Ambient.Date,"END",V.Global.sView1End,"PERIOD",1,"ZONE",V.Global.sZone1End)
+'f.Intrinsic.Control.CallSub(viewer_period,"FILTER",V.Local.sFilter,"TYPE",V.Local.sViewType1,"START",V.Ambient.Date,"END",v.Global.sP1End,"PERIOD",1)
+
+
+'call to calculate period 2 values
+f.Intrinsic.Control.CallSub(viewer_period,"FILTER",v.Local.sFilter,"TYPE",V.Local.sViewType2,"START",V.Global.dStartDate,"END",V.Global.sView2End,"PERIOD",2,"ZONE",V.Global.sZone2End)
+'f.Intrinsic.Control.CallSub(viewer_period,"FILTER",v.Local.sFilter,"TYPE",V.Local.sViewType2,"START",V.Args.START,"END",v.Global.sP2End,"PERIOD",2)
+
+
+'call to calculate period 3 values
+F.Intrinsic.Control.CallSub(viewer_period,"FILTER",V.Local.sFilter,"TYPE",V.Local.sViewType3,"START",V.Global.dStartDate,"END",V.Global.sView3End,"PERIOD",3,"ZONE",V.Global.sZone3End)
+
+
+'===============================================ORIGINAL VERSION ABOVE====MODIFIED VERSION BELOW=======================================================
+
+
+''call to calculate period 1 values
+'f.Intrinsic.Control.CallSub(viewer_period,"PART",V.Local.sPart,"FILTER",V.Local.sFilter,"TYPE",V.Local.sViewType1,"START",V.Ambient.Date,"END",v.Global.sView1End,"ZONE",1,"FIRST",True)
+
+''finish period 1 that may be in zone 2
+'f.Intrinsic.Control.If(v.Global.bRepeat)
+'	
+'	f.Intrinsic.Control.CallSub(viewer_period,"PART",V.Local.sPart,"FILTER",V.Local.sFilter,"TYPE",v.Global.sType,"START",v.Global.dStartDate,"END",v.Global.sZone1End,"ZONE",v.Global.iZone,"FIRST",False)
+'f.Intrinsic.Control.EndIf
+
+''call to calculate period 2 values
+'f.Intrinsic.Control.CallSub(viewer_period,"PART",V.Local.sPart,"FILTER",v.Local.sFilter,"TYPE",V.Local.sViewType2,"START",v.Global.dStartDate,"END",v.Global.sView2End,"ZONE",2,"FIRST",True)
+
+''finish period 2 that may be in zone 3
+'f.Intrinsic.Control.If(v.Global.bRepeat)
+'	f.Intrinsic.Control.CallSub(viewer_period,"FILTER",v.Local.sFilter,"TYPE",V.Local.sViewType2,"START",v.Global.dStartDate,"END",v.Global.sZone2End,"ZONE",v.Global.iZone,"FIRST",False)
+'f.Intrinsic.Control.EndIf
+
+''call to calculate period 3 values
+'F.Intrinsic.Control.CallSub(viewer_period,"PART",V.Local.sPart,"FILTER",V.Local.sFilter,"TYPE",V.Local.sViewType3,"START",v.Global.dStartDate,"END",V.Global.sView3End,"ZONE",3,"FIRST",True)
+
+'===================================================INCLUDE THE FUTURE COLUMN=====================================================================================
+'do we include the future column beyond period 3?
+F.Intrinsic.Control.If(V.dictionary.dSettings!LATERCOLUMN,=,"TRUE")
+	F.Intrinsic.Control.CallSub(viewer_future,"FILTER",V.Local.sFilter,"TYPE",V.Local.sViewType3,"START",v.Global.dStartDate,"END",V.Global.sView3End)
+F.Intrinsic.Control.EndIf
+
+f.Intrinsic.Control.CallSub(set_buckets,"PART",V.Local.sPart)
+
+f.Intrinsic.Control.CallSub(VerticalToHoizontal,"PART",v.Local.sPart)
+
+f.Intrinsic.Control.CallSub(format_viewer,"PART",V.Local.sPart)
+
+f.Intrinsic.Control.CallSub(format_graph)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.set_filters.End
+
+Program.Sub.viewer_past.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sFilter.Declare
+v.Local.sDateFilter.Declare
+v.Local.sPast.Declare
+V.Local.fForecast.Declare
+v.Local.fCustOrd.Declare
+v.Local.fDepDem.Declare
+v.Local.fSchRec.Declare
+v.Local.fPlanDue.Declare
+v.Local.fPlannedStart.Declare
+v.Local.iDay.Declare
+v.Local.dPast.Declare
+V.Local.fUnconsumed.Declare
+
+
+
+F.Intrinsic.String.Build("{0} AND {1}",V.Args.FILTER,v.Global.sPast,v.Local.sFilter)
+
+'f.Data.DataTable.Compute("PART","SUM(FORECAST)",V.Local.sFilter,V.Local.fForecast)
+'no need to calculate the forecast quantity here.  It's prior to period 2 so we only want to see firm orders.
+v.Local.fForecast.Set(0)
+	'Store the forecast value for later use
+	v.Global.fForecast.Set(v.Local.fForecast)
+f.Data.DataTable.Compute("PART","SUM(CUST_ORDERS)",V.Local.sFilter,V.Local.fCustOrd)
+f.Data.DataTable.Compute("PART","SUM(DEP_DEM)",V.Local.sFilter,V.Local.fDepDem)
+f.Data.DataTable.Compute("PART","SUM(SCH_RECEIPTS)",V.Local.sFilter,V.Local.fSchRec)
+f.Data.DataTable.Compute("PART","SUM(PLANNED)",V.Local.sFilter,v.Local.fPlanDue)
+f.Data.DataTable.Compute("PART","SUM(UNCONSUMED)",V.Local.sFilter,V.Local.fUnconsumed)
+
+F.Intrinsic.String.Replace(V.Local.sFilter,"DateDue","DateStart",v.Local.sFilter)
+F.Data.DataTable.Compute("PART","sum(planned)",v.Local.sFilter,V.Local.fPlannedStart)
+
+
+
+f.Intrinsic.Date.DateAddWorkDays(v.Ambient.Date,-1,V.Dictionary.dSettings!DayFilter,v.Local.dPast)
+'f.Intrinsic.Date.DateSubtractWorkDays(v.Ambient.Date,1,V.Dictionary.dSettings!DayFilter,v.Local.dPast)
+
+
+
+f.Data.DataTable.AddRow("verticalview","ColumnKey","Past","DateStamp",v.Local.dPast,"BeginFilter",v.Local.dPast,"EndFilter",v.Local.dPast,"FORECAST",v.Local.fForecast,"CUST_ORDERS",v.Local.fCustOrd,"DEP_DEM",v.Local.fDepDem,"SCH_RECEIPTS",v.Local.fSchRec,"PLANNED",v.Local.fPlanDue,"PLANNED_START",v.Local.fPlannedStart,"Unconsumed",V.Local.fUnconsumed,"PERIOD",0,"ZONE",0)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.viewer_past.End
+
+Program.Sub.viewer_period.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sDateFilter.Declare
+v.Local.dCheckDate.Declare
+v.Local.dDate.Declare
+v.Local.dStartDate.Declare
+v.Local.dEndDate.Declare
+v.Local.dWeekEnd.Declare
+v.Local.dMonthEnd.Declare
+v.Local.sDate.Declare
+V.Local.sEnd.Declare
+v.Local.sFilter.Declare
+V.Local.fForecast.Declare
+v.Local.fCustOrd.Declare
+v.Local.fDepDem.Declare
+v.Local.fSchRec.Declare
+v.Local.fPlanDue.Declare
+v.Local.fPlannedStart.Declare
+v.Local.iDay.Declare
+v.Local.iZone.Declare
+v.Local.dZone.Declare
+v.Local.bRepeat.Declare
+v.Local.sType.Declare
+V.Local.fUnconsumed.Declare
+
+v.Local.dStartDate.Set(v.Args.START)
+V.Local.dEndDate.Set(V.Args.END)
+v.Local.dZone.Set(v.Args.ZONE)
+V.Local.iZone.Set(v.Args.PERIOD)
+v.Local.sType.Set(v.Args.TYPE)
+
+
+
+'f.Intrinsic.String.Build("sZone{0}End",V.Args.ZONE,V.Local.sZone)
+
+'make 
+
+'check which method we're using for this period
+f.Intrinsic.Control.SelectCase(v.Local.sType)
+	F.Intrinsic.Control.Case("D")
+		F.Intrinsic.Control.DoUntil(V.Local.dStartDate,>,V.Local.dEndDate)
+			'set the filter for the due date
+			F.Intrinsic.String.Build("DateDue = #{0}#",V.Local.dStartDate,v.Local.sFilter)
+			'calculate each value based on due date
+			'F.Intrinsic.Control.If(V.Args.ZONE,>,1)
+			f.Data.DataTable.Compute("PART","SUM(FORECAST)",V.Local.sFilter,V.Local.fForecast)
+			'F.Intrinsic.Control.Else
+			'	V.Local.fForecast.Set(0)
+			'F.Intrinsic.Control.EndIf
+			f.Data.DataTable.Compute("PART","SUM(CUST_ORDERS)",V.Local.sFilter,V.Local.fCustOrd)
+			f.Data.DataTable.Compute("PART","SUM(DEP_DEM)",V.Local.sFilter,V.Local.fDepDem)
+			f.Data.DataTable.Compute("PART","SUM(SCH_RECEIPTS)",V.Local.sFilter,V.Local.fSchRec)
+			f.Data.DataTable.Compute("PART","SUM(PLANNED)",V.Local.sFilter,v.Local.fPlanDue)
+			f.Data.DataTable.Compute("PART","SUM(UNCONSUMED)",V.Local.sFilter,V.Local.fUnconsumed)
+			'change the filter on startdate to calculate planned order start	
+			F.Intrinsic.String.Replace(V.Local.sFilter,"DateDue","DateStart",v.Local.sFilter)
+			F.Data.DataTable.Compute("PART","sum(planned)",v.Local.sFilter,V.Local.fPlannedStart)
+			'formate the key value for adding the row
+			f.Intrinsic.String.Format(v.Local.dStartDate,"M/DD",V.Local.sDate)
+			'check the zone based on the date
+			F.Intrinsic.Control.If(V.Local.dStartDate,<=,V.Global.sZone1End)
+				V.Local.iZone.Set(1)
+			F.Intrinsic.Control.Elseif(V.Local.dStartDate,>,V.Global.sZone1End,AND,V.Local.dStartDate,<=,V.Global.sZone2End)
+				V.Local.iZone.Set(2)
+			F.Intrinsic.Control.ElseIf(V.Local.dStartDate,>,V.Global.sZone2End,AND,V.Local.dStartDate,<=,V.Global.sZone3End)
+				V.Local.iZone.Set(3)
+			F.Intrinsic.Control.Else
+				V.Local.iZone.Set(3)
+			F.Intrinsic.Control.EndIf
+			'add the row
+			f.Data.DataTable.AddRow("verticalview","ColumnKey",v.Local.sDate,"DateStamp",v.Local.dStartDate,"BeginFilter",v.Local.dStartDate,"EndFilter",v.Local.dStartDate,"FORECAST",v.Local.fForecast,"CUST_ORDERS",v.Local.fCustOrd,"DEP_DEM",v.Local.fDepDem,"SCH_RECEIPTS",v.Local.fSchRec,"PLANNED",v.Local.fPlanDue,"PLANNED_START",v.Local.fPlannedStart,"Unconsumed",V.Local.fUnconsumed,"PERIOD",V.Args.PERIOD,"ZONE",V.Local.iZone)
+			
+			f.Intrinsic.Date.DateAddWorkDays(v.Local.dStartDate,1,v.dictionary.dSettings!DAYFILTER,V.Local.dStartDate)
+		F.Intrinsic.Control.Loop
+	
+	f.Intrinsic.Control.Case("W")
+	
+		F.Intrinsic.Control.DoUntil(V.Local.dStartDate,>=,V.Local.dEndDate)
+			'set the end value for this filter range
+			f.Intrinsic.Date.EndOfWeek(v.Local.dStartDate,v.Local.dWeekEnd)
+			'set the filter for the due date
+			F.Intrinsic.String.Build("DateDue >= #{0}# AND DateDue <= #{1}#",V.Local.dStartDate,v.Local.dWeekEnd,v.Local.sFilter)
+			'calculate each value based on due date
+			'F.Intrinsic.Control.If(V.Args.ZONE,>,1)
+				f.Data.DataTable.Compute("PART","SUM(FORECAST)",V.Local.sFilter,V.Local.fForecast)
+			'F.Intrinsic.Control.Else
+			'	V.Local.fForecast.Set(0)
+			'F.Intrinsic.Control.EndIf
+			f.Data.DataTable.Compute("PART","SUM(CUST_ORDERS)",V.Local.sFilter,V.Local.fCustOrd)
+			f.Data.DataTable.Compute("PART","SUM(DEP_DEM)",V.Local.sFilter,V.Local.fDepDem)
+			f.Data.DataTable.Compute("PART","SUM(SCH_RECEIPTS)",V.Local.sFilter,V.Local.fSchRec)
+			f.Data.DataTable.Compute("PART","SUM(PLANNED)",V.Local.sFilter,v.Local.fPlanDue)
+			f.Data.DataTable.Compute("PART","SUM(UNCONSUMED)",V.Local.sFilter,V.Local.fUnconsumed)
+			'change the filter on startdate to calculate planned order start	
+			F.Intrinsic.String.Replace(V.Local.sFilter,"DateDue","DateStart",v.Local.sFilter)
+			F.Data.DataTable.Compute("PART","sum(planned)",v.Local.sFilter,V.Local.fPlannedStart)
+			'formate the key value for adding the row		
+			f.Intrinsic.Date.Weekday(v.Local.dStartDate,v.Local.iDay)
+			f.Intrinsic.Control.If(v.Local.iDay,=,1)
+				f.Intrinsic.Date.DateAdd("D",1,v.Local.dStartDate,v.Local.dDate)
+				f.Intrinsic.String.Format(v.Local.dDate,"M/DD",V.Local.sDate)
+				f.Intrinsic.String.Format(v.Local.dWeekEnd,"M/DD",V.Local.sEnd)
+				F.Intrinsic.String.Build("{0} - {1}{2}",V.Local.sDate,V.Ambient.NewLine,V.Local.sEnd,V.Local.sDate)
+			f.Intrinsic.Control.Else
+				f.Intrinsic.String.Format(v.Local.dStartDate,"M/DD",V.Local.sDate)
+				f.Intrinsic.Date.DateAdd("D",-1,V.Local.dWeekEnd,V.Local.sEnd)
+				f.Intrinsic.String.Format(v.Local.sEnd,"M/DD",V.Local.sEnd)
+				F.Intrinsic.String.Build("{0} - {1}{2}",V.Local.sDate,V.Ambient.NewLine,V.Local.sEnd,V.Local.sDate)
+			F.Intrinsic.Control.Endif
+			'check the zone based on the date
+			F.Intrinsic.Control.If(V.Local.dStartDate,<=,V.Global.sZone1End)
+				V.Local.iZone.Set(1)
+			F.Intrinsic.Control.Elseif(V.Local.dStartDate,>,V.Global.sZone1End,AND,V.Local.dStartDate,<=,V.Global.sZone2End)
+				V.Local.iZone.Set(2)
+			F.Intrinsic.Control.ElseIf(V.Local.dStartDate,>,V.Global.sZone2End,AND,V.Local.dStartDate,<=,V.Global.sZone3End)
+				V.Local.iZone.Set(3)
+			F.Intrinsic.Control.Else
+				V.Local.iZone.Set(3)
+			F.Intrinsic.Control.EndIf
+			
+			'add the new row
+			f.Data.DataTable.AddRow("verticalview","ColumnKey",v.Local.sDate,"DateStamp",v.Local.dStartDate,"BeginFilter",v.Local.dStartDate,"EndFilter",v.Local.dWeekEnd,"FORECAST",v.Local.fForecast,"CUST_ORDERS",v.Local.fCustOrd,"DEP_DEM",v.Local.fDepDem,"SCH_RECEIPTS",v.Local.fSchRec,"PLANNED",v.Local.fPlanDue,"PLANNED_START",v.Local.fPlannedStart,"Unconsumed",V.Local.fUnconsumed,"PERIOD",V.Args.PERIOD,"ZONE",V.Local.iZone)
+		
+			
+			'calculate the next date
+			f.Intrinsic.Date.DateAdd("D",1,v.Local.dWeekEnd,v.Local.dStartDate)
+		'Next date	
+		F.Intrinsic.Control.Loop	
+	
+	f.Intrinsic.Control.Case("M")
+		f.Intrinsic.Control.DoUntil(v.Local.dStartDate,>=,v.Local.dEndDate)
+			'set the end value for this filter range
+			f.Intrinsic.Date.DateAdd("M",1,v.Local.dStartDate,v.Local.dMonthEnd)
+			'set the filter for the due date
+			f.Intrinsic.String.Build("DateDue >= #{0}# AND DateDue <= #{1}#",V.Local.dStartDate,v.Local.dMonthEnd,v.Local.sFilter)
+			'calculate each value based on due date
+			'F.Intrinsic.Control.If(V.Args.ZONE,>,1)
+				f.Data.DataTable.Compute("PART","SUM(FORECAST)",V.Local.sFilter,V.Local.fForecast)
+			'F.Intrinsic.Control.Else
+			'	V.Local.fForecast.Set(0)
+			'F.Intrinsic.Control.EndIf
+			f.Data.DataTable.Compute("PART","SUM(CUST_ORDERS)",V.Local.sFilter,V.Local.fCustOrd)
+			f.Data.DataTable.Compute("PART","SUM(DEP_DEM)",V.Local.sFilter,V.Local.fDepDem)
+			f.Data.DataTable.Compute("PART","SUM(SCH_RECEIPTS)",V.Local.sFilter,V.Local.fSchRec)
+			f.Data.DataTable.Compute("PART","SUM(PLANNED)",V.Local.sFilter,v.Local.fPlanDue)
+			F.Data.DataTable.Compute("PART","SUM(UNCONSUMED)",V.Local.sFilter,V.Local.fUnconsumed)
+			'change the filter on startdate to calculate planned order start	
+			F.Intrinsic.String.Replace(V.Local.sFilter,"DateDue","DateStart",v.Local.sFilter)
+			F.Data.DataTable.Compute("PART","sum(planned)",v.Local.sFilter,V.Local.fPlannedStart)
+			'formate the key value for adding the row
+			f.Intrinsic.String.Format(v.Local.dStartDate,"M/DD",V.Local.sDate)
+			f.Intrinsic.String.Format(v.Local.dMonthEnd,"M/DD",V.Local.sEnd)
+			F.Intrinsic.String.Build("{0} - {1}{2}",V.Local.sDate,V.Ambient.NewLine,V.Local.sEnd,V.Local.sDate)
+			'check the zone based on the date
+			F.Intrinsic.Control.If(V.Local.dStartDate,<=,V.Global.sZone1End)
+				V.Local.iZone.Set(1)
+			F.Intrinsic.Control.Elseif(V.Local.dStartDate,>,V.Global.sZone1End,AND,V.Local.dStartDate,<=,V.Global.sZone2End)
+				V.Local.iZone.Set(2)
+			F.Intrinsic.Control.ElseIf(V.Local.dStartDate,>,V.Global.sZone2End,AND,V.Local.dStartDate,<=,V.Global.sZone3End)
+				V.Local.iZone.Set(3)
+			F.Intrinsic.Control.Else
+				V.Local.iZone.Set(3)
+			F.Intrinsic.Control.EndIf
+			'add the new row
+			f.Data.DataTable.AddRow("verticalview","ColumnKey",v.Local.sDate,"DateStamp",v.Local.dStartDate,"BeginFilter",v.Local.dStartDate,"EndFilter",v.Local.dMonthEnd,"FORECAST",v.Local.fForecast,"CUST_ORDERS",v.Local.fCustOrd,"DEP_DEM",v.Local.fDepDem,"SCH_RECEIPTS",v.Local.fSchRec,"PLANNED",v.Local.fPlanDue,"PLANNED_START",v.Local.fPlannedStart,"Unconsumed",V.Local.fUnconsumed,"PERIOD",V.Args.PERIOD,"ZONE",V.Local.iZone)
+			'set the next startdate
+			v.Local.dStartDate.Set(v.Local.dMonthEnd)
+		f.Intrinsic.Control.Loop	
+f.Intrinsic.Control.EndSelect
+
+'it's possible that the EndFilter for the last row in zone 2 or 3 is different than the Global.sView3End date.
+'to make sure it's colored correctly in the grid, we'll check to see if the last row added in period 3 is before or after the end date, and reset the global end date if needed.
+'f.Intrinsic.Control.If(V.Args.ZONE,=,2)
+'	F.Data.DataTable.Compute("verticalview","MAX(EndFilter)","",V.Local.sDate)
+'	F.Intrinsic.Control.If(v.Local.sDate,>,v.Global.sView2End)
+'		v.Global.sView2End.Set(v.Local.sDate)
+'	f.Intrinsic.Date.DateAdd("D",1,V.Global.sView2End,V.Global.sView3Start)
+'f.Intrinsic.Control.ElseIf(V.Args.ZONE,=,3)
+'	F.Intrinsic.Control.EndIf
+'	F.Data.DataTable.Compute("verticalview","MAX(EndFilter)","",v.Local.sDate)
+'	f.Intrinsic.Control.If(v.Local.sDate,>,v.Global.sView3End)
+'		v.Global.sView3End.Set(v.Local.sDate)
+'	f.Intrinsic.Control.EndIf
+'f.Intrinsic.Control.EndIf
+
+
+
+
+v.Global.dStartDate.Set(V.Local.dStartDate)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.viewer_period.End
+
+Program.Sub.viewer_future.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sDateFilter.Declare
+v.Local.dStartDate.Declare
+v.Local.sFilter.Declare
+V.Local.fForecast.Declare
+v.Local.fCustOrd.Declare
+v.Local.fDepDem.Declare
+v.Local.fSchRec.Declare
+v.Local.fPlanDue.Declare
+v.Local.fPlannedStart.Declare
+v.Local.iDay.Declare
+V.Local.fUnconsumed.Declare
+
+v.Local.dStartDate.Set(v.Args.START)
+
+f.Intrinsic.Date.Weekday(v.Local.dStartDate,v.Local.iDay)
+'f.Intrinsic.Control.If(v.Local.iDay,=,7)
+'	f.Intrinsic.Date.DateAdd("D",2,v.Local.dStartDate,v.Local.dStartDate)
+'f.Intrinsic.Control.ElseIf(v.Local.iDay,=,1)
+'	f.Intrinsic.Date.DateAdd("D",1,v.Local.dStartDate,v.Local.dStartDate)
+'f.Intrinsic.Control.EndIf
+
+	F.Intrinsic.String.Build("DateDue > #{0}#",V.Local.dStartDate,v.Local.sFilter)
+	
+	f.Data.DataTable.Compute("PART","SUM(FORECAST)",V.Local.sFilter,V.Local.fForecast)
+	f.Data.DataTable.Compute("PART","SUM(CUST_ORDERS)",V.Local.sFilter,V.Local.fCustOrd)
+	f.Data.DataTable.Compute("PART","SUM(DEP_DEM)",V.Local.sFilter,V.Local.fDepDem)
+	f.Data.DataTable.Compute("PART","SUM(SCH_RECEIPTS)",V.Local.sFilter,V.Local.fSchRec)
+	f.Data.DataTable.Compute("PART","SUM(PLANNED)",V.Local.sFilter,v.Local.fPlanDue)
+	f.Data.DataTable.Compute("PART","SUM(UNCONSUMED)",V.Local.sFilter,V.Local.fUnconsumed)
+	
+	F.Intrinsic.String.Replace(V.Local.sFilter,"DateDue","DateStart",v.Local.sFilter)
+	F.Data.DataTable.Compute("PART","sum(planned)",v.Local.sFilter,V.Local.fPlannedStart)
+	
+	f.Intrinsic.Date.DateAdd("M",1,V.Local.dStartDate,V.Local.dStartDate)
+	
+	f.Data.DataTable.AddRow("verticalview","ColumnKey","Future","DateStamp",v.Local.dStartDate,"BeginFilter",v.Local.dStartDate,"EndFilter",v.Local.dStartDate,"FORECAST",v.Local.fForecast,"CUST_ORDERS",v.Local.fCustOrd,"DEP_DEM",v.Local.fDepDem,"SCH_RECEIPTS",v.Local.fSchRec,"PLANNED",v.Local.fPlanDue,"PLANNED_START",v.Local.fPlannedStart,"Unconsumed",V.Local.fUnconsumed)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.viewer_future.End
+
+Program.Sub.set_buckets.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fBeginOnHand.Declare
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare
+v.Local.dPeriod2End.Declare
+v.Local.dForecastDays.Declare
+v.Local.sPeriod2Filter.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+
+V.Local.fBeginOnHand.Set(v.dictionary.dOnHand![V.Args.PART])
+
+''viewer settings
+''"Forecast Zones"
+''"Viewer Column Buckets"
+
+''Consumption Methods
+''"By Month"
+''"Days From Today"
+''"Forecast Zone 2"
+
+
+
+''build the formula that we'll use in the Total Demand expression column
+''total demand is calculated differently for each period
+''period 1 sales + dependant demand
+''period 2 dependant demand + (the greater of sales or forecast orders)
+''period 3 dependant demand + forecast orders.
+
+
+'f.Intrinsic.Control.If(v.Screen.FormView!ddlShowBy.text,=,"Forecast Zones")
+'	'these are the forecast zones
+'	f.Intrinsic.String.Format(v.Global.sZone1End,"MM/DD/YYYY",V.Local.dPeriod1End)
+'	f.Intrinsic.String.Format(v.Global.sZone2End,"MM/DD/YYYY",V.Local.dPeriod2End)
+'f.Intrinsic.Control.Else
+'	'these are the viewer column settings
+'	f.Intrinsic.String.Format(v.Global.sView2Start,"MM/DD/YYYY",V.Local.dPeriod1End)
+'	f.Intrinsic.String.Format(v.Global.sView2End,"MM/DD/YYYY",V.Local.dPeriod2End)
+'f.Intrinsic.Control.EndIf
+
+
+
+'add a month only column used in formulas
+f.Data.DataTable.SetValueFormat("VERTICALVIEW",-1,"EndFilter","Month","YYMM")
+''BeginFilter
+''EndFilter
+
+'f.Intrinsic.Control.SelectCase(v.Screen.FormView!ddlConsume.text)
+'	f.Intrinsic.Control.Case("Zone 2 By Month")
+'		f.Intrinsic.Control.CallSub(consume_by_month,"START",v.Local.dPeriod1End,"END",V.Local.dPeriod2End)
+
+'	
+'	f.Intrinsic.Control.Case("Days From Today")
+'		f.Intrinsic.Control.CallSub(consume_by_startdate,"START",V.Local.dPeriod1End,"END",V.Local.dPeriod2End)
+
+'		
+'	f.Intrinsic.Control.Case("Forecast Zone 2")
+'		f.Intrinsic.Control.CallSub(consume_zone_2,"START",V.Local.dPeriod1End,"END",V.Local.dPeriod2End)
+
+
+'f.Intrinsic.Control.EndSelect
+
+
+f.Data.DataTable.AddExpressionColumn("verticalview","TotalDemand","FLOAT","IIF(ZONE = 1,CUST_ORDERS + DEP_DEM,IIF(ZONE = 2,CUST_ORDERS + DEP_DEM + UNCONSUMED,IIF(ZONE = 3,UNCONSUMED + DEP_DEM,CUST_ORDERS + DEP_DEM)))")
+
+'set
+F.Data.DataTable.AddExpressionColumn("verticalview","TotalSupply","FLOAT","SCH_RECEIPTS + PLANNED")
+F.Data.DataTable.AddExpressionColumn("verticalview","EndOnHand","FLOAT","BeginOnHand + totalsupply - totaldemand")
+
+'set the beginning value in row 0
+F.Data.DataTable.SetValue("VERTICALVIEW",0,"BeginOnHand",V.Local.fBeginOnHand)
+
+'set beginning and ending values in all subsequent rows
+f.Data.DataTable.SetValueOnNextLine("VERTICALVIEW","EndOnHand","BeginOnHand")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.set_buckets.End
+
+Program.Sub.consume_by_month.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fBeginOnHand.Declare
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare
+v.Local.dPeriod2End.Declare
+v.Local.dForecastDays.Declare
+v.Local.sPeriod2Filter.Declare
+
+v.Local.iCount.Declare
+v.Local.iC.Declare
+V.Local.fUnconsumed.Declare
+v.Local.iUncTotal.Declare
+v.Local.fConsumed.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+v.Local.fBucketSales.Declare
+v.Local.fBucketForecast.Declare
+v.Local.fTotalSales.Declare
+v.Local.fTotalForecast.Declare
+
+v.Local.dPeriod1End.set(v.Args.START)
+v.Local.dPeriod2End.set(v.Args.END)
+
+'in consume by month - there is no "UnConsumedQty" in zones 1 and 3.
+'zone 2 compares the greater of sales and forecast for each month.
+'20	20	20	20		80		forecast
+'15	15	20	0		50		sales
+'							
+'0	0	10	20		30		unconsumed  (forecast is consumed foreward and backward in the bucket)
+'15	15	30	20		80		total demand
+'							
+'							
+'							
+'20	20	20	20		80		forecast
+'15	50	20	0		85		sales
+'							
+'0	0	0	0		0		unconsumed
+'15	50	20	0		85		total demand
+
+'get a list of YYMM values for period 2. Loop through that to determine total sales and total forecast for each bucket
+'once the total are determined, we can figure out how to calculate total demand and unconsumed
+
+
+f.Data.DataView.Create("verticalview","vZone2",22,"ZONE = 2","ENDFILTER ASC, MONTH ASC")
+
+F.Data.DataView.ToDataTableDistinct("verticalview","vZone2","MONTHS","ZONE*!*MONTH")
+
+'crazy rules!  From here to the end of this subroutine as all to calculate the Unconsumed quantity for each Bucket within each month, within Zone2.
+
+
+'loop through the months and determine our values
+f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.MONTHS.RowCount--,1)
+	V.Local.fTotalForecast.Set(0)
+	V.Local.fTotalSales.Set(0)
+	v.Local.fUnconsumed.Set(0)
+	v.Local.iUncTotal.Set(0)
+	v.Local.fConsumed.Set(0)
+'	f.Intrinsic.Control.If(V.DataTable.MONTHS(V.Local.iCount).MONTH!FIELDVAL,=,1904)
+'		Function.Intrinsic.Debug.InvokeDebugger
+'		Function.Intrinsic.Debug.Stop
+'	f.Intrinsic.Control.EndIf
+
+	
+	'set the filter for the first month in the period - get the total sales and total forecast
+	F.Intrinsic.String.Build("ZONE = 2 AND MONTH = '{0}'",V.DataTable.MONTHS(v.Local.iCount).MONTH!FIELDVALTRIM,V.Local.sPeriod2Filter)
+	F.Data.DataTable.Compute("VERTICALVIEW","SUM(CUST_ORDERS)",V.Local.sPeriod2Filter,V.Local.fBucketSales)
+	F.Data.DataTable.Compute("VERTICALVIEW","SUM(FORECAST)",V.Local.sPeriod2Filter,V.Local.fBucketForecast)
+	F.Data.DataView.SetFilter("verticalview","vZone2",v.Local.sPeriod2Filter)
+
+	
+	F.Intrinsic.Control.If(V.Local.fBucketForecast,>,V.Local.fBucketSales)
+		'loop through the month 
+		f.Intrinsic.Control.For(v.Local.iC,0,v.DataView.verticalview!vZone2.RowCount--,1)
+			'get the sales and forecast amount for each row in the bucket(month)
+			v.Local.fSales.Set(v.DataView.verticalview!vZone2(v.Local.iC).CUST_ORDERS!FIELDVAL)
+			v.Local.fForecast.Set(v.DataView.verticalview!vZone2(v.Local.iC).FORECAST!FIELDVAL)
+			'total up the accumulated sales and accumulated forecast
+			f.Intrinsic.Math.Add(v.Local.fConsumed,v.Local.fSales,v.Local.fConsumed)
+			f.Intrinsic.Math.Add(v.Local.iUncTotal,v.Local.fForecast,v.Local.iUncTotal)
+			
+			f.Intrinsic.Control.If(v.Local.iUncTotal,<=,v.Local.fBucketSales)
+				'this says that the forecast has been consumed up to this point
+				v.Local.fUnconsumed.Set(0)
+				
+			f.Intrinsic.Control.ElseIf(v.Local.fForecast,>,0)
+				f.Intrinsic.Math.Sub(v.Local.iUncTotal,v.Local.fBucketSales,v.Local.fUnconsumed)
+				f.Intrinsic.Math.Sub(v.Local.iUncTotal,v.Local.fUnconsumed,v.Local.iUncTotal)
+
+			f.Intrinsic.Control.EndIf
+			
+			F.Data.DataView.SetValue("verticalview","vZone2",v.Local.iC,"Unconsumed",v.Local.fUnconsumed)
+		f.Intrinsic.Control.Next(v.Local.iC)
+	F.Intrinsic.Control.ElseIf(v.Local.fBucketForecast,<=,v.Local.fBucketSales)
+		'if the total sales are >= total forecast, then all rows for this bucket will have an unconsumed amount of 0
+		f.Intrinsic.Control.For(v.Local.iC,0,v.DataView.verticalview!vZone2.RowCount--,1)
+			f.Data.DataView.SetValue("verticalview","vZone2",V.Local.iC,"TotalForecast",0,"Totalsales",0,"Unconsumed",0)	
+		f.Intrinsic.Control.Next(v.Local.iC)
+	f.Intrinsic.Control.EndIf
+
+	
+f.Intrinsic.Control.Next(v.Local.iCount)
+'Function.Intrinsic.Debug.InvokeDebugger
+'Function.Intrinsic.Debug.Stop
+
+''ZONE 2 is done, Zone 3 will be set to Unconsumed = Forecast regardless of anything else
+'f.Data.DataView.SetFilter("verticalview","vZone2","ZONE = 3")
+'F.Intrinsic.Control.For(V.Local.iCount,0,V.DataView.verticalview!vZone2.RowCount--,1)
+'	F.Data.DataView.SetValue("VERTICALVIEW","vZone2","UNCONSUMED",V.DataView.verticalview!vZone2(V.Local.iCount).FORECAST!FIELDVAL)
+'F.Intrinsic.Control.Next(V.Local.iCount)
+
+F.Data.DataView.Close("verticalview","vZone2")
+f.Data.DataTable.Close("MONTHS")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.consume_by_month.End
+
+Program.Sub.consume_by_startdate.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fBeginOnHand.Declare
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare(date,v.Args.START)
+v.Local.dPeriod2End.Declare(date,v.Args.END)
+v.Local.dForecastDays.Declare
+v.Local.sPeriod2Filter.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+
+f.Intrinsic.String.Build("ENDFILTER > #{0}# AND ENDFILTER <= #{1}#",V.Local.dPeriod1End,V.Local.dPeriod2End,V.Local.sPeriod2Filter)
+'f.Intrinsic.String.Build("ENDFILTER <= #{0}#",V.Local.dPeriod2End,V.Local.sPeriod2Filter)
+F.Data.DataTable.Compute("VERTICALVIEW","SUM(CUST_ORDERS)",V.Local.sPeriod2Filter,V.Local.fSales)
+F.Data.DataTable.Compute("VERTICALVIEW","SUM(FORECAST)",V.Local.sPeriod2Filter,V.Local.fForecast)
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.consume_by_startdate.End
+
+Program.Sub.consume_zone_2.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fBeginOnHand.Declare
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare(date,v.Args.START)
+v.Local.dPeriod2End.Declare(date,v.Args.END)
+v.Local.dForecastDays.Declare
+v.Local.sPeriod2Filter.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+
+
+f.Intrinsic.String.Build("ENDFILTER > #{0}# AND ENDFILTER <= #{1}#",v.Global.sZone1End,v.Global.sZone2End,V.Local.sPeriod2Filter)
+'f.Intrinsic.String.Build("ENDFILTER <= #{0}#",V.Local.dPeriod2End,V.Local.sPeriod2Filter)
+F.Data.DataTable.Compute("VERTICALVIEW","SUM(CUST_ORDERS)",V.Local.sPeriod2Filter,V.Local.fSales)
+F.Data.DataTable.Compute("VERTICALVIEW","SUM(FORECAST)",V.Local.sPeriod2Filter,V.Local.fForecast)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.consume_zone_2.End
+
+Program.Sub.VerticalToHoizontal.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare
+v.Local.dPeriod2End.Declare
+v.Local.sPeriod2Filter.Declare
+
+v.Local.sColForecast.Declare(String,"")
+v.Local.sColCustOrd.Declare(String,"")
+v.Local.sColDepDem.Declare(String,"")
+v.Local.sColSchRecpt.Declare(String,"")
+v.Local.sColPlannedDue.Declare(String,"")
+v.Local.sColPlannedStart.Declare(String,"")
+v.Local.sColTotalDemand.Declare(String,"")
+v.Local.sColTotalSupply.Declare(String,"")
+v.Local.sColBeginOnHand.Declare(String,"")
+v.Local.sColEndOnHand.Declare(String,"")
+v.Local.sColUnconsumed.Declare(String,"")
+v.Local.sColBucket.Declare(String,"")
+v.Local.sColZone.Declare(String,"")
+v.Local.sColMonth.Declare(String,"")
+
+v.Local.sColumns.Declare
+v.Local.sTable.Declare
+V.Local.sDataTypes.Declare
+V.Local.iCount.Declare
+v.Local.fForecast.Declare
+v.Local.fSales.Declare
+
+
+
+'Take each column to a string
+f.Data.DataTable.ColumnToString("VERTICALVIEW","Forecast",v.Local.sColForecast)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","CUST_ORDERS",V.Local.sColCustOrd)
+F.Data.DataTable.ColumnToString("VERTICALVIEW","DEP_DEM",V.Local.sColDepDem)
+F.Data.DataTable.ColumnToString("VERTICALVIEW","SCH_RECEIPTS",V.Local.sColSchRecpt)
+F.Data.DataTable.ColumnToString("VERTICALVIEW","PLANNED",V.Local.sColPlannedDue)
+F.Data.DataTable.ColumnToString("VERTICALVIEW","PLANNED_START",V.Local.sColPlannedStart)
+F.Data.DataTable.ColumnToString("VERTICALVIEW","TotalDemand",v.Local.sColTotalDemand)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","TotalSupply",v.Local.sColTotalSupply)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","BeginOnHand",v.Local.sColBeginOnHand)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","EndOnHand",v.Local.sColEndOnHand)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","Unconsumed",V.Local.sColUnconsumed)
+'added for the viewer
+f.Data.DataTable.ColumnToString("VERTICALVIEW","PERIOD",V.Local.sColBucket)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","ZONE",V.Local.sColZone)
+f.Data.DataTable.ColumnToString("VERTICALVIEW","MONTH",V.Local.sColMonth)
+
+'put all strings in to a block
+F.Intrinsic.StringBuilder.Create("TABLEVIEW")
+F.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Beginning On-Hand*!*",v.Local.sColBeginOnHand)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Sales Forecast*!*",v.Local.sColForecast)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Customer Orders*!*",v.Local.sColCustOrd)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Dependant Demand*!*",v.Local.sColDepDem)
+f.Intrinsic.Stringbuilder.AppendLine("TABLEVIEW","UnconsumedForecast*!*",v.Local.sColUnconsumed)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Total Demand*!*",v.Local.sColTotalDemand)
+f.Intrinsic.Stringbuilder.AppendLine("TABLEVIEW","    ")
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Scheduled Receipts*!*",v.Local.sColSchRecpt)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Planned Orders Due*!*",v.Local.sColPlannedDue)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Total Supply*!*",v.Local.sColTotalSupply)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Ending On Hand*!*",v.Local.sColEndOnHand)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Planned Order Start*!*",v.Local.sColPlannedStart)
+'added for the viewer
+f.Intrinsic.Stringbuilder.AppendLine("TABLEVIEW","    ")
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Period Bucket*!*",v.Local.sColBucket)
+f.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","MRP Forecast Zone*!*",v.Local.sColZone)
+F.Intrinsic.StringBuilder.AppendLine("TABLEVIEW","Consumption Bucket*!*",v.Local.sColMonth)
+
+f.Intrinsic.StringBuilder.ToString("TABLEVIEW",v.Local.sTable)
+f.Intrinsic.StringBuilder.Dispose("TABLEVIEW")
+f.Data.DataTable.ColumnToString("VERTICALVIEW","COLUMNKEY",v.Local.sColumns)
+f.Intrinsic.String.Build("{0}*!*{1}","Section",v.Local.sColumns,V.Local.sColumns)
+
+'set the datatypes for each column (each column is represented as a row in verticalview)
+v.Local.sDataTypes.Set("STRING")
+
+F.Intrinsic.Control.For(V.Local.iCount,0,v.DataTable.verticalview.RowCount--,1)
+	f.Intrinsic.String.Build("{0}*!*STRING",V.Local.sDataTypes,V.Local.sDataTypes)
+F.Intrinsic.Control.Next(V.Local.iCount)
+
+
+'create the viewer datatable from the accumulated strings above
+f.Data.DataTable.CreateFromString("VIEWER",V.Local.sTable,V.Local.sColumns,V.Local.sDataTypes,"*!*",V.Ambient.NewLine,True)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.VerticalToHoizontal.End
+
+Program.Sub.format_viewer.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.sCol.Declare
+v.Local.iCount.Declare
+v.Local.dDateStamp.Declare
+V.Local.dPeriod1End.Declare
+v.Local.dPeriod2End.Declare
+v.Local.dPeriod3End.Declare
+v.Local.sPart.Declare
+V.Local.sType.Declare
+v.Local.iPeriod.Declare
+
+
+'Setting the date ranges based on the Form DDL for coloring
+f.Intrinsic.Control.If(v.Screen.FormView!ddlShowBy.text,=,"Viewer Column Buckets")
+	f.Intrinsic.String.Format(v.Global.sView1End,"MM/DD/YYYY",V.Local.dPeriod1End)
+	F.Intrinsic.String.Format(V.Global.sView2End,"MM/DD/YYYY",V.Local.dPeriod2End)
+	F.Intrinsic.String.Format(V.Global.sView3End,"MM/DD/YYYY",V.Local.dPeriod3End)
+f.Intrinsic.Control.Else
+	F.Intrinsic.Date.DateAddWorkdays(V.Ambient.Date,v.dictionary.dSettings!DEFAULTWIDTHPD1,v.dictionary.dSettings!DAYFILTER,V.Local.sType)
+	F.Intrinsic.String.Format(v.Local.sType,"MM/DD/YYYY",V.Local.dPeriod1End)
+	F.Intrinsic.Date.DateAddWorkdays(V.Local.dPeriod1End,V.dictionary.dSettings!DEFAULTWIDTHPD2,v.dictionary.dSettings!DAYFILTER,V.Local.sType)
+	F.Intrinsic.String.Format(V.Local.sType,"MM/DD/YYYY",V.Local.dPeriod2End)
+	F.Intrinsic.Date.DateAddWorkdays(V.Local.dPeriod2End,1000,v.dictionary.dSettings!DAYFILTER,V.Local.sType)
+	F.Intrinsic.String.Format(V.Local.sType,"MM/DD/YYYY",V.Local.dPeriod3End)
+F.Intrinsic.Control.EndIf
+
+gui.FormView.ggcMrp.SuspendLayout()
+
+gui.FormView.ggcMrp.DataSource("VIEWER")
+F.Data.DataView.Create("VIEWER","dvVIEWER")
+gui.FormView.ggcMrp.AddGridviewFromDataview("gvVIEWER","VIEWER","dvVIEWER")
+
+gui.FormView.ggcMrp.SetGridviewProperty("gvVIEWER","AllowSort","False")
+gui.FormView.ggcMrp.SetGridviewProperty("gvVIEWER","AllowFilter","False")
+
+'each row in verticalview represents a column in the gridview
+f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.verticalview.RowCount--,1)
+	v.Local.sCol.Set(v.DataTable.verticalview(v.Local.iCount).columnkey!FIELDVALSTRING)
+	v.Local.dDateStamp.Set(v.DataTable.verticalview(v.Local.iCount).EndFilter!FIELDVAL)
+	GUI.FormView.ggcMrp.SetColumnProperty("gvVIEWER",V.Local.sCol,"HeaderFontBold",True)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"HeaderHAlignment","Center")
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"CellHAlignment","Center")
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"AllowEdit",False)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"ReadOnly",True)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"MinWidth",55)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"AllowSize",False)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"DisplayFormatType","numeric")
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"DisplayCustomNumeric","#,###")
+	
+
+		'past
+	f.Intrinsic.Control.If(V.Local.dDateStamp,<,V.Ambient.Date)
+		GUI.FormView.ggcMrp.SetColumnProperty("gvVIEWER",V.Local.sCol,"CellBackColor","#D1D1D1")
+		'period 1
+	f.Intrinsic.Control.ElseIf(v.Local.dDateStamp,>=,v.Ambient.Date,AND,V.Local.dDateStamp,<=,V.Local.dPeriod1End)
+		GUI.FormView.ggcMrp.SetColumnProperty("gvVIEWER",V.Local.sCol,"CellBackColor","#B7E0B9")
+		'period 2
+	f.Intrinsic.Control.ElseIf(v.Local.dDateStamp,>,v.Local.dPeriod1End,AND,V.Local.dDateStamp,<=,V.Local.dPeriod2End)
+		GUI.FormView.ggcMrp.SetColumnProperty("gvVIEWER",V.Local.sCol,"CellBackColor","#B6D5E0")
+		'period 3
+	f.Intrinsic.Control.ElseIf(v.Local.dDateStamp,>,v.Local.dPeriod2End,AND,v.Local.dDateStamp,<=,v.Local.dPeriod3End)
+		gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"CellBackColor","#DBBCD9")
+		'future
+	f.Intrinsic.Control.ElseIf(v.Local.dDateStamp,>,v.Local.dPeriod3End)
+		gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER",v.Local.sCol,"CellBackColor","#D1D1D1")
+	f.Intrinsic.Control.EndIf
+	
+f.Intrinsic.Control.Next(v.Local.iCount)
+
+	'this is formatting the first column with row titles already in it
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER","Section","CellHAlignment","Near")
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER","Section","AllowEdit",False)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER","Section","ReadOnly",True)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER","Section","MinWidth",140)
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER","Section","Caption"," ")
+	gui.FormView.ggcMrp.SetColumnProperty("gvVIEWER","Section","Fixed","Left")
+
+	gui.FormView.ggcMrp.SetGridviewProperty("gvVIEWER","ColumnPanelRowHeight",40)
+
+'set form values from dictionaries before displaying the grid
+f.Intrinsic.String.RPad(V.Args.PART," ",20,V.Local.sPart)
+gui.FormView.txtPurMan.Text(v.dictionary.dSource![V.Local.sPart])
+gui.FormView.txtLeadP.Text(v.dictionary.dPurLead![V.Local.sPart])
+gui.FormView.txtProdLine.Text(v.dictionary.dProd![V.Local.sPart])
+gui.FormView.txtSafety.Text(v.dictionary.dSafetyStock![V.Local.sPart])
+gui.FormView.txtMinOrd.Text(v.dictionary.dMinQty![V.Local.sPart])
+gui.FormView.txtIncrement.Text(v.dictionary.dIncrement![V.Local.sPart])
+gui.FormView.txtSort.Text(v.dictionary.dSort![v.Local.sPart])
+
+'number values for periods
+f.Intrinsic.Control.If(v.Global.bLock,=,False)
+	GUI.FormView.txtPer1.Text(v.dictionary.DVIEWLEN1![V.Local.sPart])
+	GUI.FormView.txtPer2.Text(v.dictionary.DVIEWLEN2![V.Local.sPart])
+	GUI.FormView.txtPer3.Text(v.dictionary.DVIEWLEN3![V.Local.sPart])
+
+	'drop down values for periods
+	v.Local.sType.Set(v.dictionary.DVIEWTYPE1![V.Local.sPart])
+	gui.FormView.ddlPer1.Text(v.dictionary.TYPES![v.Local.sType])
+	v.Local.sType.Set(v.dictionary.DVIEWTYPE2![V.Local.sPart])
+	gui.FormView.ddlPer2.Text(v.dictionary.TYPES![v.Local.sType])
+	v.Local.sType.Set(v.dictionary.DVIEWTYPE3![V.Local.sPart])
+	gui.FormView.ddlPer3.Text(v.dictionary.TYPES![v.Local.sType])
+f.Intrinsic.Control.EndIf
+
+gui.FormView.ggcMrp.SetGridviewProperty("gvVIEWER","OptionsViewColumnAutoWidth",False)
+
+gui.FormView.ggcMrp.ResumeLayout()
+
+gui.FormView.ggcMrp.Visible(True)
+
+Gui.FormView.ggcMrp.Anchor(15)
+gui.FormView.frameViewSettings.Anchor(15)
+gui.FormView.tabmain.SetTab(0)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.format_viewer.End
+
+Program.Sub.cmdBrw_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sRet.Declare
+
+'common browser for BOM/REV/DESCRIPTION
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+f.Intrinsic.UI.SetBrowserHotTypeAheadColumn(0)
+f.Intrinsic.UI.SetBrowserColumnResizeMode(1)
+
+f.Intrinsic.UI.CommonBrowser(100,"",v.Local.sRet)
+
+f.Intrinsic.Control.If(v.Local.sRet,<>,v.Ambient.cancel)
+	'split the selected record, populate the form, pass args forward
+	f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+	gui.FormView.txtPart.Text(v.Local.sRet(0))
+	gui.FormView.txtRev.Text(v.Local.sRet(1))
+	gui.FormView.txtLoc.Text(v.Local.sRet(2))
+	f.Intrinsic.Control.CallSub(set_filters,"PART",V.Local.sRet(0),"REV",V.Local.sRet(1),"Loc",v.Local.sRet(2))
+f.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdBrw_Click.End
+
+Program.Sub.cmdApply_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sRet.Declare
+V.Local.sPart.Declare
+v.Local.sKey.Declare
+v.Local.bExists.Declare
+
+
+f.Intrinsic.String.GSSPartString(v.Screen.FormView!txtPart.text,v.Screen.FormView!txtRev.text,v.Local.sPart)
+
+'clear erros and reset the boolean variable every time we enter this sub
+f.Intrinsic.Control.ClearErrors
+v.Local.bExists.Set(False)
+'try to add the item and catch the error when it already exists
+f.Intrinsic.Control.Try
+	f.Data.Dictionary.AddItem("dViewLen1",v.Local.sPart,v.Screen.FormView!txtPer1.text,False)
+	'this catch traps the error of trying to enter a duplicate part in to the dictionary.
+f.Intrinsic.Control.CatchWhen(21085)
+	'if the error is caught, we then update the part instead of adding a new one.
+	f.Data.Dictionary.UpdateItem("dViewLen1",v.Local.sPart,v.Screen.FormView!txtPer1.text)
+	'set to true so the next dictionaries are just updated.  If it's in 1 dictionary, it's in all of them.
+	v.Local.bExists.Set(True)
+f.Intrinsic.Control.EndTry
+
+'if bExists = true, this means that the part already exists in all of the dictionaries, so we updateItem.  Otherwise we addItem
+
+'txtPerX = the number fields for each period
+'ddlPerX = the type of view (days, weeks, months) pulled from the form
+f.Intrinsic.Control.If(v.Local.bExists)
+	f.Data.Dictionary.UpdateItem("dViewLen2",v.Local.sPart,v.Screen.FormView!txtPer2.text)
+	f.Data.Dictionary.UpdateItem("dViewLen3",v.Local.sPart,v.Screen.FormView!txtPer3.text)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer1.TEXT,V.Local.sRet)
+	f.Data.Dictionary.UpdateItem("dViewType1",v.Local.sPart,V.Local.sRet)
+	F.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer2.TEXT,V.Local.sRet)
+	F.Data.Dictionary.UpdateItem("dViewType2",v.Local.sPart,v.Local.sRet)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer3.TEXT,V.Local.sRet)
+	f.Data.Dictionary.UpdateItem("dViewType3",v.Local.sPart,v.Local.sRet)
+f.Intrinsic.Control.Else
+	f.Data.Dictionary.AddItem("dViewLen2",v.Local.sPart,v.Screen.FormView!txtPer2.text)
+	f.Data.Dictionary.AddItem("dViewLen3",v.Local.sPart,v.Screen.FormView!txtPer3.text)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer1.TEXT,V.Local.sRet)
+	f.Data.Dictionary.AddItem("dViewType1",v.Local.sPart,V.Local.sRet)
+	F.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer2.TEXT,V.Local.sRet)
+	F.Data.Dictionary.AddItem("dViewType2",v.Local.sPart,v.Local.sRet)
+	f.Data.Dictionary.ReturnKeyFromValue("TYPES",V.Screen.FormView!ddlPer3.TEXT,V.Local.sRet)
+	f.Data.Dictionary.AddItem("dViewType3",v.Local.sPart,v.Local.sRet)	
+f.Intrinsic.Control.EndIf
+
+'we've updated the dictionary settings so let's rebuild the view starting at the filters
+f.Intrinsic.Control.CallSub(set_filters,"PART",V.Screen.FormView!txtPart.TEXT,"REV",V.Screen.FormView!txtRev.TEXT,"LOC",V.Screen.FormView!txtLoc.text)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdApply_Click.End
+
+Program.Sub.cmdSave_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sSql.Declare
+v.Local.sPart.Declare
+v.Local.sRev.Declare
+v.Local.sGSSPart.Declare
+v.Local.sLoc.Declare
+v.Local.sType1.Declare
+v.Local.sType2.Declare
+v.Local.sType3.Declare
+v.Local.dNow.Declare
+
+'get the part / rev / location from the form
+v.Local.sPart.Set(v.Screen.FormView!txtPart.text)
+v.Local.sRev.Set(v.Screen.FormView!txtRev.text)
+v.Local.sLoc.Set(v.Screen.FormView!txtLoc.text)
+f.Intrinsic.String.GSSPartString(v.Local.sPart,v.Local.sRev,v.Local.sGSSPart)
+'get the type settings for each period
+f.Data.Dictionary.returnkeyfromvalue("types",v.Screen.FormView!ddlPer1.text,v.Local.sType1)
+f.Data.Dictionary.returnkeyfromvalue("types",v.Screen.FormView!ddlPer2.text,v.Local.sType2)
+f.Data.Dictionary.returnkeyfromvalue("types",v.Screen.FormView!ddlPer3.text,v.Local.sType3)
+v.Local.dNow.Set(v.Ambient.Now.PSQLFriendly)
+'these values should already be added to the local dictionary.
+f.Intrinsic.String.Build("Select top 1 * from MRP_Forecast_Parts where Part = '{0}' and Location = '{1}'",v.Local.sGSSPart,v.Local.sLoc,v.Local.sSql)
+'open the connection
+f.ODBC.Connection!coredb.opencompanyconnection
+'create datatable to edit
+f.Data.DataTable.CreateFromSQL("savepart","coredb",v.Local.sSql,True)
+'check for a row count
+f.Intrinsic.Control.If(v.DataTable.savepart.RowCount,>,0)
+	'update the existing record
+	f.Data.datatable.SetValue("savepart",0,"Viewer1Length",v.dictionary.dviewlen1![v.Local.sGSSPart],"Viewer1Type",v.Local.sType1,"viewer2length",v.dictionary.dviewlen2![v.Local.sGSSPart],"viewer2Type",v.Local.sType2,"viewer3Length",v.dictionary.dviewlen3![v.Local.sGSSPart],"viewer3Type",v.Local.sType3)
+f.Intrinsic.Control.Else
+	'add a new record
+	f.Data.DataTable.AddRow("savepart","part",v.Local.sGSSPart,"location",v.Local.sLoc,"PD1Width",v.dictionary.FCWIDTH1![V.Local.sGSSPart],"PD2Width",v.dictionary.FCWIDTH2![V.Local.sGSSPart],"TimeModified",v.Ambient.Now,"Viewer1Length",v.dictionary.dviewlen1![v.Local.sGSSPart],"Viewer1Type",v.Local.sType1,"viewer2length",v.dictionary.dviewlen2![v.Local.sGSSPart],"viewer2Type",v.Local.sType2,"viewer3Length",v.dictionary.dviewlen3![v.Local.sGSSPart],"viewer3Type",v.Local.sType3)
+f.Intrinsic.Control.EndIf
+
+'save to db
+F.Data.DataTable.SaveToDB("savepart","coredb","MRP_Forecast_Parts","PART*!*LOCATION")
+'close the connection
+f.ODBC.Connection!coredb.close
+'close the table
+f.Data.DataTable.Close("savepart")
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.form_settings.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sDir.Declare
+v.Local.sFile.Declare
+v.Local.sDest.Declare
+v.Local.bExists.Declare
+
+
+'buttons
+f.Intrinsic.String.Build("{0}\ART\ICON_PREVIOUS_WHITE.PNG",v.dictionary.dSettings!PROGRAMDIR,V.Local.sFile)
+GUI.FormView.cmdPrevious.Picture(V.Local.sFile)
+F.Intrinsic.String.Build("{0}\ART\ICON_NEXT_WHITE.PNG",v.dictionary.dSettings!PROGRAMDIR,V.Local.sFile)
+GUI.FormView.cmdNext.Picture(V.Local.sFile)
+f.Intrinsic.String.Build("{0}\ART\GSS2.ICO",v.dictionary.dSettings!PROGRAMDIR,V.Local.sFile)
+gui.FormView..Icon(V.Local.sFile)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.form_settings.End
+
+Program.Sub.FormView_UnLoad.Start
+f.Intrinsic.Control.End
+Program.Sub.FormView_UnLoad.End
+
+Program.Sub.lblPart_Click.Start
+f.Intrinsic.Control.If(v.Args.BUTTON,=,"Right")
+	Function.Intrinsic.Debug.InvokeDebugger
+	Function.Intrinsic.Debug.Stop
+f.Intrinsic.Control.EndIf
+Program.Sub.lblPart_Click.End
+
+Program.Sub.format_graph.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sColumns.Declare
+v.Local.sColEndOnHand.Declare
+v.Local.sRet.Declare
+v.Local.sSeries.Declare
+v.Local.sPath.Declare
+v.Local.iX.Declare
+v.Local.iY.Declare
+v.Local.bExists.Declare
+
+
+
+'get the x-axis titles
+f.Data.DataTable.ColumnToString("VERTICALVIEW","COLUMNKEY",v.Local.sColumns)
+f.Intrinsic.String.Replace(v.Local.sColumns,"/","-",v.Local.sColumns)
+'get the chart values
+f.Data.DataTable.ColumnToString("VERTICALVIEW","EndOnHand",v.Local.sColEndOnHand)
+
+'name the chart
+f.Global.Presentation.CreateChart("OnHand",v.Local.sRet)
+'create the chart title
+f.Global.Presentation.CreateChartMember("OnHand","Title","EndOnHand","Ending Qty On Hand by Date",v.Local.sRet)
+
+'create the data series for the chart
+f.Intrinsic.String.Build("{0}!*!{1}",v.Local.sColumns,v.Local.sColEndOnHand,v.Local.sSeries)
+'add the chart member
+f.Global.Presentation.CreateChartMember("OnHand","Series","On Hand","Line",v.Local.sSeries,v.Local.sRet)
+
+'Set Chart Area Property -- Enable 3d chart style
+F.Global.Presentation.SetChartProperty("OnHand","ChartArea","Area3DStyle:Enable3D","False",V.Local.sRet)
+F.Global.Presentation.SetChartProperty("OnHand","ChartArea","BackColor","LightYellow",V.Local.sRet)
+
+'Render a simple graph
+f.Intrinsic.String.Build("{0}\mychart.bmp",v.Caller.TempDir,v.Local.sPath)
+f.Intrinsic.Math.Div(v.Screen.FormView!picChart.Width,v.Ambient.TwipsPerPixelX,v.Local.iX)
+f.Intrinsic.Math.Div(v.Screen.FormView!picChart.Height,v.Ambient.TwipsPerPixelY,v.Local.iY)
+f.Global.Presentation.RenderChart("OnHand",v.Local.sPath,"True",v.Local.iX,v.Local.iY,v.Local.sRet)
+
+'load picture to picturebox
+f.Intrinsic.File.Exists(v.Local.sPath,v.Local.bExists)
+f.Intrinsic.Control.If(v.Local.bExists)
+	gui.FormView.picChart.Picture(v.Local.sPath)
+f.Intrinsic.Control.EndIf
+
+'Clear Chart -- Necessary for Re-Rendering
+F.Global.Presentation.ClearChart("OnHand",V.Local.sRet)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.format_graph.End
+
+Program.Sub.lblForView_Click.Start
+gui.FormView.ggcMrp.visible(True)
+gui.FormView.picChart.Visible(False)
+Program.Sub.lblForView_Click.End
+
+Program.Sub.lblGraphic_Click.Start
+gui.FormView.ggcMrp.visible(False)
+gui.FormView.picChart.Visible(True)
+Program.Sub.lblGraphic_Click.End
+
+Program.Sub.cmdRefresh_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+
+
+f.ODBC.Connection!coredb.opencompanyconnection
+
+F.Data.DataTable.Close("PLAN")
+
+'f.Intrinsic.Control.CallSub(getsettings)
+
+f.Intrinsic.UI.InvokeWaitDialog("Retrieving Forecast Data...")
+f.Intrinsic.Control.CallSub(getdata)
+
+f.Intrinsic.Control.If(v.Screen.FormView!txtPart.text.length,>,1)
+	f.Intrinsic.Control.CallSub(set_filters,"PART",v.Screen.FormView!txtPart.text,"REV",v.Screen.FormView!txtRev.text,"Loc",v.Screen.FormView!txtLoc.text)
+f.Intrinsic.Control.EndIf
+
+f.Intrinsic.UI.CloseWaitDialog
+
+F.ODBC.Connection!coredb.close
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdRefresh_Click.End
+
+Program.Sub.cmdNext_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.sPart.Declare
+v.Local.sRev.Declare
+v.Local.sLoc.Declare
+v.Local.iKey.Declare
+
+'the part from the screen
+V.Local.sPart.Set(V.Screen.FormView!txtPart.Text)
+'check if it's empty
+f.Intrinsic.Control.If(v.Local.sPart.IsNotNullOrWhiteSpace)
+	f.Intrinsic.String.GSSPartString(v.Local.sPart,v.Screen.FormView!txtRev.text,v.Local.sPart)
+	'get the numeric key from the dictionary
+	f.Data.Dictionary.ReturnKeyFromValue("dKey",v.Local.sPart,True,v.Local.iKey)
+	'add 1 to the key to get the next part
+	f.Intrinsic.Math.Add(v.Local.iKey,1,v.Local.iKey)
+	v.local.sPart.Set(v.dictionary.dKey![v.Local.iKey])
+	'make sure we're not at the end
+	f.Intrinsic.Control.If(v.Local.sPart,<>,"ENDLIST")
+		'check the length of the part and move forward accordingly
+		f.Intrinsic.Control.If(v.Local.sPart.Length,>,17)
+			gui.FormView.txtPart.Text(v.Local.sPart.left17)
+			f.Intrinsic.String.Mid(v.Local.sPart,18,3,v.Local.sRev)
+			gui.FormView.txtRev.Text(v.Local.sRev)
+			f.Intrinsic.Control.CallSub(set_filters,"PART",v.Local.sPart.Left17,"REV",v.Local.sRev,"Loc",v.Screen.FormView!txtLoc.text)
+		f.Intrinsic.Control.Else
+			f.Intrinsic.Control.CallSub(set_filters,"PART",v.Local.sPart,"REV","","Loc",v.Screen.FormView!txtLoc.text)
+		f.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.Else
+		'if sPart = ENDLIST we're at the end
+		F.Intrinsic.UI.Msgbox("This is the end of the list")
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Else
+	'if it's empty, get the first part from the dictionary and continue
+	v.Local.sPart.Set(v.dictionary.dKey!1)
+	'check the length of the part and move forward accordingly
+	f.Intrinsic.Control.If(v.Local.sPart.Length,>,17)
+		gui.FormView.txtPart.Text(v.Local.sPart.left17)
+		f.Intrinsic.String.Mid(v.Local.sPart,18,3,v.Local.sRev)
+		gui.FormView.txtRev.Text(v.Local.sRev)
+		f.Intrinsic.Control.CallSub(set_filters,"PART",v.Local.sPart.Left17,"REV",v.Local.sRev,"Loc",v.Screen.FormView!txtLoc.text)
+	f.Intrinsic.Control.Else
+		gui.FormView.txtPart.Text(v.Local.sPart)
+		gui.FormView.txtRev.Text("")
+		f.Intrinsic.Control.CallSub(set_filters,"PART",v.Local.sPart,"REV","","Loc",v.Screen.FormView!txtLoc.text)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdNext_Click.End
+
+Program.Sub.cmdPrevious_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.sPart.Declare
+v.Local.sRev.Declare
+v.Local.sLoc.Declare
+v.Local.sKey.Declare
+v.Local.iKey.Declare
+
+V.Local.sPart.Set(V.Screen.FormView!txtPart.Text)
+f.Intrinsic.Control.If(v.Local.sPart.IsNotNullOrWhiteSpace)
+	f.Intrinsic.String.GSSPartString(v.Local.sPart,v.Screen.FormView!txtRev.text,v.Local.sPart)
+	f.Data.Dictionary.ReturnKeyFromValue("dKey",v.Local.sPart,True,v.Local.sKey)
+
+	f.Intrinsic.Math.Sub(v.Local.sKey,1,v.Local.iKey)
+	
+	f.Intrinsic.Control.If(v.Local.iKey,<>,0)
+		v.local.sPart.Set(v.dictionary.dKey![v.Local.iKey])
+		f.Intrinsic.Control.If(v.Local.sPart.Length,>,17)
+			gui.FormView.txtPart.Text(v.Local.sPart.left17)
+			f.Intrinsic.String.Mid(v.Local.sPart,18,3,v.Local.sRev)
+			gui.FormView.txtRev.Text(v.Local.sRev)
+			f.Intrinsic.Control.CallSub(set_filters,"PART",v.Local.sPart.Left17,"REV",v.Local.sRev,"Loc",v.Screen.FormView!txtLoc.text)
+		f.Intrinsic.Control.Else
+			f.Intrinsic.Control.CallSub(set_filters,"PART",v.Local.sPart,"REV","","Loc",v.Screen.FormView!txtLoc.text)
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.Else
+		f.Intrinsic.UI.Msgbox("This is the beginning of the list")
+	f.Intrinsic.Control.EndIf
+
+f.Intrinsic.Control.Else
+	f.Intrinsic.UI.Msgbox("This is the beginning of the list")
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdPrevious_Click.End
+
+Program.Sub.chkLock_Click.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+f.Intrinsic.Control.If(v.Screen.FormView!chkLock.checkedasboolean,=,True)
+	v.Global.bLock.Set(True)
+f.Intrinsic.Control.Else
+	v.Global.bLock.Set(False)
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.chkLock_Click.End
+
+Program.Sub.set_buckets_by_line.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fBeginOnHand.Declare
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare
+v.Local.dPeriod2End.Declare
+v.Local.dForecastDays.Declare
+v.Local.sPeriod2Filter.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+
+V.Local.fBeginOnHand.Set(v.dictionary.dOnHand![V.Args.PART])
+
+'viewer settings
+'"Forecast Zones"
+'"Viewer Column Buckets"
+
+'Consumption Methods
+'"By Month"
+'"Days From Today"
+'"Forecast Zone 2"
+
+
+
+'build the formula that we'll use in the Total Demand expression column
+'total demand is calculated differently for each period
+'period 1 sales + dependant demand
+'period 2 dependant demand + (the greater of sales or forecast orders)
+'period 3 dependant demand + forecast orders.
+
+
+f.Intrinsic.Control.If(v.Screen.FormView!ddlShowBy.text,=,"Forecast Zones")
+	'these are the forecast zones
+	f.Intrinsic.String.Format(v.Global.sZone1End,"MM/DD/YYYY",V.Local.dPeriod1End)
+	f.Intrinsic.String.Format(v.Global.sZone2End,"MM/DD/YYYY",V.Local.dPeriod2End)
+f.Intrinsic.Control.Else
+	'these are the viewer column settings
+	f.Intrinsic.String.Format(v.Global.sView2Start,"MM/DD/YYYY",V.Local.dPeriod1End)
+	f.Intrinsic.String.Format(v.Global.sView2End,"MM/DD/YYYY",V.Local.dPeriod2End)
+f.Intrinsic.Control.EndIf
+
+
+'add the columns required to finish the data set
+f.Data.DataTable.AddColumn("PART","MONTH","FLOAT")
+f.Data.DataTable.AddColumn("PART","consumption_bucket","FLOAT")
+F.Data.DataTable.AddColumn("PART","TotalSales","FLOAT",0)
+F.Data.DataTable.AddColumn("PART","TotalForecast","FLOAT",0)
+f.Data.DataTable.AddColumn("PART","Unconsumed","FLOAT",0)
+
+
+'add a month only column used in formulas
+f.Data.DataTable.SetValueFormat("PART",-1,"DATEDUE","Month","YYMM")
+'BeginFilter
+'EndFilter
+
+f.Intrinsic.Control.SelectCase(v.Screen.FormView!ddlConsume.text)
+	f.Intrinsic.Control.Case("Zone 2 By Month")
+		f.Intrinsic.Control.CallSub(consume_by_month_by_line,"START",v.Local.dPeriod1End,"END",V.Local.dPeriod2End)
+
+	
+	f.Intrinsic.Control.Case("Days From Today")
+		f.Intrinsic.Control.CallSub(consume_by_startdate_by_line,"START",V.Local.dPeriod1End,"END",V.Local.dPeriod2End)
+'		f.Intrinsic.Date.DateAddWorkdays(v.Ambient.Date,v.Dictionary.dSettings!ConsumptionDays,v.Dictionary.dSettings!DayFilter,v.Local.dForecastDays)
+'		f.Intrinsic.String.Build("IIF(ENDFILTER <= #{0}#,FORECAST - CUST_ORDERS,0)",V.Local.dForecastDays,v.Local.sUnconsumedFormula)
+'		f.Data.DataTable.AddExpressionColumn("verticalview","UnConsumedNet","FLOAT",V.Local.sUnconsumedFormula)
+
+		
+	
+	f.Intrinsic.Control.Case("Forecast Zone 2")
+		f.Intrinsic.Control.CallSub(consume_zone_2_by_line,"START",V.Local.dPeriod1End,"END",V.Local.dPeriod2End)
+'		f.Intrinsic.String.Build("IIF(ENDFILTER > #{0}# AND ENDFILTER < #{1}#,FORECAST - CUST_ORDERS,0)",V.Local.dPeriod1End,V.Local.dPeriod2End,V.Local.sUnconsumedFormula)
+'		f.Data.DataTable.AddExpressionColumn("verticalview","UnConsumedNet","FLOAT",V.Local.sUnconsumedFormula)
+
+
+f.Intrinsic.Control.EndSelect
+
+
+f.Data.DataTable.AddExpressionColumn("PART","TotalDemand","FLOAT","IIF(ZONE = 1,CUST_ORDERS + DEP_DEM,IIF(ZONE = 2,CUST_ORDERS + DEP_DEM + UNCONSUMED,IIF(ZONE = 3,FORECAST + DEP_DEM,CUST_ORDERS + DEP_DEM)))")
+
+
+'set
+'F.Data.DataTable.AddExpressionColumn("PART","TotalSupply","FLOAT","SCH_RECEIPTS + PLANNED")
+'F.Data.DataTable.AddExpressionColumn("PART","EndOnHand","FLOAT","BeginOnHand + totalsupply - totaldemand")
+
+'set the beginning value in row 0
+'F.Data.DataTable.SetValue("PART",0,"BeginOnHand",V.Local.fBeginOnHand)
+
+'set beginning and ending values in all subsequent rows
+'f.Data.DataTable.SetValueOnNextLine("PART","EndOnHand","BeginOnHand")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.set_buckets_by_line.End
+
+Program.Sub.consume_by_month_by_line.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fBeginOnHand.Declare
+v.Local.sTotalDemandFormula.Declare
+V.Local.sUnconsumedFormula.Declare
+v.Local.dPeriod1End.Declare
+v.Local.dPeriod2End.Declare
+v.Local.dForecastDays.Declare
+v.Local.sPeriod2Filter.Declare
+
+v.Local.iCount.Declare
+v.Local.iC.Declare
+V.Local.fUnconsumed.Declare
+v.Local.iUncTotal.Declare
+v.Local.fConsumed.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+v.Local.fBucketSales.Declare
+v.Local.fBucketForecast.Declare
+v.Local.fTotalSales.Declare
+v.Local.fTotalForecast.Declare
+
+v.Local.dPeriod1End.set(v.Args.START)
+v.Local.dPeriod2End.set(v.Args.END)
+
+'in consume by month - there is no "UnConsumedQty" in zones 1 and 3.
+'zone 2 compares the greater of sales and forecast for each month.
+'20	20	20	20		80		forecast
+'15	15	20	0		50		sales
+'							
+'0	0	10	20		30		unconsumed  (forecast is consumed foreward and backward in the bucket)
+'15	15	30	20		80		total demand
+'							
+'							
+'							
+'20	20	20	20		80		forecast
+'15	50	20	0		85		sales
+'							
+'0	0	0	0		0		unconsumed
+'15	50	20	0		85		total demand
+
+'get a list of YYMM values for period 2. Loop through that to determine total sales and total forecast for each bucket
+'once the total are determined, we can figure out how to calculate total demand and unconsumed
+
+
+f.Data.DataView.Create("PART","vZone2",22,"ZONE = 2","DATEDUE ASC, MONTH ASC")
+
+F.Data.DataView.ToDataTableDistinct("PART","vZone2","MONTHS","ZONE*!*MONTH")
+
+'crazy rules!  From here to the end of this subroutine as all to calculate the Unconsumed quantity for each Bucket within each month, within Zone2.
+
+
+'loop through the months and determine our values
+f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.MONTHS.RowCount--,1)
+	V.Local.fTotalForecast.Set(0)
+	V.Local.fTotalSales.Set(0)
+	v.Local.fUnconsumed.Set(0)
+	v.Local.iUncTotal.Set(0)
+	v.Local.fConsumed.Set(0)
+'	f.Intrinsic.Control.If(V.DataTable.MONTHS(V.Local.iCount).MONTH!FIELDVAL,=,1904)
+'		Function.Intrinsic.Debug.InvokeDebugger
+'		Function.Intrinsic.Debug.Stop
+'	f.Intrinsic.Control.EndIf
+
+	
+	'set the filter for the first month in the period - get the total sales and total forecast
+	F.Intrinsic.String.Build("ZONE = 2 AND MONTH = '{0}'",V.DataTable.MONTHS(v.Local.iCount).MONTH!FIELDVALTRIM,V.Local.sPeriod2Filter)
+	F.Data.DataTable.Compute("PART","SUM(CUST_ORDERS)",V.Local.sPeriod2Filter,V.Local.fBucketSales)
+	F.Data.DataTable.Compute("PART","SUM(FORECAST)",V.Local.sPeriod2Filter,V.Local.fBucketForecast)
+	F.Data.DataView.SetFilter("PART","vZone2",v.Local.sPeriod2Filter)
+
+	
+	F.Intrinsic.Control.If(V.Local.fBucketForecast,>,V.Local.fBucketSales)
+		'loop through the month 
+		f.Intrinsic.Control.For(v.Local.iC,0,v.DataView.PART!vZone2.RowCount--,1)
+			'get the sales and forecast amount for each row in the bucket(month)
+			v.Local.fSales.Set(v.DataView.PART!vZone2(v.Local.iC).CUST_ORDERS!FIELDVAL)
+			v.Local.fForecast.Set(v.DataView.PART!vZone2(v.Local.iC).FORECAST!FIELDVAL)
+			'total up the accumulated sales and accumulated forecast
+			f.Intrinsic.Math.Add(v.Local.fConsumed,v.Local.fSales,v.Local.fConsumed)
+			f.Intrinsic.Math.Add(v.Local.iUncTotal,v.Local.fForecast,v.Local.iUncTotal)
+			
+			f.Intrinsic.Control.If(v.Local.iUncTotal,<=,v.Local.fBucketSales)
+				'this says that the forecast has been consumed up to this point
+				v.Local.fUnconsumed.Set(0)
+				
+			f.Intrinsic.Control.ElseIf(v.Local.fForecast,>,0)
+				f.Intrinsic.Math.Sub(v.Local.iUncTotal,v.Local.fBucketSales,v.Local.fUnconsumed)
+				f.Intrinsic.Math.Sub(v.Local.iUncTotal,v.Local.fUnconsumed,v.Local.iUncTotal)
+
+			f.Intrinsic.Control.EndIf
+			
+			F.Data.DataView.SetValue("PART","vZone2",v.Local.iC,"Unconsumed",v.Local.fUnconsumed)
+		f.Intrinsic.Control.Next(v.Local.iC)
+	F.Intrinsic.Control.ElseIf(v.Local.fBucketForecast,<=,v.Local.fBucketSales)
+		'if the total sales are >= total forecast, then all rows for this bucket will have an unconsumed amount of 0
+		f.Intrinsic.Control.For(v.Local.iC,0,v.DataView.PART!vZone2.RowCount--,1)
+			f.Data.DataView.SetValue("PART","vZone2",V.Local.iC,"TotalForecast",0,"Totalsales",0,"Unconsumed",0)	
+		f.Intrinsic.Control.Next(v.Local.iC)
+	f.Intrinsic.Control.EndIf
+
+	
+f.Intrinsic.Control.Next(v.Local.iCount)
+
+
+'ZONE 2 is done, Zone 3 will be set to Unconsumed = Forecast regardless of anything else
+f.Data.DataView.SetFilter("part","vZone2","ZONE = 3")
+
+F.Intrinsic.Control.For(V.Local.iCount,0,V.DataView.part!vZone2.RowCount--,1)
+	F.Data.DataView.SetValue("part","vZone2",V.Local.iCount,"UNCONSUMED",V.DataView.part!vZone2(V.Local.iCount).FORECAST!FIELDVAL)
+F.Intrinsic.Control.Next(V.Local.iCount)
+
+
+F.Data.DataView.Close("PART","vZone2")
+f.Data.DataTable.Close("MONTHS")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+
+Program.Sub.consume_by_month_by_line.End
