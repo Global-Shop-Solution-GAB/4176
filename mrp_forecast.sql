@@ -1,0 +1,11 @@
+CREATE TABLE "MRP_Forecast" (
+ "ID" BIGINT NOT NULL,
+ "Part" CHAR(20),
+ "Location" CHAR(2),
+ "DateDue" DATE,
+ "ForecastQty" NUMERIC(16,6),
+ "TimeModified" DATETIME NOT NULL,
+ "Customer" VARCHAR(64),
+ "MRP_Refreshed" BIT NOT NULL );
+CREATE UNIQUE INDEX "UK_ID" USING 0 IN DICTIONARY  ON "MRP_Forecast" ( "ID" );
+ALTER TABLE "MRP_Forecast" IN DICTIONARY ADD CONSTRAINT "PK_ID" PRIMARY KEY  ( "ID" ) USING 0
