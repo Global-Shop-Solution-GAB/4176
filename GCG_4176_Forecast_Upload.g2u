@@ -1,0 +1,747 @@
+Program.Sub.ScreenSU.Start
+Gui.SS_Form1..create
+Gui.SS_Form1..caption("Upload MRP Forecast Data")
+Gui.SS_Form1..size(6165,2940)
+Gui.SS_Form1..position(0,0)
+Gui.SS_Form1..forecolor(0)
+Gui.SS_Form1..BackColor(-2147483633)
+Gui.SS_Form1..maxbutton(False)
+Gui.SS_Form1..minbutton(False)
+Gui.SS_Form1..mousepointer(0)
+Gui.SS_Form1..sizeable(False)
+Gui.SS_Form1..MinX(0)
+Gui.SS_Form1..MinY(0)
+Gui.SS_Form1..Event(UnLoad,SS_Form1_UnLoad)
+Gui.SS_Form1.lbl_txtUploadFile.create(label,"Select File to Upload",True,1800,195,1,105,990,True,0,Arial,8,-2147483633,0)
+Gui.SS_Form1.lbl_txtUploadFile.LabelStretch(True)
+Gui.SS_Form1.txtUploadFile.create(textbox,"",True,5400,300,1,105,1185,True,0,Arial,8,16777215,1)
+Gui.SS_Form1.txtUploadFile.tabstop(True)
+Gui.SS_Form1.txtUploadFile.tabindex(1)
+Gui.SS_Form1.txtUploadFile.Event(LostFocus,txtUploadFile_LostFocus)
+Gui.SS_Form1.cmd_txtUploadFile.create(button)
+Gui.SS_Form1.cmd_txtUploadFile.Caption("^")
+Gui.SS_Form1.cmd_txtUploadFile.size(330,330)
+Gui.SS_Form1.cmd_txtUploadFile.position(5580,1185)
+Gui.SS_Form1.cmd_txtUploadFile.tabstop(True)
+Gui.SS_Form1.cmd_txtUploadFile.tabindex(2)
+Gui.SS_Form1.cmd_txtUploadFile.Event(Click,cmd_txtUploadFile_Click)
+Gui.SS_Form1.pnlHeader.Create(Frame)
+Gui.SS_Form1.pnlHeader.Size(6360,750)
+Gui.SS_Form1.pnlHeader.Position(-15,-15)
+Gui.SS_Form1.pnlHeader.BackColor(6273113)
+Gui.SS_Form1.pnlHeader.BorderStyle(0)
+Gui.SS_Form1.lblTitle.Create(Label,"MRP Forecast Data",True,4935,300,0,900,105,True,0,"Segoe UI Semibold",14,6273113,1)
+Gui.SS_Form1.lblTitle.ForeColor(16777215)
+Gui.SS_Form1.lblTitle.Parent("pnlHeader")
+Gui.SS_Form1.pic1.Create(PictureBox)
+Gui.SS_Form1.pic1.Size(930,645)
+Gui.SS_Form1.pic1.Position(75,60)
+Gui.SS_Form1.pic1.BackColor(6273113)
+Gui.SS_Form1.pic1.Parent("pnlHeader")
+Gui.SS_Form1.pnlFooter.Create(Frame)
+Gui.SS_Form1.pnlFooter.Size(6405,1020)
+Gui.SS_Form1.pnlFooter.Position(-15,1875)
+Gui.SS_Form1.pnlFooter.BackColor(6273113)
+Gui.SS_Form1.pnlFooter.BorderStyle(0)
+Gui.SS_Form1.cmdUploadFile.create(button)
+Gui.SS_Form1.cmdUploadFile.Caption("Upload File")
+Gui.SS_Form1.cmdUploadFile.size(1500,360)
+Gui.SS_Form1.cmdUploadFile.position(105,120)
+Gui.SS_Form1.cmdUploadFile.Event(Click,cmdUploadFile_Click)
+Gui.SS_Form1.cmdUploadFile.Parent("pnlFooter")
+Gui.SS_Form1.cmdError.create(button)
+Gui.SS_Form1.cmdError.Caption("Check Errors")
+Gui.SS_Form1.cmdError.size(1500,360)
+Gui.SS_Form1.cmdError.position(1680,120)
+Gui.SS_Form1.cmdError.Event(Click,cmdError_Click)
+Gui.SS_Form1.cmdError.Parent("pnlFooter")
+Gui.SS_Form1.lbl1.Create(Label,"Complete!",True,1875,360,0,3240,2055,True,0,"Arial",8,6273113,0)
+Gui.SS_Form1.lbl1.ForeColor(255)
+Gui.compare..Create
+Gui.compare..Caption("Forecast Comparison")
+Gui.compare..Size(11640,7950)
+Gui.compare..MinX(0)
+Gui.compare..MinY(0)
+Gui.compare..Position(0,0)
+Gui.compare..BackColor(-2147483633)
+Gui.compare..MousePointer(0)
+Gui.compare..MaxButton(False)
+Gui.compare..Sizeable(False)
+Gui.compare..Event(UnLoad,compare_UnLoad)
+Gui.compare.GGC_Compare.Create(GsGridControl)
+Gui.compare.GGC_Compare.Size(11355,6090)
+Gui.compare.GGC_Compare.Position(30,765)
+Gui.compare.frameHeader.Create(Frame)
+Gui.compare.frameHeader.Size(12420,675)
+Gui.compare.frameHeader.Position(-735,-90)
+Gui.compare.frameHeader.BackColor(6273113)
+Gui.compare.lblHeader.Create(Label,"MRP Forecast Comparison",True,4170,390,0,960,285,True,0,"Arial",14,6273113,1)
+Gui.compare.lblHeader.Parent("frameHeader")
+Gui.compare.lblHeader.ForeColor(16777215)
+Gui.compare.lblHeader.Event(Click,lblHeader_Click)
+Gui.compare.frameFooter.Create(Frame)
+Gui.compare.frameFooter.Size(11835,675)
+Gui.compare.frameFooter.Position(-30,6945)
+Gui.compare.frameFooter.BackColor(6273113)
+Gui.compare.picSave.Create(PictureBox)
+Gui.compare.picSave.Size(465,420)
+Gui.compare.picSave.Position(345,150)
+Gui.compare.picSave.Parent("frameFooter")
+Gui.compare.picSave.Anchor(6)
+Gui.compare.picSave.BackColor(6273113)
+Gui.compare.picSave.ToolTip("Save New Forecast")
+Gui.compare.picSave.Event(Click,picSave_Click)
+Gui.compare.picExport.Create(PictureBox)
+Gui.compare.picExport.Size(465,420)
+Gui.compare.picExport.Position(10815,135)
+Gui.compare.picExport.Parent("frameFooter")
+Gui.compare.picExport.Anchor(10)
+Gui.compare.picExport.BackColor(6273113)
+Gui.compare.picExport.ToolTip("Export to Excel")
+Gui.compare.picExport.Event(Click,picExport_Click)
+Program.Sub.ScreenSU.End
+
+
+Program.Sub.Preflight.Start
+Variable.Global.sFileName.Declare(String)
+Variable.Global.sFilePath.Declare(String)
+Variable.Global.sPassFilePath.Declare(String)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sTemp.Declare(String)
+V.Local.bRet.Declare(Boolean)
+
+
+
+'Ending Program and letting user know they need excel for this program to run
+F.Automation.MSExcel.CheckPresence(V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	F.Intrinsic.UI.Msgbox("MsExcel is needed for this program")
+	F.Intrinsic.Control.End
+F.Intrinsic.Control.EndIf
+
+f.ODBC.Connection!con.opencompanyconnection
+
+'settings dictionary (20 = fully trimmed and uppercase)
+f.Data.Dictionary.CreateFromSQL("mrpSettings","con","select Name, Value from MRP_Settings",20)
+
+'checking if folders exist if not creating folders
+F.Intrinsic.String.Build("{0}\Passed",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.DirExists(V.Local.sTemp,V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	'Create Directory
+	F.Intrinsic.File.CreateDir(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\Exceptions",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.DirExists(V.Local.sTemp,V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	'Create Directory
+	F.Intrinsic.File.CreateDir(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\Errors",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.DirExists(V.Local.sTemp,V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	'Create Directory
+	F.Intrinsic.File.CreateDir(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\Failed",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.DirExists(V.Local.sTemp,V.Local.bRet)
+F.Intrinsic.Control.If(V.Local.bRet,=,False)
+	'Create Directory
+	F.Intrinsic.File.CreateDir(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\ART\mrp_icon.png",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+F.Intrinsic.Control.If(v.Local.bRet)
+	Gui.SS_Form1.pic1.Picture(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\ART\mrp_save_compare.png",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+F.Intrinsic.Control.If(v.Local.bRet)
+	Gui.compare.picSave.Picture(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.String.Build("{0}\ART\mrp_export_compare.png",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sTemp)
+F.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+F.Intrinsic.Control.If(v.Local.bRet)
+	Gui.compare.picExport.Picture(V.Local.sTemp)
+F.Intrinsic.Control.EndIf
+
+Gui.SS_Form1.cmdUploadFile.Enabled(False)
+Gui.SS_Form1.cmdError.Enabled(False)
+
+Gui.SS_Form1..Show
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.Main.End
+
+Program.Sub.SS_Form1_UnLoad.Start
+F.Intrinsic.Control.SetErrorHandler("SS_Form1_UnLoad_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+F.ODBC.Connection!con.Close
+F.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SS_Form1_UnLoad_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.End
+
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.SS_Form1_UnLoad.End
+
+Program.Sub.cmd_txtUploadFile_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmd_txtUploadFile_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+'open browser to let user select file to upload
+Variable.Local.sFile.Declare(String)
+Variable.Local.sDir.Declare(String)
+
+F.Intrinsic.String.Build("{0}\Select File",V.Caller.FilesDir,V.Local.sDir)
+Function.Intrinsic.UI.ShowOpenFileDialog("","xlsx|*xlsx",V.Local.sDir,V.Local.sFile)
+
+
+Function.Intrinsic.Control.If(V.Local.sFile,<>,v.Ambient.cancel)
+	Gui.SS_Form1.txtUploadFile.Text(V.Local.sFile)
+	'call sub to validate data	
+	F.Intrinsic.Control.CallSub(validate_data,"File",V.Local.sFile)
+Function.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmd_txtUploadFile_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmd_txtUploadFile_Click.End
+
+Program.Sub.cmdUploadFile_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdUploadFile_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.iTemp.Declare(Long)
+v.Local.iLength.Declare(Long)
+v.Local.sTemp.Declare(String)
+v.Local.sSql.Declare
+v.Local.sFile.Declare
+v.Local.bFile.Declare
+
+
+F.Intrinsic.UI.InvokeWaitDialog("Saving Data")
+
+F.Data.DataView.ToDataTableDistinct("RELOAD","vRELOAD","list","customer",true)
+
+F.Intrinsic.Control.For(V.Local.iTemp,0,V.DataTable.LIST.RowCount--,1)
+	F.Intrinsic.UI.ChangeWaitStatus("Removing old forecast records...",v.Local.iTemp,0,v.DataTable.LIST.RowCount)
+	F.Intrinsic.String.Build("DELETE FROM MRP_Forecast where RTRIM(Customer) = '{0}'",v.DataTable.LIST(V.Local.iTemp).Customer!fieldvaltrim,v.Local.sSql)
+	f.ODBC.Connection!con.execute(v.Local.sSql)
+F.Intrinsic.Control.Next(V.Local.iTemp)
+
+'get the max ID currently in the table so we can reset the series before saveTODB
+
+f.ODBC.Connection!con.GETID("MRP_Forecast","ID",True,v.Local.iTemp)
+f.Data.DataTable.SetSeries("Upload","ID",v.Local.iTemp,1)
+
+F.Intrinsic.UI.ChangeWaitStatus("Saving new forecast records...")
+'add MRP_Refreshed to the datatable and set all to false
+f.Data.DataTable.SetValue("Upload",-1,"TimeModified",v.Ambient.Now)
+'F.Data.DataTable.SetValue("Upload",-1,"Location","MV")
+f.Data.DataTable.AddColumn("Upload","MRP_Refreshed","BOOLEAN",0)
+
+'save datatable to pervasive table
+F.Data.DataTable.SaveToDB("Upload","con","MRP_Forecast","ID",128,"ID@!@ID*!*VALPART@!@PART*!*LOCATION@!@LOCATION*!*DATEDUE@!@DATEDUE*!*FORECASTQTY@!@FORECASTQTY*!*TIMEMODIFIED@!@TIMEMODIFIED*!*CUSTOMER@!@CUSTOMER*!*MRP_Refreshed@!@MRP_Refreshed")
+
+F.Data.DataTable.Close("Upload")
+
+'disable upload button
+Gui.SS_Form1.cmdUploadFile.Enabled(False)
+
+f.Intrinsic.String.InstrRev(v.Global.sFileName,"\",v.Local.iTemp)
+f.Intrinsic.String.Len(v.Global.sFileName,v.Local.iLength)
+F.Intrinsic.Math.Sub(V.Local.iLength,V.Local.iTemp,V.Local.iLength)
+F.Intrinsic.String.Right(V.Global.sFileName,V.Local.iLength,V.Local.sFile)
+
+f.Intrinsic.String.Build("{0}\Passed\{1}",v.dictionary.mrpSettings!PROGRAMDIR,v.Local.sFile,v.Global.sPassFilePath)
+'Moved File to passed folder
+F.Intrinsic.File.Exists(V.Global.sPassFilePath,V.Local.bFile)
+f.Intrinsic.Control.If(v.Local.bFile,=,False)
+	F.Intrinsic.File.MoveFile(v.Global.sFileName,V.Global.sPassFilePath,V.Local.iTemp)
+f.Intrinsic.Control.EndIf
+F.Intrinsic.UI.CloseWaitDialog
+gui.SS_Form1.lblTitle.Caption("MRP Upload Complete!")
+f.Intrinsic.UI.Sleep(2)
+f.Intrinsic.Control.End
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdUploadFile_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdUploadFile_Click.End
+
+Program.Sub.cmdError_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdError_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sFilePath.Declare(String)
+V.Local.iHandle.Declare(Long)
+v.Local.sFile.Declare
+v.Local.iTemp.Declare
+v.Local.iLength.Declare
+
+'trim out just the file name from Global.sFileName
+f.Intrinsic.String.InstrRev(v.Global.sFileName,"\",v.Local.iTemp)
+f.Intrinsic.String.Len(v.Global.sFileName,v.Local.iLength)
+F.Intrinsic.Math.Sub(V.Local.iLength,V.Local.iTemp,V.Local.iLength)
+F.Intrinsic.String.Right(V.Global.sFileName,V.Local.iLength,V.Local.sFile)
+
+F.Intrinsic.String.Build("{0}\Errors\{1}",v.dictionary.mrpSettings!PROGRAMDIR,v.Local.sFile,V.Local.sFilePath)
+'Open error file
+F.Intrinsic.File.GetHandle(V.Local.iHandle)
+F.Intrinsic.File.OpenForRead(V.Local.sFilePath,V.Local.iHandle)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdError_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.cmdError_Click.End
+
+Program.Sub.txtUploadFile_LostFocus.Start
+F.Intrinsic.Control.SetErrorHandler("txtUploadFile_LostFocus_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.bExist.Declare(Boolean)
+
+F.Intrinsic.Control.If(V.Screen.SS_Form1!txtUploadFile.Text,=,"")
+	F.Intrinsic.Control.ExitSub
+F.Intrinsic.Control.EndIf
+
+'checks to see if the path and name user enter is correct
+F.Intrinsic.File.Exists(V.Screen.SS_Form1!txtUploadFile.Text,V.Local.bExist)
+
+F.Intrinsic.Control.If(V.Local.bExist,=,True)
+	'call sub to validate data
+	F.Intrinsic.Control.CallSub(validate_data,"File",V.Screen.SS_Form1!txtUploadFile.Text)
+F.Intrinsic.Control.Else
+ F.Intrinsic.UI.Msgbox("File does not exist")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("txtUploadFile_LostFocus_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.txtUploadFile_LostFocus.End
+
+Program.Sub.Validate_Data.Start
+F.Intrinsic.Control.SetErrorHandler("Validate_Data_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sUpFile.Declare(String)
+V.Local.sSheet.Declare(String)
+V.Local.sRow.Declare(String)
+V.Local.sCol.Declare(String)
+V.Local.iR.Declare(Long)
+V.Local.iS.Declare(Long)
+V.Local.iC.Declare(Long)
+V.Local.iRow.Declare(Long)
+V.Local.sTempDate.Declare(String)
+V.Local.iID.Declare(Long)
+V.Local.iColumn.Declare(Long)
+V.Local.sText.Declare(String)
+V.Local.sHeader.Declare(String,"CUSTOMER*!*PART*!*QTY*!*DATE*!*FCDATE")
+V.Local.dDate.Declare(Date)
+V.Local.sFilePath.Declare(String)
+V.Local.sFailedFile.Declare(String)
+V.Local.sFileName.Declare(String)
+V.Local.sSql.Declare(String)
+V.Local.sDate.Declare
+v.Local.sFile.Declare
+v.Local.bPartial.Declare
+
+gui.SS_Form1..Enabled(False)
+'wait dialog 
+F.Intrinsic.UI.InvokeWaitDialog("Validating Data")
+
+F.Intrinsic.String.Split(V.Local.sHeader,"*!*",V.Local.sHeader)
+
+'set the global file name for later
+v.Global.sFileName.Set(v.Args.FILE)
+'opening file
+F.Automation.MSExcel.ReadSpreadsheet(V.Args.File,V.Local.sUpFile)
+
+F.Intrinsic.String.Split(V.Local.sUpFile,"&^&",V.Local.sSheet)
+F.Intrinsic.String.Replace(V.Local.sSheet,"*!*$!$","$!$",V.Local.sSheet)
+F.Intrinsic.Control.If(V.Local.sSheet.RIGHT3,=,"*!*")
+	F.Intrinsic.String.Len(V.Local.sSheet,V.Local.iC)
+	F.Intrinsic.Math.Sub(V.Local.iC,3,V.Local.iC)
+	F.Intrinsic.String.Left(V.Local.sSheet,V.Local.iC,V.Local.sSheet)
+F.Intrinsic.Control.EndIf
+
+'create a datatable from the spreadsheet.
+f.Data.DataTable.CreateFromString("dtSource",v.Local.sSheet,"CUSTOMER*!*PART*!*ForecastQTY*!*DATE*!*DateDue*!*TYPE","STRING*!*STRING*!*LONG*!*DATE*!*DATE*!*STRING","*!*","$!$",True)
+F.Data.DataTable.AddColumn("dtSource","ValPart","String")
+f.Data.DataTable.AddExpressionColumn("dtSource","CPART","String","TRIM(CUSTOMER)+TRIM(PART)")
+f.Data.DataTable.AddExpressionColumn("dtSource","TrimPart","string","TRIM(PART)")
+
+
+'reset the variables for the spreadsheet to free up memory
+v.Local.sUpFile.Set("")
+v.Local.sSheet.Set("")
+'F.Intrinsic.String.Split(V.Local.sSheet(0),"$!$",V.Local.sRow)
+f.Data.DataTable.CreateFromSQL("dtValidate","con","Select DISTINCT PART,RTRIM(PART) AS TRIMPART, LEFT(PART,17) AS PartNoRev, if(customer > '',LTRIM(RTRIM(customer)),'EXISTS') AS CUSTOMER, LTRIM(RTRIM(LEFT(CUSTOMER_PART,17))) AS customer_part from v_inv_cross_ref",True)
+F.Data.DataTable.AddExpressionColumn("dtValidate","CPART","String","CUSTOMER + CUSTOMER_PART")
+
+
+'create dictionaries to validate parts.
+f.Data.Dictionary.createfromDatatable("dNoTrim","dtValidate","Part","Part",4)
+F.Data.Dictionary.SetDefaultReturn("dNoTrim","NOMATCH")
+f.Data.Dictionary.createFromDatatable("dPartNoRev","dtValidate","PartNoRev","Part",20)
+F.Data.Dictionary.SetDefaultReturn("dPartNoRev","NOMATCH")
+f.Data.Dictionary.CreateFromDatatable("dTrimPart","dtValidate","TrimPart","Part",20)
+f.Data.Dictionary.SetDefaultReturn("dTrimPart","NOMATCH")
+
+
+'==========================================NOTICE=====================================
+'multiple filters are used because customer part numbers are not consistent.  Part with rev, part without rev, or customer part.  It could be any of the 3.
+
+'filter out the parts that returned "nomatch" based on a non-trimmed part number. create a new datatable
+F.Data.DataTable.FillFromDictionary("dtSource","dNoTrim","Part","ValPart")
+f.Data.DataView.Create("dtSource","dvSource",22,"ValPart = 'NOMATCH'","")
+F.Data.DataView.ToDataTable("dtSource","dvSource","dtSource2")
+
+'filter out the parts that returned "nomatch" based on Part No Rev, and create a new datatable
+F.Data.DataTable.FillFromDictionary("dtSource2","dPartNoRev","TrimPart","ValPart")
+F.Data.DataView.Create("dtSource2","dvSource2",22,"ValPart = 'NOMATCH'","")
+f.Data.DataView.ToDataTable("dtSource2","dvSource2","dtSource3",True)
+
+
+'filter out the parts that returned "nomatch" based on Part With Rev, and create a new datatable
+f.Data.DataTable.FillFromDictionary("dtSource3","dTrimPart","Part","ValPart")
+
+'get all the parts that validated against the inventory or inventory cross reference
+f.Data.DataView.Create("dtSource3","dvSource3",22,"ValPart <> 'NOMATCH'","")
+f.Data.DataView.ToDataTable("dtSource3","dvSource3","ValSource3",True)
+
+f.Data.DataView.SetFilter("dtSource","dvSource","ValPart <> 'NOMATCH'")
+f.Data.DataView.ToDataTable("dtSource","dvSource","ValSource1",True)
+f.Data.DataView.SetFilter("dtSource2","dvSource2","ValPart <> 'NOMATCH'")
+F.Data.DataView.ToDataTable("dtSource2","dvSource2","ValSource2",True)
+
+
+'Creating Datatable
+F.Data.DataTable.Create("Upload",True)
+F.Data.DataTable.AddColumn("Upload","ID","Long")
+F.Data.DataTable.AddColumn("Upload","Part","String")
+F.Data.DataTable.AddColumn("Upload","ValPart","String")
+F.Data.DataTable.AddColumn("Upload","Location","String","",2)
+F.Data.DataTable.AddColumn("Upload","DateDue","Date")
+F.Data.DataTable.AddColumn("Upload","ForecastQty","Float")
+F.Data.DataTable.AddColumn("Upload","TimeModified","Date")
+F.Data.DataTable.AddColumn("Upload","Customer","String")
+
+'merge the filtered source data in to a single upload table
+f.Data.DataTable.Merge("ValSource1","Upload",False,2)
+f.Data.DataTable.Merge("ValSource2","Upload",False,2)
+f.Data.DataTable.Merge("ValSource3","Upload",False,2)
+F.Data.DataTable.SetSeries("UPLOAD","ID",1,1)
+
+'write a log of items that didn't validate
+f.Data.DataView.SetFilter("dtSource3","dvSource3","ValPart = 'NOMATCH'")
+'if the dvSource3 rowcount is greater than zero, we have parts that didn't validate
+F.Intrinsic.Control.If(V.DataView.dtSource3!dvSource3.RowCount,>,0)
+	F.Data.DataView.ToString("dtSource3","dvSource3","customer*!*part*!*ForecastQTY*!*date*!*DateDue*!*type*!*ValPart*!*cpart","*!*",v.Ambient.NewLine,v.Local.sFailedFile)
+	f.Intrinsic.String.Format(v.Ambient.Date,"YYYY-MM-DD",V.Local.sDate)
+	F.Intrinsic.File.GetFileNameFromFQN(V.Args.FILE,V.Local.sFile)
+	f.Intrinsic.String.Build("{0}\Errors\{1}_ERROR_LOG_{2}.txt",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sFile,V.Local.sDate,V.Local.sFileName)
+	F.Intrinsic.File.String2File(V.Local.sFileName,V.Local.sFailedFile)
+
+		f.Intrinsic.String.Build("Exceptions found! A detailed list can be found here.{0}{1}{0}An exception list of parts will open but the upload can continue.",v.Ambient.NewLine,v.Local.sFileName,v.Local.sFilePath)
+		f.Intrinsic.UI.Msgbox(v.Local.sFilePath,"Validation Error!")
+		f.Data.DataView.ToDataTableDistinct("dtSource3","dvSource3","dtParts","CUSTOMER*!*PART",True)
+		f.Intrinsic.String.Replace(v.Local.sFileName,".txt",".csv",v.Local.sFileName)
+		'this will change both the file name and the path
+		f.Intrinsic.String.Replace(v.Local.sFileName,"ERROR","EXCEPTION",V.Local.sFileName)
+		f.Data.DataTable.SaveToCSV("dtParts",V.Local.sFileName,True)
+		f.Intrinsic.Task.ShellExecSync(0,"OPEN",V.Local.sFileName,"","",0)
+		v.Local.bPartial.Set(True)
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(v.DataTable.Upload.RowCount,>,0)
+	V.Global.sFilePath.Set(V.Args.File)
+	f.Intrinsic.Control.If(v.Local.bPartial)
+		F.Intrinsic.String.Build("{0}\Partial\{1}.xlsx",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sFileName,V.Global.sPassFilePath)
+		
+	f.Intrinsic.Control.Else
+		F.Intrinsic.String.Build("{0}\Passed\{1}.xlsx",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sFileName,V.Global.sPassFilePath)
+		
+	f.Intrinsic.Control.EndIf
+	'the file is loaded in to memory and ready to upload,now we're going to compare that to the existing forecast for this/these customers
+	f.Intrinsic.Control.CallSub(getExisting)
+	F.Intrinsic.Control.CallSub(buildCompare)
+	gui.compare..Show
+f.Intrinsic.Control.Else
+	f.Intrinsic.UI.Msgbox("No parts validated!  Check the upload file for trailing spaces.","Upload Error!")
+	V.Global.sFilePath.Set(V.Args.File)
+	F.Intrinsic.String.Build("{0}\Failed\{1}.xlsx",v.dictionary.mrpSettings!PROGRAMDIR,V.Local.sFileName,V.Global.sPassFilePath)
+	f.Intrinsic.File.MoveFile(v.Global.sFilePath,v.Global.sPassFilePath,v.Local.iR)
+	f.Intrinsic.Control.CallSub(ss_form1_unload)
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.UI.CloseWaitDialog
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Validate_Data_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_4176_Forecast_Upload.g2u",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	F.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Validate_Data.End
+
+Program.Sub.getExisting.Start
+f.Intrinsic.Control.Try
+v.Local.sError.Declare
+v.Local.sSql.Declare
+v.Local.iCount.Declare
+
+'F.Data.DataTable.RemoveColumn("UPLOAD","ID")
+'F.Data.DataTable.RemoveColumn("UPLOAD","TimeModified")
+
+
+f.ODBC.Connection!getmrp.opencompanyconnection
+
+f.ODBC.Connection!getmrp.execute("delete from MRP_Consolidate")
+F.Data.DataTable.SaveToDB("UPLOAD","getmrp","MRP_Consolidate","ID",128,"ID@!@ID*!*VALPART@!@PART*!*LOCATION@!@LOCATION*!*DATEDUE@!@DATEDUE*!*FORECASTQTY@!@FORECASTQTY*!*CUSTOMER@!@CUSTOMER")
+f.Data.DataTable.CreateFromSQL("RELOAD","getmrp","SELECT DISTINCT RTRIM(LTRIM(Part)) as Part, RTRIM(LTRIM(Location)) as Location, DateDue as DateDue, Cast(SUM(FORECASTQTY) as double) AS ForecastQty, RTRIM(LTRIM(CUSTOMER)) As Customer FROM MRP_Consolidate GROUP BY Part, Location, DateDue, Customer",True)
+
+
+f.Data.DataTable.SetPK("RELOAD","Part","DateDue","Customer")
+
+F.Data.DataView.Create("RELOAD","vUPLOAD",22)
+F.Data.DataView.ToDataTableDistinct("RELOAD","vUPLOAD","list","customer",true)
+f.Data.DataView.Close("RELOAD","vUPLOAD")
+
+
+f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.LIST.RowCount--,1)
+	'for each customer/part/location combination in the spreadsheet upload, we are going to query out the existing forecast records and merge them with the spreadsheet data.  This gives us a comparison view between the old forecast and the new forecast for those parts.
+	'F.Intrinsic.String.Build("select  distinct RTRIM(PART) AS Part, RTRIM(LOCATION) AS Location, DateDue as DateDue, cast(sum(FORECASTQTY) as double) AS OldQty, RTRIM(CUSTOMER) AS Customer from MRP_Forecast where customer = '{0}' and part = '{1}' and location = '{2}' GROUP BY Part, Location, DateDue, Customer",v.DataTable.list(v.Local.iCount).customer!fieldvaltrim,v.DataTable.list(v.Local.iCount).part!fieldvaltrim,v.DataTable.list(v.Local.iCount).location!fieldvaltrim,v.Local.sSql)
+	
+	'building the comparison by customer.
+	F.Intrinsic.String.Build("select distinct RTRIM(LTRIM(PART)) AS Part, RTRIM(LTRIM(LOCATION)) AS Location, DateDue as DateDue, cast(sum(FORECASTQTY) as double) AS OLDQTY, RTRIM(LTRIM(CUSTOMER)) AS Customer from MRP_Forecast where customer = '{0}' GROUP BY Part, Location, DateDue, Customer",v.DataTable.list(v.Local.iCount).customer!fieldvaltrim,v.Local.sSql)
+
+	f.Data.DataTable.CreateFromSQL("Forecast","getmrp",v.Local.sSql,True)
+	f.Intrinsic.Control.If(v.DataTable.Forecast.RowCount,>,0)
+		F.Data.DataTable.SetPK("Forecast","Part","DateDue","Customer")
+		F.Data.DataTable.Merge("Forecast","RELOAD",False,1)
+		f.Data.DataTable.Close("Forecast")
+	f.Intrinsic.Control.ElseIf(v.DataTable.Forecast.RowCount,=,0,AND,v.Local.iCount,=,0)
+		f.Data.DataTable.AddColumn("RELOAD","OLDQTY","FLOAT",0)
+		f.Data.DataTable.Close("Forecast")
+	f.Intrinsic.Control.ElseIf(v.DataTable.Forecast.RowCount,<,1)
+		f.Data.DataTable.Close("Forecast")
+	f.Intrinsic.Control.EndIf
+	
+f.Intrinsic.Control.Next(v.Local.iCount)
+
+f.Data.DataTable.Close("list")
+F.ODBC.Connection!getmrp.CLOSE
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.getExisting.End
+
+Program.Sub.catching.Start
+v.Local.sError.declare(string)
+F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}","GCG_4176_Forecast_Upload.g2u",V.Ambient.NewLine,v.Args.sub,V.Args.errorno,V.args.errordesc,V.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+F.Intrinsic.Control.CallSub(ss_form1_unload)
+Program.Sub.catching.End
+
+Program.Sub.buildCompare.Start
+f.Intrinsic.Control.Try
+v.Local.sError.Declare
+
+f.Data.DataTable.AddExpressionColumn("RELOAD","DIFFERENCE","FLOAT","OLDQTY - ForecastQty")
+F.Data.DataTable.AcceptChanges("RELOAD")
+
+GUI.compare.GGC_Compare.DataSource("RELOAD")
+f.Data.DataView.Create("RELOAD","vRELOAD",22)
+GUI.compare.GGC_Compare.AddGridviewFromDataview("gvRELOAD","RELOAD","vRELOAD")
+
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Customer","VisibleIndex",0)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Part","VisibleIndex",1)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Location","VisibleIndex",2)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DateDue","VisibleIndex",3)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","ForecastQty","VisibleIndex",4)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","OLDQTY","VisibleIndex",5)
+
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Customer","HeaderFontBold",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Part","HeaderFontBold",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Location","HeaderFontBold",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DateDue","HeaderFontBold",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","ForecastQty","HeaderFontBold",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","OLDQTY","HeaderFontBold",True)
+
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Customer","ReadOnly",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Part","ReadOnly",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Location","ReadOnly",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DateDue","ReadOnly",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","ForecastQty","ReadOnly",True)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","OLDQTY","ReadOnly",True)
+
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Customer","MinWidth",75)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Part","MinWidth",120)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","Location","MinWidth",75)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DateDue","MinWidth",100)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","ForecastQty","MinWidth",100)
+GUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","OLDQTY","MinWidth",100)
+
+gUI.compare.GGC_Compare.SetColumnProperty("gvRELOAD","ForecastQty","Caption","New Qty")
+gui.compare.GGC_Compare.SetColumnProperty("gvRELOAD","OLDQTY","Caption","Old Qty")
+gui.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DIFFERENCE","Visible",False)
+
+gui.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DateDue","DisplayFormatType","DateTime")
+gui.compare.GGC_Compare.SetColumnProperty("gvRELOAD","DateDue","DisplayCustomDateTime","d")
+
+'if quantities are the same
+'GUI.compare.GGC_Compare.AddStyleFormatCondition("gvRELOAD","DIFFERENCE","SAME","EQUAL","0")
+'gui.compare.GGC_Compare.SetStyleFormatConditionProperty("gvRELOAD","DIFFERENCE","SAME","BACKCOLOR","PALEGREEN")
+'gui.compare.GGC_Compare.SetStyleFormatConditionProperty("gvRELOAD","DIFFERENCE","SAME","APPLYTOROW",True)
+'if the new quantity has increased
+GUI.compare.GGC_Compare.AddStyleFormatCondition("gvRELOAD","DIFFERENCE","NEW","LESS","0")
+gui.compare.GGC_Compare.SetStyleFormatConditionProperty("gvRELOAD","DIFFERENCE","NEW","BACKCOLOR","PALEVIOLETRED")
+gui.compare.GGC_Compare.SetStyleFormatConditionProperty("gvRELOAD","DIFFERENCE","NEW","APPLYTOROW",True)
+'if the new quantity has decreased
+GUI.compare.GGC_Compare.AddStyleFormatCondition("gvRELOAD","DIFFERENCE","OLD","GREATER","0")
+gui.compare.GGC_Compare.SetStyleFormatConditionProperty("gvRELOAD","DIFFERENCE","OLD","BACKCOLOR","PALETURQUOISE")
+gui.compare.GGC_Compare.SetStyleFormatConditionProperty("gvRELOAD","DIFFERENCE","OLD","APPLYTOROW",True)
+
+gui.compare.GGC_Compare.MainView("gvRELOAD")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.buildCompare.End
+
+Program.Sub.compare_UnLoad.Start
+Gui.SS_Form1.cmdUploadFile.Enabled(True)
+gui.compare..Visible(false)
+gui.SS_Form1..Enabled(True)
+gui.SS_Form1..AlwaysOnTop(true)
+gui.SS_Form1..AlwaysOnTop(false)
+
+Program.Sub.compare_UnLoad.End
+
+Program.Sub.picSave_Click.Start
+f.Intrinsic.Control.Try
+v.Local.sError.Declare
+
+F.Intrinsic.Control.CallSub(compare_unload)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.picSave_Click.End
+
+Program.Sub.picExport_Click.Start
+f.Intrinsic.Control.Try
+v.Local.sError.Declare
+v.Local.bExcel.Declare
+v.Local.sFile.Declare
+
+f.Intrinsic.String.Build("{0}{1}",v.Caller.User,v.Ambient.Date,v.Local.sFile)
+F.Automation.MSExcel.CheckPresence(V.Local.bExcel)
+
+f.Intrinsic.Control.If(v.Local.bExcel)
+	f.Intrinsic.UI.ShowSaveFileDialog(v.Caller.FilesDir,"xlsx|*.xlsx",v.Local.sFile,v.Local.sFile)
+
+	Gui.compare.GGC_Compare.Export(v.Local.sFile,"xlsx")
+	F.Intrinsic.Task.ShellExec(0,"",V.Local.sFile,"","",1)
+f.Intrinsic.Control.Else
+	f.Intrinsic.UI.ShowSaveFileDialog(v.Caller.FilesDir,".csv|*.csv",v.Local.sFile,v.Local.sFile)
+	
+	Gui.compare.GGC_Compare.Export(v.Local.sFile,"csv")
+	F.Intrinsic.Task.ShellExec(0,"",V.Local.sFile,"","",1)
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.picExport_Click.End
+
+Program.Sub.lblHeader_Click.Start
+f.Intrinsic.Control.If(v.Args.BUTTON,=,"Right")
+	Function.Intrinsic.Debug.InvokeDebugger
+	Function.Intrinsic.Debug.Stop
+f.Intrinsic.Control.EndIf
+Program.Sub.lblHeader_Click.End
+
+
+Program.Sub.Comments.Start
+${$0$}$$}$RLK$}$11/21/2016 2:10:09 PM$}$False
+Program.Sub.Comments.End
