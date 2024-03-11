@@ -1,0 +1,697 @@
+Program.Sub.ScreenSU.Start
+Gui.Form..Create
+Gui.Form..Caption("MRP Settings")
+Gui.Form..Size(4065,8940)
+Gui.Form..MinX(0)
+Gui.Form..MinY(0)
+Gui.Form..Position(0,0)
+Gui.Form..BackColor(16777215)
+Gui.Form..MousePointer(0)
+Gui.Form..MaxButton(False)
+Gui.Form..Sizeable(False)
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form.frame1.Create(Frame)
+Gui.Form.frame1.Size(5865,750)
+Gui.Form.frame1.Position(0,0)
+Gui.Form.frame1.BackColor(6273113)
+Gui.Form.frame1.ForeColor(16777215)
+Gui.Form.frame1.BorderStyle(0)
+Gui.Form.frame1.Anchor(13)
+Gui.Form.lbl1.Create(Label,"Settings",True,1935,300,0,1050,150,True,0,"Segoe UI Semibold",14,6273113,16777215)
+Gui.Form.lbl1.ForeColor(16777215)
+Gui.Form.lbl2.Create(Label,"MRP Settings and Defaults",True,3390,300,0,1050,450,True,0,"Segoe UI",9,6273113,16777215)
+Gui.Form.lbl2.ForeColor(16777215)
+Gui.Form.pic1.Create(PictureBox)
+Gui.Form.pic1.Size(930,645)
+Gui.Form.pic1.Position(30,75)
+Gui.Form.pic1.BackColor(6273113)
+Gui.Form.lbl3.Create(Label,"Period 1",True,1080,255,0,375,1275,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.txtPd1.Create(TextBox,"",True,1065,300,0,420,1470,True,0,"Arial",8,-2147483643,1)
+Gui.Form.txtPd1.Event(LostFocus,txtPd_LostFocus)
+Gui.Form.txtPd1.Event(GotFocus,txtBox_GotFocus)
+Gui.Form.lbl4.Create(Label,"Period 2",True,1095,255,0,1575,1275,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl4.ForeColor(0)
+Gui.Form.txtPd2.Create(TextBox,"",True,1065,300,0,1620,1470,True,0,"Arial",8,-2147483643,1)
+Gui.Form.txtPd2.Event(LostFocus,txtPd_LostFocus)
+Gui.Form.txtPd2.Event(GotFocus,txtBox_GotFocus)
+Gui.Form.lbl5.Create(Label,"Period 3",True,1050,255,0,2775,1275,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl5.ForeColor(0)
+Gui.Form.lbl6.Create(Label,"Default Period Widths (In Days)",True,3075,255,0,225,990,True,0,"Segoe UI Semibold",9,16777215,0)
+Gui.Form.lbl6.ForeColor(0)
+Gui.Form.lbl7.Create(Label,"Scheduling Calculation",True,3315,255,0,240,2025,True,0,"Segoe UI Semibold",9,16777215,0)
+Gui.Form.lbl7.ForeColor(0)
+Gui.Form.pnlFooter.Create(Frame)
+Gui.Form.pnlFooter.Size(5865,1590)
+Gui.Form.pnlFooter.Position(-15,7770)
+Gui.Form.pnlFooter.BackColor(6273113)
+Gui.Form.pnlFooter.BorderStyle(0)
+Gui.Form.pnlFooter.Anchor(13)
+Gui.Form.cmdSave.Create(Button)
+Gui.Form.cmdSave.Size(855,375)
+Gui.Form.cmdSave.Caption("Save")
+Gui.Form.cmdSave.Event(Click,cmdSave_Click)
+Gui.Form.cmdSave.Enabled(False)
+Gui.Form.cmdSave.Parent("pnlFooter")
+Gui.Form.cmdSave.Position(105,105)
+Gui.Form.cmdSave.BackColor(14803425)
+Gui.Form.lblPd3.Create(Label,"91+",True,1050,255,0,2775,1515,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lblPd3.ForeColor(0)
+Gui.Form.lbl8.Create(Label,"Default Viewer Settings",True,3075,255,0,240,3270,True,0,"Segoe UI Semibold",9,16777215,0)
+Gui.Form.lbl8.ForeColor(0)
+Gui.Form.lbl9.Create(Label,"Section 1 shows the first",True,2550,255,0,375,3990,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl9.ForeColor(0)
+Gui.Form.txtViewer1.Create(TextBox,"",True,600,300,0,420,4200,True,0,"Arial",8,-2147483643,1)
+Gui.Form.txtViewer1.ForeColor(0)
+Gui.Form.txtViewer1.Event(LostFocus,txtViewer_LostFocus)
+Gui.Form.txtViewer1.Event(GotFocus,txtBox_GotFocus)
+Gui.Form.cboViewer1.Create(DropDownList)
+Gui.Form.cboViewer1.Size(1095,330)
+Gui.Form.cboViewer1.Position(1155,4200)
+Gui.Form.cboViewer1.Event(Click,CboViewer_Change)
+Gui.Form.lbl10.Create(Label,"Section 2 shows the next",True,2550,255,0,375,4665,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl10.ForeColor(0)
+Gui.Form.txtViewer2.Create(TextBox,"",True,600,300,0,420,4875,True,0,"Arial",8,-2147483643,1)
+Gui.Form.txtViewer2.ForeColor(0)
+Gui.Form.txtViewer2.Event(LostFocus,txtViewer_LostFocus)
+Gui.Form.txtViewer2.Event(GotFocus,txtBox_GotFocus)
+Gui.Form.cboViewer2.Create(DropDownList)
+Gui.Form.cboViewer2.Size(1095,330)
+Gui.Form.cboViewer2.Position(1155,4875)
+Gui.Form.cboViewer2.BackColor(16777215)
+Gui.Form.cboViewer2.ForeColor(0)
+Gui.Form.cboViewer2.Event(Click,CboViewer_Change)
+Gui.Form.lbl11.Create(Label,"Section 3 shows the next",True,2550,255,0,375,5340,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl11.ForeColor(0)
+Gui.Form.txtViewer3.Create(TextBox,"",True,600,300,0,420,5550,True,0,"Arial",8,-2147483643,1)
+Gui.Form.txtViewer3.ForeColor(0)
+Gui.Form.txtViewer3.Event(LostFocus,txtViewer_LostFocus)
+Gui.Form.txtViewer3.Event(GotFocus,txtBox_GotFocus)
+Gui.Form.cboViewer3.Create(DropDownList)
+Gui.Form.cboViewer3.Size(1095,330)
+Gui.Form.cboViewer3.Position(1155,5550)
+Gui.Form.cboViewer3.BackColor(16777215)
+Gui.Form.cboViewer3.ForeColor(0)
+Gui.Form.cboViewer3.Event(Click,CboViewer_Change)
+Gui.Form.chkPast.Create(CheckBox)
+Gui.Form.chkPast.Size(2580,360)
+Gui.Form.chkPast.Position(420,3555)
+Gui.Form.chkPast.Caption("Show Past Records column")
+Gui.Form.chkPast.FontName("Segoe UI")
+Gui.Form.chkPast.ToolTip("When checked, records that are in the past are shown in a new column in the Viewer. When unchecked, these records are ignored.")
+Gui.Form.chkPast.Value(1)
+Gui.Form.chkPast.BackColor(16777215)
+Gui.Form.chkPast.Event(Click,chkPast_Click)
+Gui.Form.chkLater.Create(CheckBox)
+Gui.Form.chkLater.Size(2580,360)
+Gui.Form.chkLater.Position(420,5970)
+Gui.Form.chkLater.Caption("Show Later column")
+Gui.Form.chkLater.FontName("Segoe UI")
+Gui.Form.chkLater.ToolTip("When checked, records that occur beyond the specified range are shown in a new column in the Viewer. When unchecked, these records are added to the final column.")
+Gui.Form.chkLater.Value(1)
+Gui.Form.chkLater.BackColor(16777215)
+Gui.Form.chkLater.ForeColor(0)
+Gui.Form.chkLater.Event(Click,chkLater_Click)
+Gui.Form.cboFirstDay.Create(DropDownList)
+Gui.Form.cboFirstDay.Size(1830,330)
+Gui.Form.cboFirstDay.Position(420,6690)
+Gui.Form.cboFirstDay.Event(Click,cboFirstDay_Click)
+Gui.Form.lblWeekStart.Create(Label,"First day of the week",True,2550,255,0,375,6465,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lblWeekStart.ForeColor(0)
+Gui.Form.lbl12.Create(Label,"Use the following days for scheduling",True,3105,255,0,375,2340,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl12.ForeColor(0)
+Gui.Form.chk1.Create(CheckBox)
+Gui.Form.chk1.Size(240,240)
+Gui.Form.chk1.Position(420,2595)
+Gui.Form.chk1.BackColor(16777215)
+Gui.Form.chk1.Event(Click,chkDay_Click)
+Gui.Form.chk2.Create(CheckBox)
+Gui.Form.chk2.Size(240,240)
+Gui.Form.chk2.Position(825,2595)
+Gui.Form.chk2.BackColor(16777215)
+Gui.Form.chk2.ForeColor(0)
+Gui.Form.chk2.Event(Click,chkDay_Click)
+Gui.Form.chk3.Create(CheckBox)
+Gui.Form.chk3.Size(240,240)
+Gui.Form.chk3.Position(1635,2595)
+Gui.Form.chk3.BackColor(16777215)
+Gui.Form.chk3.ForeColor(0)
+Gui.Form.chk3.Event(Click,chkDay_Click)
+Gui.Form.chk4.Create(CheckBox)
+Gui.Form.chk4.Size(240,240)
+Gui.Form.chk4.Position(1230,2595)
+Gui.Form.chk4.BackColor(16777215)
+Gui.Form.chk4.ForeColor(0)
+Gui.Form.chk4.Event(Click,chkDay_Click)
+Gui.Form.chk5.Create(CheckBox)
+Gui.Form.chk5.Size(240,240)
+Gui.Form.chk5.Position(2040,2595)
+Gui.Form.chk5.BackColor(16777215)
+Gui.Form.chk5.ForeColor(0)
+Gui.Form.chk5.Event(Click,chkDay_Click)
+Gui.Form.chk6.Create(CheckBox)
+Gui.Form.chk6.Size(240,240)
+Gui.Form.chk6.Position(2445,2595)
+Gui.Form.chk6.BackColor(16777215)
+Gui.Form.chk6.ForeColor(0)
+Gui.Form.chk6.Event(Click,chkDay_Click)
+Gui.Form.lbl13.Create(Label,"Su",True,405,255,0,375,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl13.ForeColor(0)
+Gui.Form.chk7.Create(CheckBox)
+Gui.Form.chk7.Size(240,240)
+Gui.Form.chk7.Position(2850,2595)
+Gui.Form.chk7.BackColor(16777215)
+Gui.Form.chk7.ForeColor(0)
+Gui.Form.chk7.Event(Click,chkDay_Click)
+Gui.Form.lbl14.Create(Label,"Mo",True,405,255,0,780,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl14.ForeColor(0)
+Gui.Form.lbl15.Create(Label,"Tu",True,405,255,0,1185,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl15.ForeColor(0)
+Gui.Form.lbl16.Create(Label,"We",True,405,255,0,1590,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl16.ForeColor(0)
+Gui.Form.lbl17.Create(Label,"Th",True,405,255,0,1995,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl17.ForeColor(0)
+Gui.Form.lbl18.Create(Label,"Fr",True,405,255,0,2400,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl18.ForeColor(0)
+Gui.Form.lbl19.Create(Label,"Sa",True,405,255,0,2805,2880,True,0,"Segoe UI",8,16777215,0)
+Gui.Form.lbl19.ForeColor(0)
+Gui.Form.txtConsume.Create(TextBox,"",True,1215,300,0,435,7395,True,0,"Arial",8,-2147483643,1)
+Gui.Form.txtConsume.Event(GotFocus,txtBox_GotFocus)
+Gui.Form.txtConsume.Event(LostFocus,txtConsume_LostFocus)
+Gui.Form.lblConsume.Create(Label,"Default Consumption Days",True,2355,255,0,420,7155,True,0,"Arial",8,16777215,0)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+v.Global.sSettingsList.Declare(String)
+
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+v.Local.bRet.Declare(Boolean)
+
+' Check if defaults are there and insert if not.
+Function.Intrinsic.Control.CallSub(checktable,"bRet",v.Local.bRet)
+
+Function.Intrinsic.Control.If(v.Args.bRet,=,False)
+	Function.Intrinsic.UI.Msgbox("Table MRP_Settings not found. Please run SQL Script.")
+	Function.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Control.If(v.Caller.Switches,<>,"-s")
+	Function.Intrinsic.Control.CallSub(initializeglobals)
+	Function.Intrinsic.Control.CallSub(initializeform)
+Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Control.If(v.Caller.Switches,<>,"-s")
+	Function.Intrinsic.Control.CallSub(setui)
+	'gui.Form..DockWidget
+	gui.Form.cmdSave.Enabled(False)
+	gui.Form..Show
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Main.End
+
+' ======================================================================
+' Initialization and Validation
+Program.Sub.InitializeForm.Start
+v.Local.iHt.Declare(Long)
+v.Local.sTemp.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+' Format footer
+f.Intrinsic.Math.Sub(v.Global.FormHeightTwips,600,v.Local.iHt)
+gui.Form.pnlFooter.BorderStyle(0)
+gui.Form.pnlFooter.Position(0,v.Local.iHt)
+
+gui.Form.cboViewer1.AddItem("Days")
+gui.Form.cboViewer1.AddItem("Weeks")
+gui.Form.cboViewer1.AddItem("Months")
+gui.Form.cboViewer1.AddItem("Years")
+
+gui.Form.cboViewer2.AddItem("Days")
+gui.Form.cboViewer2.AddItem("Weeks")
+gui.Form.cboViewer2.AddItem("Months")
+gui.Form.cboViewer2.AddItem("Years")
+
+gui.Form.cboViewer3.AddItem("Days")
+gui.Form.cboViewer3.AddItem("Weeks")
+gui.Form.cboViewer3.AddItem("Months")
+gui.Form.cboViewer3.AddItem("Years")
+
+gui.Form.cboFirstDay.AddItem("Sunday")
+gui.Form.cboFirstDay.AddItem("Monday")
+gui.Form.cboFirstDay.AddItem("Tuesday")
+gui.Form.cboFirstDay.AddItem("Wednesday")
+gui.Form.cboFirstDay.AddItem("Thursday")
+gui.Form.cboFirstDay.AddItem("Friday")
+gui.Form.cboFirstDay.AddItem("Saturday")
+
+
+Function.Intrinsic.String.Build("{0}\ART\mrp_icon.png",v.dictionary.Settings!PROGRAMDIR,v.Local.sTemp)
+Function.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	gui.Form.pic1.Picture(v.Local.sTemp)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.InitializeForm.End
+
+Program.Sub.InitializeGlobals.Start
+v.Global.MsgBoxFlag_OKOnly.Declare(Long,0)
+v.Global.MsgBoxFlag_OKCancel.Declare(Long,1)
+v.Global.MsgBoxFlag_AbortRetryIgnore.Declare(Long,2)
+v.Global.MsgBoxFlag_YesNoCancel.Declare(Long,3)
+v.Global.MsgBoxFlag_YesNo.Declare(Long,4)
+v.Global.MsgBoxFlag_RetryCancel.Declare(Long,5)
+
+v.Global.MsgBoxRet_OK.Declare(Long,1)
+v.Global.MsgBoxRet_Cancel.Declare(Long,2)
+v.Global.MsgBoxRet_Abort.Declare(Long,3)
+v.Global.MsgBoxRet_Retry.Declare(Long,4)
+v.Global.MsgBoxRet_Ignore.Declare(Long,5)
+v.Global.MsgBoxRet_Yes.Declare(Long,6)
+v.Global.MsgBoxRet_No.Declare(Long,7)
+
+v.Global.GABVersionMajor.Declare(Long)
+Function.Intrinsic.String.Left(v.Ambient.GABVersion,1,v.Global.GABVersionMajor)
+
+v.Global.FormHeight.Declare(Long,0)
+v.Global.FormHeightTwips.Declare(Long,0)
+Function.Intrinsic.Control.If(v.Global.GABVersionMajor,>,1)
+	Function.Intrinsic.Math.Mult(31,v.Ambient.TwipsPerPixelY,v.Global.FormHeight)
+Function.Intrinsic.Control.Else
+	Function.Intrinsic.Math.Mult(39,v.Ambient.TwipsPerPixelY,v.Global.FormHeight)
+Function.Intrinsic.Control.EndIf
+f.Intrinsic.Math.Sub(v.Screen.Form.Height,v.Global.FormHeight,v.Global.FormHeightTwips)
+Function.Intrinsic.Math.Div(v.Global.FormHeightTwips,v.Ambient.TwipsPerPixelY,v.Global.FormHeight)
+
+v.Global.FormWidth.Declare(Long,0)
+v.Global.FormWidthTwips.Declare(Long,0)
+Function.Intrinsic.Math.Mult(16,v.Ambient.TwipsPerPixelX,v.Global.FormWidth)
+f.Intrinsic.Math.Sub(v.Screen.Form.Width,v.Global.FormWidth,v.Global.FormWidthTwips)
+Function.Intrinsic.Math.Div(v.Global.FormWidthTwips,v.Ambient.TwipsPerPixelX,v.Global.FormWidth)
+
+Program.Sub.InitializeGlobals.End
+
+Program.Sub.CheckTable.Start
+v.Local.bRet.Declare(Boolean, False)
+v.Local.i.Declare(Long)
+v.Local.bNeedsUpdate.Declare(Boolean,False)
+v.Local.sPair.Declare(String)
+v.Local.sName.Declare(String)
+
+f.ODBC.Connection!Conx.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+f.ODBC.Connection!Conx.TableExists("MRP_Settings",v.Local.bRet)
+
+Function.Intrinsic.Control.If(v.Local.bRet,=,True)
+
+	f.Data.DataTable.CreateFromSQL("dtSettngs","conx","Select Name, Value from MRP_Settings",True)
+	f.Data.DataView.Create("dtSettngs","dvSettings",22)
+	f.Data.DataView.ToString("dtSettngs","dvSettings",v.DataTable.dtSettngs.FieldNames,"|","*!*",v.Global.sSettingsList)
+	
+
+	Function.Intrinsic.String.Split(v.Global.sSettingsList,"*!*",v.Global.sSettingsList)
+	
+	f.Data.Dictionary.CreateFromSQL("Settings","Conx","Select Name, Value from MRP_Settings")
+	f.Data.Dictionary.SetDefaultReturn("Settings","")
+	
+	f.Intrinsic.Control.For(v.Local.i,0,v.Global.sSettingsList.UBound,1)
+		Function.Intrinsic.String.Split(v.Global.sSettingsList(v.Local.i),"|",v.Local.sPair)
+		v.Local.sName.Set(v.Local.sPair(0))
+		
+		Function.Intrinsic.Control.If(v.Dictionary.Settings![v.Local.sName],=,"")
+			f.Data.Dictionary.AddItem("Settings",v.Local.sName,v.Local.sPair(1))
+			v.Local.bNeedsUpdate.Set(True)
+		Function.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.Next(v.Local.i)
+	
+	Function.Intrinsic.Variable.AddRV("bRet",True)
+Function.Intrinsic.Control.Else
+	Function.Intrinsic.Variable.AddRV("bRet",False)
+Function.Intrinsic.Control.EndIf
+
+f.ODBC.Connection!Conx.Close
+
+Program.Sub.CheckTable.End
+
+' ======================================================================
+' Save Settings
+Program.Sub.SaveToDB.Start
+v.Local.i.Declare(Long)
+v.Local.sPair.Declare(String)
+v.Local.sKey.Declare(String)
+
+f.ODBC.Connection!Conx.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+
+f.Data.DataTable.CreateFromSQL("SettingsTable","Conx","Select Name, Value from MRP_Settings",False)
+
+f.Intrinsic.Control.For(v.Local.i,0,v.DataTable.SettingsTable.RowCount--,1)
+	f.Data.DataTable.SetValue("SettingsTable",v.Local.i,"Value",v.Dictionary.Settings![v.DataTable.SettingsTable(v.Local.i).Name!FieldValTrim])
+ 	f.Data.Dictionary.UpdateItem("Settings",v.DataTable.SettingsTable(v.Local.i).Name!FieldValTrim,"-1")
+f.Intrinsic.Control.Next(v.Local.i)
+
+f.Intrinsic.Control.For(v.Local.i,0,v.Global.sSettingsList.UBound,1)
+	Function.Intrinsic.String.Split(v.Global.sSettingsList(v.Local.i),"|",v.Local.sPair)
+	v.Local.sKey.Set(v.Local.sPair(0))
+	
+	Function.Intrinsic.Control.If(v.Dictionary.Settings![v.Local.sKey],<>,"-1")
+		f.Data.DataTable.AddRow("SettingsTable","Name",v.Local.sKey,"Value",v.Dictionary.Settings![v.Local.sKey])
+	Function.Intrinsic.Control.EndIf
+
+f.Intrinsic.Control.Next(v.Local.i)
+
+f.Intrinsic.Control.For(v.Local.i,0,v.DataTable.SettingsTable.RowCount--,1)
+ 	f.Data.Dictionary.UpdateItem("Settings",v.DataTable.SettingsTable(v.Local.i).Name!FieldValTrim,v.DataTable.SettingsTable(v.Local.i).Value!FieldVal)
+f.Intrinsic.Control.Next(v.Local.i)
+
+f.Data.DataTable.SaveToDB("SettingsTable","Conx","MRP_Settings","Name")
+
+f.ODBC.Connection!Conx.Close
+	
+Program.Sub.SaveToDB.End
+
+' ======================================================================
+' UI Handlers
+Program.Sub.txtPd_LostFocus.Start
+v.Local.bRet.Declare(Boolean)
+v.Local.sVal.Declare(String)
+v.Local.sDictName.Declare(String)
+
+Function.Intrinsic.Math.IsNumeric(v.Screen.Form![v.Args.ControlName].Text,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	v.Local.sVal.Set(v.Screen.Form![v.Args.ControlName].Text)
+	Function.Intrinsic.String.Right(v.Args.ControlName,1,v.Local.sDictName)
+	Function.Intrinsic.String.Concat("DefaultWidthPd",v.Local.sDictName,v.Local.sDictName)
+	Function.Intrinsic.Control.If(v.Local.sVal,<>,v.Dictionary.Settings![v.Local.sDictName])
+		gui.Form.cmdSave.Enabled(True)
+		f.Data.Dictionary.UpdateItem("Settings",v.Local.sDictName,v.Local.sVal)
+		Function.Intrinsic.Control.CallSub(setpd3)
+	Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.txtPd_LostFocus.End
+
+Program.Sub.chkDay_Click.Start
+v.Local.iFilter.Declare(Long,0)
+v.Local.iFromDict.Declare(Long)
+
+Function.Intrinsic.Control.If(v.Screen.Form!chk1.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,1,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.If(v.Screen.Form!chk2.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,2,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.If(v.Screen.Form!chk3.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,4,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.If(v.Screen.Form!chk4.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,8,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.If(v.Screen.Form!chk5.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,16,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.If(v.Screen.Form!chk6.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,32,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.If(v.Screen.Form!chk7.Checked)
+	f.Intrinsic.Math.Add(v.Local.iFilter,64,v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+
+v.Local.iFromDict.Set(v.Dictionary.Settings!DayFilter)
+
+Function.Intrinsic.Control.If(v.Local.iFilter,<>,v.Local.iFromDict)
+	gui.Form.cmdSave.Enabled(True)
+	f.Data.Dictionary.UpdateItem("Settings","DayFilter",v.Local.iFilter)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.chkDay_Click.End
+
+Program.Sub.chkPast_Click.Start
+v.Local.bVal.Declare(Boolean)
+v.Local.bVal.Set(v.Dictionary.Settings!PastColumn)
+
+Function.Intrinsic.Control.If(v.Local.bVal.Long,<>,v.Screen.Form!chkPast.Value)
+	gui.Form.cmdSave.Enabled(True)
+	
+	Function.Intrinsic.Control.If(v.Screen.Form!chkPast.Value,=,1)
+		f.Data.Dictionary.UpdateItem("Settings","PastColumn","True")
+	Function.Intrinsic.Control.Else
+		f.Data.Dictionary.UpdateItem("Settings","PastColumn","False")
+	Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.chkPast_Click.End
+
+Program.Sub.chkLater_Click.Start
+v.Local.bVal.Declare(Boolean)
+v.Local.bVal.Set(v.Dictionary.Settings!LaterColumn)
+
+Function.Intrinsic.Control.If(v.Local.bVal.Long,<>,v.Screen.Form!chkLater.Value)
+	gui.Form.cmdSave.Enabled(True)
+	
+	Function.Intrinsic.Control.If(v.Screen.Form!chkLater.Value,=,1)
+		f.Data.Dictionary.UpdateItem("Settings","LaterColumn","True")
+	Function.Intrinsic.Control.Else
+		f.Data.Dictionary.UpdateItem("Settings","LaterColumn","False")
+	Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf
+Program.Sub.chkLater_Click.End
+
+Program.Sub.txtViewer_LostFocus.Start
+v.Local.sI.Declare(String)
+v.Local.sDictTypeKey.Declare(String)
+v.Local.sVal.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+Function.Intrinsic.String.Right(v.Args.ControlName,1,v.Local.sI)
+Function.Intrinsic.String.Concat("DefaultViewerWt",v.Local.sI,v.Local.sDictTypeKey)
+
+v.Local.sVal.Set(v.Screen.Form![v.Args.ControlName].Text)
+Function.Intrinsic.Math.IsNumeric(v.Local.sVal,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	Function.Intrinsic.Control.If(v.Local.sVal,<>,v.Dictionary.Settings![v.Local.sDictTypeKey])
+		gui.Form.cmdSave.Enabled(True)
+		f.Data.Dictionary.UpdateItem("Settings",v.Local.sDictTypeKey,v.Local.sVal)
+	Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.txtViewer_LostFocus.End
+
+Program.Sub.txtConsume_LostFocus.Start
+v.Local.sVal.Declare
+
+v.Local.sVal.Set(v.Screen.Form![v.Args.ControlName].Text)
+f.Intrinsic.Control.If(v.Local.sVal,<>,v.Dictionary.Settings!ConsumptionDays)
+	gui.Form.cmdSave.Enabled(True)
+	f.Data.Dictionary.UpdateItem("Settings","ConsumptionDays",v.Local.sVal)
+f.Intrinsic.Control.EndIf
+
+Program.Sub.txtConsume_LostFocus.End
+
+Program.Sub.CboViewer_Change.Start
+v.Local.sI.Declare(String)
+v.Local.sDictTypeKey.Declare(String)
+v.Local.cVal.Declare(String)
+
+Function.Intrinsic.String.Right(v.Args.ControlName,1,v.Local.sI)
+Function.Intrinsic.String.Concat("DefaultViewerType",v.Local.sI,v.Local.sDictTypeKey)
+
+Function.Intrinsic.Control.SelectCase(v.Screen.Form![v.Args.ControlName].Text)
+Function.Intrinsic.Control.Case("Days")
+	v.Local.cVal.Set("D")
+Function.Intrinsic.Control.Case("Weeks")
+	v.Local.cVal.Set("W")
+Function.Intrinsic.Control.Case("Months")
+	v.Local.cVal.Set("M")
+Function.Intrinsic.Control.Case("Years")
+	v.Local.cVal.Set("Y")
+Function.Intrinsic.Control.EndSelect
+
+Function.Intrinsic.Control.If(v.Local.cVal,<>,v.Dictionary.Settings![v.Local.sDictTypeKey])
+	gui.Form.cmdSave.Enabled(True)
+	f.Data.Dictionary.UpdateItem("Settings",v.Local.sDictTypeKey,v.Local.cVal)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.CboViewer_Change.End
+
+Program.Sub.cboFirstDay_Click.Start
+v.Local.bDirty.Declare(Boolean)
+	
+Function.Intrinsic.Control.SelectCase(v.Screen.Form!cboFirstDay.Text)
+Function.Intrinsic.Control.Case("Sunday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,1)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",1)
+Function.Intrinsic.Control.Case("Monday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,2)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",2)
+Function.Intrinsic.Control.Case("Tuesday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,3)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",3)
+Function.Intrinsic.Control.Case("Wednesday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,4)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",4)
+Function.Intrinsic.Control.Case("Thursday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,5)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",5)
+Function.Intrinsic.Control.Case("Friday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,6)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",6)
+Function.Intrinsic.Control.Case("Saturday")
+	Function.Intrinsic.Control.If(v.Dictionary.Settings!FirstDay,<>,7)
+		v.Local.bDirty.Set(True)
+	Function.Intrinsic.Control.EndIf
+	f.Data.Dictionary.UpdateItem("Settings","FirstDay",7)
+Function.Intrinsic.Control.EndSelect
+	
+Function.Intrinsic.Control.If(v.Local.bDirty)
+	gui.Form.cmdSave.Enabled(True)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.cboFirstDay_Click.End
+
+Program.Sub.cmdSave_Click.Start
+gui.Form..Enabled(False)
+gui.Form.cmdSave.Enabled(False)
+Function.Intrinsic.Control.CallSub(savetodb)
+gui.Form..Enabled(True)
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.txtBox_GotFocus.Start
+gui.Form.[v.Args.ControlName].SelectAll
+
+Program.Sub.txtBox_GotFocus.End
+
+Program.Sub.Form_UnLoad.Start
+v.Local.iRet.Declare(Long)
+
+Function.Intrinsic.Control.If(v.Screen.Form!cmdSave.Enabled)
+	Function.Intrinsic.UI.Msgbox("Would you like to save changes before exiting?","Save Changes",v.Global.MsgBoxFlag_YesNoCancel,v.Local.iRet)
+	
+	Function.Intrinsic.Control.SelectCase(v.Local.iRet)
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Yes)
+			Function.Intrinsic.Control.CallSub(savetodb)
+			f.Intrinsic.Control.End
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_No)
+			f.Intrinsic.Control.End
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Cancel)
+			
+	Function.Intrinsic.Control.EndSelect
+Function.Intrinsic.Control.Else
+	Function.Intrinsic.Control.End
+
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Form_UnLoad.End
+
+' ======================================================================
+' UI Helper Methods
+Program.Sub.SetUI.Start
+v.Local.bVal.Declare(Boolean)
+v.Local.iFilter.Declare(Long)
+v.Local.iMask.Declare(Long)
+v.Local.i.Declare(Long)
+v.Local.sTemp.Declare(String,"0|1|2|4|8|16|32|64")
+Function.Intrinsic.String.Split(v.Local.sTemp,"|",v.Local.iMask)
+
+gui.Form.txtPd1.Text(v.Dictionary.Settings!DefaultWidthPd1)
+gui.Form.txtPd2.Text(v.Dictionary.Settings!DefaultWidthPd2)
+Function.Intrinsic.Control.CallSub(setpd3)
+
+v.Local.iFilter.Set(v.Dictionary.Settings!DayFilter)
+
+f.Intrinsic.Control.For(v.Local.i,v.Local.iMask.UBound,1,-1)
+	Function.Intrinsic.String.Concat("chk",v.Local.i,v.Local.sTemp)
+	
+	Function.Intrinsic.Control.If(v.Local.iFilter,>=,v.Local.iMask(v.Local.i))
+		gui.Form.[v.Local.sTemp].Value(True)
+		f.Intrinsic.Math.Sub(v.Local.iFilter,v.Local.iMask(v.Local.i),v.Local.iFilter)
+	Function.Intrinsic.Control.Else
+		gui.Form.[v.Local.sTemp].Value(False)
+	Function.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Next(v.Local.i)
+
+Function.Intrinsic.Control.CallSub(setviewerwithui)
+
+gui.Form.chkPast.Value(v.Dictionary.Settings!PastColumn)
+gui.Form.chkLater.Value(v.Dictionary.Settings!LaterColumn)
+gui.Form.txtConsume.Text(v.Dictionary.Settings!ConsumptionDays)
+
+Function.Intrinsic.Control.SelectCase(v.Dictionary.Settings!FirstDay)
+Function.Intrinsic.Control.Case(1)
+	gui.Form.cboFirstDay.Text("Sunday")
+Function.Intrinsic.Control.Case(2)
+	gui.Form.cboFirstDay.Text("Monday")
+Function.Intrinsic.Control.Case(3)
+	gui.Form.cboFirstDay.Text("Tuesday")
+Function.Intrinsic.Control.Case(4)
+	gui.Form.cboFirstDay.Text("Wednesday")
+Function.Intrinsic.Control.Case(5)
+	gui.Form.cboFirstDay.Text("Thursday")
+Function.Intrinsic.Control.Case(6)
+	gui.Form.cboFirstDay.Text("Friday")
+Function.Intrinsic.Control.Case(7)
+	gui.Form.cboFirstDay.Text("Saturday")
+Function.Intrinsic.Control.EndSelect
+
+Program.Sub.SetUI.End
+
+Program.Sub.SetPd3.Start
+v.Local.iPd3.Declare(Long)
+v.Local.bPd1.Declare(Boolean)
+v.Local.bPd2.Declare(Boolean)
+v.Local.sPd3.Declare(String)
+
+Function.Intrinsic.Math.IsNumeric(v.Dictionary.Settings!DefaultWidthPd1,v.Local.bPd1)
+Function.Intrinsic.Math.IsNumeric(v.Dictionary.Settings!DefaultWidthPd2,v.Local.bPd2)
+Function.Intrinsic.Control.If(v.Local.bPd1,=,True,AND,v.Local.bPd2,=,True)
+	f.Intrinsic.Math.Add(v.Dictionary.Settings!DefaultWidthPd1,v.Dictionary.Settings!DefaultWidthPd2,1,v.Local.iPd3)
+	Function.Intrinsic.String.Concat(v.Local.iPd3,"+ days",v.Local.sPd3)
+	gui.Form.lblPd3.Text(V.Local.sPd3)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.SetPd3.End
+
+Program.Sub.SetViewerWithUI.Start
+	v.Local.i.Declare(Long)
+	v.Local.sTxtBoxName.Declare(String)
+	v.Local.sCboBoxName.Declare(String)
+	v.Local.sDictWtKey.Declare(String)
+	v.Local.sDictTypeKey.Declare(String)
+	
+	f.Intrinsic.Control.For(v.Local.i,1,3,1)
+		Function.Intrinsic.String.Concat("txtViewer",v.Local.i,v.Local.sTxtBoxName)
+		Function.Intrinsic.String.Concat("cboViewer",v.Local.i,v.Local.sCboBoxName)
+		Function.Intrinsic.String.Concat("DefaultViewerWt",v.Local.i,v.Local.sDictWtKey)
+		Function.Intrinsic.String.Concat("DefaultViewerType",v.Local.i,v.Local.sDictTypeKey)
+		
+		gui.Form.[v.Local.sTxtBoxName].Text(v.Dictionary.Settings![v.Local.sDictWtKey])
+		Function.Intrinsic.Control.SelectCase(v.Dictionary.Settings![v.Local.sDictTypeKey])
+		Function.Intrinsic.Control.Case("D")
+			gui.Form.[v.Local.sCboBoxName].Text("Days")
+		Function.Intrinsic.Control.Case("W")
+			gui.Form.[v.Local.sCboBoxName].Text("Weeks")
+		Function.Intrinsic.Control.Case("M")
+			gui.Form.[v.Local.sCboBoxName].Text("Months")
+		Function.Intrinsic.Control.Case("Y")
+			gui.Form.[v.Local.sCboBoxName].Text("Years")
+		Function.Intrinsic.Control.EndSelect
+	
+	f.Intrinsic.Control.Next(v.Local.i)
+	
+Program.Sub.SetViewerWithUI.End
+
+Program.Sub.Comments.Start
+${$0$}$GCG_4176_MRP_Settings.g2u$}$JWD$}$6/6/2016 11:26:44 AM$}$False
+Program.Sub.Comments.End
