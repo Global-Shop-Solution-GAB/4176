@@ -1,0 +1,286 @@
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+f.Intrinsic.Control.CallSub(extract_files)
+
+f.Intrinsic.Control.CallSub(check_for_tables)
+
+f.Intrinsic.Control.CallSub(build_defaults,"DIR",V.Args.FOLDER)
+
+F.Intrinsic.Control.CallSub(remove_runonce_task)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.Catching.Start
+v.Local.sError.declare(string)
+F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}","gcg_4176_runonce.g2u",V.Ambient.NewLine,v.Args.sub,V.Args.errorno,V.args.errordesc,V.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+F.Intrinsic.Control.End
+Program.Sub.Catching.End
+
+Program.Sub.extract_files.Start
+f.Intrinsic.Control.Try
+v.Local.sError.Declare
+v.Local.sFile.Declare
+v.Local.sDest.Declare
+V.Local.sDir.Declare
+V.Local.bExists.Declare
+v.Local.bDest.Declare
+v.Local.sSubDir.Declare
+v.Local.bDir.Declare
+v.Local.iRet.Declare
+
+'see if the custom folder is there
+f.Intrinsic.String.Build("{0}\CUSTOM\4176\{1}",V.Caller.GlobalDir,v.Caller.CompanyCode,V.Local.sDir)
+F.Intrinsic.File.DirExists(v.Local.sDir,v.Local.bDir)
+f.Intrinsic.Control.If(v.Local.bDir,=,False)
+	f.Intrinsic.File.CreateDir(v.Local.sDir)
+f.Intrinsic.Control.EndIf
+
+'see if the zip file is there
+f.Intrinsic.Control.If(v.Caller.GasDir.right1,=,"\")
+	f.Intrinsic.String.Build("{0}4176.zip",v.Caller.GasDir,v.Local.sFile)
+f.Intrinsic.Control.Else
+	f.Intrinsic.String.Build("{0}\4176.zip",v.Caller.GasDir,v.Local.sFile)
+f.Intrinsic.Control.EndIf
+
+f.Intrinsic.File.Exists(v.Local.sFile,v.Local.bExists)
+f.Intrinsic.Control.If(v.Local.bExists)
+	f.Intrinsic.Control.CallSub(set_zip_properties,"FILE",V.Local.sFile,"PATH",v.Local.sDir)
+	'f.Automation.Zip.UnZip(v.Local.sFile,v.Local.sDest)
+	f.Intrinsic.String.Build("{0}\custom\4176\4176.zip",v.Caller.GlobalDir,v.Local.sDest)
+	f.Intrinsic.File.Exists(v.Local.sDest,v.Local.bDest)
+	f.Intrinsic.Control.If(v.Local.bDest)
+		f.Intrinsic.File.DeleteFile(v.Local.sDest)
+	f.Intrinsic.Control.EndIf
+	f.Intrinsic.File.MoveFile(v.Local.sFile,v.Local.sDest,v.Local.iRet)
+f.Intrinsic.Control.Else
+	f.Intrinsic.String.Build("{0}\custom\4176\4176.zip",v.Caller.GlobalDir,v.Local.sFile)
+	f.Intrinsic.File.Exists(v.Local.sFile,v.Local.bExists)
+	f.Intrinsic.Control.CallSub(set_zip_properties,"FILE",V.Local.sFile,"PATH",V.Local.sDir)
+'	f.Intrinsic.Control.If(v.Local.bExists,=,True)
+'		f.Automation.Zip.UnZip(v.Local.sFile,v.Local.sDest)
+'	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.extract_files.End
+
+Program.Sub.check_for_tables.Start
+f.Intrinsic.Control.Try
+v.Local.sError.Declare
+V.Local.bExists.Declare
+v.Local.sFile.Declare
+v.Local.sSql.Declare
+v.Local.sDir.Declare
+v.Local.sFileList.Declare
+v.Local.iCount.Declare
+v.Local.sTable.Declare
+v.Local.bLoop.Declare
+
+F.ODBC.Connection!COREDB.OPENCOMPANYCONNECTION(300)
+'get the custom directory
+f.Intrinsic.String.Build("{0}\CUSTOM\4176\{1}\TABLES\",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Local.sdir)
+'get all the files
+f.Intrinsic.File.GetFileList(v.Local.sDir,v.Local.sFileList)
+'split to an array
+f.Intrinsic.String.Split(v.Local.sFileList,":",v.Local.sFileList)
+'loop through the array
+f.Intrinsic.Control.For(v.Local.iCount,0,v.Local.sFileList.UBound,1)
+	'if it's an sql file
+	f.Intrinsic.Control.If(v.Local.sFileList(v.Local.iCount).Right3,=,"sql")
+		f.Intrinsic.String.Split(v.Local.sFileList(v.Local.iCount),".",v.Local.sFile)
+		v.Local.sTable.Set(v.Local.sFile(0))
+		'skip over alter statements until everything else is done.
+		f.Intrinsic.Control.If(v.Local.sTable.left5,<>,"alter")
+			'now we have a table name based on the file name .... see if it's there
+			f.ODBC.Connection!coredb.tableexists(v.Local.sTable,v.Local.bExists)
+			f.Intrinsic.Control.If(v.Local.bExists,=,False)
+				'if not there, load the file and run the sql statement within it
+				f.Intrinsic.String.Build("{0}{1}",v.Local.sDir,v.Local.sFileList(v.Local.iCount),v.Local.sFile)
+				f.Intrinsic.File.File2String(v.Local.sFile,v.Local.sSql)
+				f.ODBC.Connection!coredb.execute(v.Local.sSql)
+			f.Intrinsic.Control.EndIf
+			'now that the script has been run, let's check again for the table - this is just a sleep setting to make sure that we wait here until Pervasive finishes creating the table
+			f.ODBC.Connection!coredb.tableexists(v.Local.sTable,v.Local.bExists)
+			f.Intrinsic.Control.If(v.Local.bExists,=,False)
+				f.Intrinsic.Control.DoUntil(v.Local.bExists,=,True)
+					f.Intrinsic.Control.Sleep(5)
+					f.ODBC.Connection!coredb.tableexists(v.Local.sTable,v.Local.bExists)
+				f.Intrinsic.Control.Loop
+			f.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Else
+			'set this loop to true so we go back through the list and take care of any alter statements
+			V.Local.bLoop.Set(True)
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Next(v.Local.iCount)
+
+f.Intrinsic.Control.If(v.Local.bLoop)
+	f.Intrinsic.Control.For(v.Local.iCount,0,v.Local.sFileList.UBound,1)
+		f.Intrinsic.String.Split(v.Local.sFileList(v.Local.iCount),".",v.Local.sFile)
+		v.Local.sTable.Set(v.Local.sFile(0))
+		'only look at alter statements until everything else is done.
+		f.Intrinsic.Control.If(v.Local.sTable.left5,=,"alter")
+				f.Intrinsic.String.Build("{0}{1}",v.Local.sDir,v.Local.sFileList(v.Local.iCount),v.Local.sFile)
+				f.Intrinsic.File.File2String(v.Local.sFile,v.Local.sSql)
+			f.ODBC.Connection!coredb.execute(v.Local.sSql)
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.Next(v.Local.iCount)
+f.Intrinsic.Control.EndIf
+
+f.ODBC.Connection!coredb.Close
+
+f.Intrinsic.Variable.AddRV("FOLDER",V.Local.sDir)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.check_for_tables.End
+
+Program.Sub.build_defaults.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.sFile.Declare
+V.Local.sData.Declare
+v.Local.sSql.Declare
+v.Local.sRet.Declare
+V.Local.iCount.Declare
+
+
+v.Local.sSql.Set("select Name, Value from mrp_settings")
+
+f.ODBC.Connection!coredb.opencompanyconnection
+
+f.Data.DataTable.CreateFromSQL("SETTINGS","coredb",v.Local.sSql,True)
+
+f.Intrinsic.String.Build("{0}\default_settings.txt",v.Args.DIR,V.Local.sFile)
+
+F.Intrinsic.File.File2String(v.Local.sFile,v.Local.sData)
+
+f.Data.DataTable.CreateFromString("DEFAULT",v.Local.sData,"Name*!*Value","string*!*string","*!*",v.Ambient.NewLine,True)
+
+'this method was designed to Add only NEW program options or settings to the program.
+'the design is so we don't overwrite the customers existing settings with "default" settings.
+'it was also designed so that the default_settings.txt file has the setting for MRPVersion at the bottom.
+F.Intrinsic.Control.If(V.DataTable.SETTINGS.RowCount,<>,V.DataTable.DEFAULT.RowCount)
+	f.Intrinsic.Control.For(v.Local.iCount,v.DataTable.SETTINGS.RowCount,v.DataTable.DEFAULT.RowCount--,1)
+		f.Intrinsic.String.Split(v.DataTable.DEFAULT(v.Local.iCount).fullrow,"*!*",v.Local.sData)
+
+		F.Intrinsic.Control.SelectCase(V.Local.sData(0))
+			F.Intrinsic.Control.Case("ProgramDir")
+				f.Intrinsic.String.Build("{0}\Custom\4176\{1}",v.Caller.GlobalDir,v.Caller.CompanyCode,v.Local.sFile)
+				f.Data.DataTable.AddRow("SETTINGS","Name",V.Local.sData(0),"Value",v.Local.sFile)
+			F.Intrinsic.Control.Case("MRPVersion")
+				f.Intrinsic.Control.CallSub(version_setting)
+			F.Intrinsic.Control.CaseElse
+				f.Data.DataTable.AddRow("SETTINGS","Name",V.Local.sData(0),"Value",v.Local.sData(1))
+			F.Intrinsic.Control.EndSelect
+		
+	f.Intrinsic.Control.Next(v.Local.iCount)
+
+	
+f.Intrinsic.Control.Else
+	f.Intrinsic.Control.CallSub(version_setting)
+f.Intrinsic.Control.EndIf
+
+'Save back to the database any new settings and updated version
+f.Data.DataTable.SaveToDB("SETTINGS","COREDB","MRP_SETTINGS","Name",256,"Name@!@Name*!*Value@!@Value")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.build_defaults.End
+
+Program.Sub.version_setting.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.iRow.Declare(Long,0)
+v.Local.sCurrentVersion.Declare
+v.Local.sNewVersion.Declare
+
+f.Data.DataView.Create("SETTINGS","dvSETTINGS",22,"Name = 'MRPVersion'","")
+f.Data.DataView.Create("DEFAULT","dvDEFAULT",22,"Name = 'MRPVersion'","")
+'the default setting will be there because it's coming from a file loaded from ARC
+v.Local.sNewVersion.Set(v.DataView.DEFAULT!dvDEFAULT(v.Local.iRow).VALUE!FIELDVALTRIM)
+
+f.Intrinsic.Control.If(v.DataView.SETTINGS!dvSETTINGS.RowCount,=,1)
+	v.Local.sCurrentVersion.Set(v.DataView.SETTINGS!dvSETTINGS(v.Local.iRow).VALUE!FIELDVALTRIM)
+	F.Intrinsic.Control.If(V.Local.sCurrentVersion,<>,V.Local.sNewVersion)
+		F.Data.DataView.SetValue("SETTINGS","dvSETTINGS",V.Local.iRow,"VALUE",V.Local.sNewVersion)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Else
+	F.Data.DataTable.AddRow("SETTINGS","NAME",v.DataView.DEFAULT!dvDEFAULT(v.Local.iRow).NAME!FIELDVALTRIM,"VALUE",v.DataView.DEFAULT!dvDEFAULT(v.Local.iRow).VALUE!FIELDVALTRIM)
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.version_setting.End
+
+Program.Sub.remove_runonce_task.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sSql.Declare
+v.Local.sRet.Declare
+V.Local.sPaddedHook.Declare
+
+
+f.Intrinsic.String.Build("select LTRIM(JOBSTREAM) from V_TASK_SCHEDULER where jobstream = '{0}'",v.Caller.Hook,v.Local.sSql)
+f.odbc.connection!coredb.executeandreturn(v.local.ssql,v.local.sRet)
+f.Intrinsic.Control.If(v.Local.sRet.Long,=,v.Caller.Hook.Long)
+	f.Intrinsic.String.LPad(v.Caller.Hook,"0",9,v.Local.sPaddedHook)
+	f.Intrinsic.String.Build("delete from task_scheduler where jobstream = '{0}'",v.Caller.Hook,v.Local.sSql)
+	f.odbc.connection!coredb.execute(v.local.ssql)
+	F.Intrinsic.String.Build("delete from hook_association where ID = '{0}'",v.Local.sPaddedHook,v.Local.sSql)
+	f.odbc.connection!coredb.execute(v.local.ssql)
+	f.Intrinsic.String.Build("DELETE FROM HOOK_HEADER where HOOK = '{0}'",v.Local.sPaddedHook,v.Local.sSql)
+	f.odbc.connection!coredb.execute(v.local.ssql)
+	f.Intrinsic.String.Build("DELETE FROM HOOK_USER WHERE ID = '{0}'",v.Local.sPaddedHook,v.Local.sSql)
+	f.odbc.connection!coredb.execute(v.local.ssql)
+f.Intrinsic.Control.EndIf
+
+f.odbc.connection!coredb.close
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.remove_runone_task.End
+
+Program.Sub.set_zip_properties.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+F.Automation.ZIPPro.SetProperty("ArchiveFile",0,v.Args.FILE)
+f.Automation.ZIPPro.SetProperty("OverwriteFiles",0,True)
+f.Automation.ZIPPro.SetProperty("RecursiveDirectories",0,True)
+f.Automation.ZIPPro.SetProperty("ExtractToPath",0,v.Args.PATH)
+f.Automation.ZIPPro.ExtractAll
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.set_zip_properties.End
