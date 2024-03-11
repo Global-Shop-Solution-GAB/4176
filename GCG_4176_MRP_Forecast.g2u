@@ -1,0 +1,1068 @@
+Program.Sub.ScreenSU.Start
+Gui.Form..Create
+Gui.Form..Size(10665,10695)
+Gui.Form..MinX(10230)
+Gui.Form..MinY(10695)
+Gui.Form..Position(0,0)
+Gui.Form..BackColor(-2147483633)
+Gui.Form..MousePointer(0)
+Gui.Form..Caption("Forecast Maintenance")
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form..BackColor(16777215)
+Gui.Form..MaxButton(False)
+Gui.Form..Sizeable(False)
+Gui.Form.dgPartList.Create(GsGridControl)
+Gui.Form.dgPartList.Size(4245,8715)
+Gui.Form.dgPartList.Position(30,735)
+Gui.Form.dgPartList.Event(RowClick,dgPartList_RowClick)
+Gui.Form.pnlHeader.Create(Frame)
+Gui.Form.pnlHeader.Size(10500,750)
+Gui.Form.pnlHeader.Position(0,0)
+Gui.Form.pnlHeader.BackColor(6273113)
+Gui.Form.pnlHeader.BorderStyle(0)
+Gui.Form.lblSubTitle.Create(Label,"View and edit forecast data for each part.",True,4995,300,0,1395,450,True,0,"Segoe UI",9,6273113,0)
+Gui.Form.lblSubTitle.ForeColor(16777215)
+Gui.Form.lblSubTitle.Parent("pnlHeader")
+Gui.Form.lblTitle.Create(Label,"MRP Forecast Maintenance",True,4935,300,0,1335,150,True,0,"Segoe UI Semibold",14,6273113,0)
+Gui.Form.lblTitle.ForeColor(16777215)
+Gui.Form.lblTitle.Parent("pnlHeader")
+Gui.Form.pic1.Create(PictureBox)
+Gui.Form.pic1.Size(930,645)
+Gui.Form.pic1.Position(120,15)
+Gui.Form.pic1.BackColor(6273113)
+Gui.Form.pic1.Parent("pnlHeader")
+Gui.Form.pictImport.Create(PictureBox)
+Gui.Form.pictImport.Size(300,285)
+Gui.Form.pictImport.Position(9720,180)
+Gui.Form.pictImport.BackColor(6273113)
+Gui.Form.pictImport.ToolTip("Import a forecast from file")
+Gui.Form.pictImport.Event(Click,pictImport_Click)
+Gui.Form.pictImport.Parent("pnlHeader")
+Gui.Form.pnlFooter.Create(Frame)
+Gui.Form.pnlFooter.Size(10545,735)
+Gui.Form.pnlFooter.Position(0,9465)
+Gui.Form.pnlFooter.BackColor(6273113)
+Gui.Form.pnlFooter.BorderStyle(0)
+Gui.Form.lblNextTitle.Create(Label,"Next Step",True,765,150,0,8160,150,True,1,"Segoe UI",7,6273113,1)
+Gui.Form.lblNextTitle.Parent("pnlFooter")
+Gui.Form.lblNextTitle.ForeColor(16777215)
+Gui.Form.lblNextSubTitle.Create(Label,"Generate MRP Data",True,1545,150,0,7455,345,True,1,"Segoe UI Semibold",8,6273113,1)
+Gui.Form.lblNextSubTitle.Parent("pnlFooter")
+Gui.Form.lblNextSubTitle.ForeColor(16777215)
+Gui.Form.pictNext.Create(PictureBox)
+Gui.Form.pictNext.Size(405,405)
+Gui.Form.pictNext.Position(9420,75)
+Gui.Form.pictNext.BackColor(6273113)
+Gui.Form.pictNext.Event(Click,pictNext_Click)
+Gui.Form.pictNext.Parent("pnlFooter")
+Gui.Form.lblPartLoc.Create(Label,"No Part Selected",True,5745,300,0,4455,870,True,0,"Segoe UI Semibold",14,-2147483633,0)
+Gui.Form.lblNewLine.Create(Label,"Add New Forecast Line",True,5820,300,0,4410,1260,True,0,"Segoe UI",11,-2147483633,0)
+Gui.Form.lblNewLine.ForeColor(0)
+Gui.Form.dgForecast.Create(GsGridControl)
+Gui.Form.dgForecast.Size(5745,5685)
+Gui.Form.dgForecast.Position(4455,2610)
+Gui.Form.dgForecast.Event(CellValueChanged,dgForecast_CellValueChanged)
+Gui.Form.dgForecast.Enabled(False)
+Gui.Form.lblExisting.Create(Label,"Existing Forecast",True,4440,300,0,4410,2295,True,0,"Segoe UI",11,-2147483633,0)
+Gui.Form.lblExisting.ForeColor(0)
+Gui.Form.txtQty.Create(TextBox,"",True,810,300,0,4425,1845,False,0,"Arial",8,-2147483643,1)
+Gui.Form.txtQty.Event(LostFocus,txtQty_LostFocus)
+Gui.Form.dtpDue.Create(DatePicker)
+Gui.Form.dtpDue.Size(1560,300)
+Gui.Form.dtpDue.Position(5700,1845)
+Gui.Form.dtpDue.Enabled(False)
+Gui.Form.txtCustomer.Create(TextBox,"",True,2310,300,0,7455,1845,False,0,"Arial",8,-2147483643,1)
+Gui.Form.txtCustomer.ForeColor(0)
+Gui.Form.txtCustomer.Event(LostFocus,txtCustomer_LostFocus)
+Gui.Form.lblQty.Create(Label,"Quantity",True,885,255,0,4410,1620,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblDueDate.Create(Label,"Due Date",True,885,255,0,5730,1620,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblDueDate.ForeColor(0)
+Gui.Form.lblCustomer.Create(Label,"Customer",True,885,255,0,7425,1620,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblCustomer.ForeColor(0)
+Gui.Form.cmdCustBrowser.Create(Button)
+Gui.Form.cmdCustBrowser.Size(405,330)
+Gui.Form.cmdCustBrowser.Position(9810,1830)
+Gui.Form.cmdCustBrowser.Caption("^")
+Gui.Form.cmdCustBrowser.Event(Click,cmdCustBrowser_Click)
+Gui.Form.cmdCustBrowser.Enabled(False)
+Gui.Form.cmdCustBrowser.BackColor(14803425)
+Gui.Form.lblUM.Create(Label,"EA",True,405,255,0,5280,1935,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblUM.ForeColor(0)
+Gui.Form.cmdAddLine.Create(Button)
+Gui.Form.cmdAddLine.Size(1185,330)
+Gui.Form.cmdAddLine.Position(9030,2175)
+Gui.Form.cmdAddLine.Caption("Add")
+Gui.Form.cmdAddLine.Event(Click,cmdAddLine_Click)
+Gui.Form.cmdAddLine.Enabled(False)
+Gui.Form.cmdAddLine.BackColor(14803425)
+Gui.Form.lblPdOverride.Create(Label,"Forecast Period Width Overrides (In Days)",True,5820,300,0,4440,8715,True,0,"Segoe UI",11,-2147483633,0)
+Gui.Form.lblPdOverride.ForeColor(0)
+Gui.Form.lblPd1.Create(Label,"Zone 1",True,720,255,0,4440,9090,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblPd1.ForeColor(0)
+Gui.Form.txtPd1.Create(TextBox,"",True,795,300,0,5175,9030,False,0,"Arial",8,14676446,1)
+Gui.Form.txtPd1.ForeColor(0)
+Gui.Form.txtPd1.Event(LostFocus,txtPd1_LostFocus)
+Gui.Form.lblPd2.Create(Label,"Zone 2",True,720,255,0,6240,9090,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblPd2.ForeColor(0)
+Gui.Form.txtPd2.Create(TextBox,"",True,795,300,0,6975,9030,False,0,"Arial",8,16116188,1)
+Gui.Form.txtPd2.ForeColor(0)
+Gui.Form.txtPd2.Event(LostFocus,txtPd2_LostFocus)
+Gui.Form.txtPd3.Create(TextBox,"",True,795,300,0,8850,9030,False,0,"Arial",8,16112873,1)
+Gui.Form.txtPd3.ForeColor(0)
+Gui.Form.lblPd3.Create(Label,"Zone 3",True,720,255,0,8085,9090,True,0,"Segoe UI",8,-2147483633,0)
+Gui.Form.lblPd3.ForeColor(0)
+Gui.Form.cmdSave.Create(Button)
+Gui.Form.cmdSave.Size(855,375)
+Gui.Form.cmdSave.Position(120,9585)
+Gui.Form.cmdSave.Caption("Save")
+Gui.Form.cmdSave.Event(Click,cmdSave_Click)
+Gui.Form.cmdSave.BackColor(14803425)
+Gui.Form.cmdRemoveRow.Create(Button)
+Gui.Form.cmdRemoveRow.Enabled(False)
+Gui.Form.cmdRemoveRow.Size(1185,330)
+Gui.Form.cmdRemoveRow.Position(9030,8370)
+Gui.Form.cmdRemoveRow.Caption("Remove Row")
+Gui.Form.cmdRemoveRow.Event(Click,cmdRemoveLine_Click)
+Gui.Form.cmdRemoveRow.BackColor(14803425)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.Global.sCustID.Declare(String)
+Variable.Global.sTableNameFore.Declare(String)
+Variable.Global.sTableNamePart.Declare(String)
+Variable.Global.sCurrentPart.Declare(String)
+Variable.Global.sCurrentLoc.Declare(String)
+Variable.Global.sForeTablesNeedUpdate.Declare(String)
+Variable.Global.sPartTablesNeedUpdate.Declare(String)
+Variable.Global.bPartsLoaded.Declare(Boolean,False)
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+Function.Intrinsic.Control.CallSub(getswitches)
+Function.Intrinsic.Control.CallSub(initializeglobals)
+Function.Intrinsic.Control.CallSub(loadsettings)
+Function.Intrinsic.Control.CallSub(formatcontrols)
+Function.Intrinsic.Control.CallSub(loadparts)
+Function.Intrinsic.Control.CallSub(initializepartsgrid)
+Function.Intrinsic.Control.CallSub(setdirty)
+gui.Form..Show
+Program.Sub.Main.End
+
+' ================================================================================
+' Initialization and Form Loading
+Program.Sub.InitializeGlobals.Start
+v.Global.TypeButton.Declare(String,"button")
+v.Global.TypeFrame.Declare(String,"frame")
+v.Global.TypeCheckbox.Declare(String,"checkbox")
+v.Global.TypeComboBox.Declare(String,"combobox")
+v.Global.TypePictureBox.Declare(String,"picturebox")
+v.Global.TypeLabel.Declare(String,"label")
+
+v.Global.AddCtrlArg_sType_Req.Declare(String,"sType")
+v.Global.AddCtrlArg_sName_Req.Declare(String,"sName")
+v.Global.AddCtrlArg_iLeft.Declare(String,"iLeft")
+v.Global.AddCtrlArg_iTop.Declare(String,"iTop")
+v.Global.AddCtrlArg_iWidth.Declare(String,"iWidth")
+v.Global.AddCtrlArg_iHeight.Declare(String,"iHeight")
+v.Global.AddCtrlArg_iLeftTwips.Declare(String,"iLeftTwips")
+v.Global.AddCtrlArg_iTopTwips.Declare(String,"iTopTwips")
+v.Global.AddCtrlArg_iWidthTwips.Declare(String,"iWidthTwips")
+v.Global.AddCtrlArg_iHeightTwips.Declare(String,"iHeightTwips")
+v.Global.AddCtrlArg_iAnchor.Declare(String,"iAnchor")
+v.Global.AddCtrlArg_iAlign.Declare(String,"iAlign")
+v.Global.AddCtrlArg_iFontSize.Declare(String,"iFontSize")
+v.Global.AddCtrlArg_iBorder.Declare(String,"iBorder")
+v.Global.AddCtrlArg_iBackColor.Declare(String,"iBackColor")
+v.Global.AddCtrlArg_iForeColor.Declare(String,"iForeColor")
+v.Global.AddCtrlArg_sCaption.Declare(String,"sCaption")
+v.Global.AddCtrlArg_sFontName.Declare(String,"sFontName")
+v.Global.AddCtrlArg_sPicture.Declare(String,"sPicture")
+v.Global.AddCtrlArg_bVisible.Declare(String,"bVisible")
+v.Global.AddCtrlArg_bEnabled.Declare(String,"bEnabled")
+
+v.Global.AnchorNone.Declare(Long,0)
+v.Global.AnchorTop.Declare(Long,1)
+v.Global.AnchorBottom.Declare(Long,2)
+v.Global.AnchorTopBottom.Declare(Long,3)
+v.Global.AnchorLeft.Declare(Long,4)
+v.Global.AnchorTopLeft.Declare(Long,5)
+v.Global.AnchorBottomLeft.Declare(Long,6)
+v.Global.AnchorTopBottomLeft.Declare(Long,7)
+v.Global.AnchorRight.Declare(Long,8)
+v.Global.AnchorTopRight.Declare(Long,9)
+v.Global.AnchorBottomRight.Declare(Long,10)
+v.Global.AnchorTopBottomRight.Declare(Long,11)
+v.Global.AnchorLeftRight.Declare(Long,12)
+v.Global.AnchorTopLeftRight.Declare(Long,13)
+v.Global.AnchorBottomLeftRight.Declare(Long,14)
+v.Global.AnchorTopBottomLeftRight.Declare(Long,15)
+
+v.Global.MsgBoxFlag_OKOnly.Declare(Long,0)
+v.Global.MsgBoxFlag_OKCancel.Declare(Long,1)
+v.Global.MsgBoxFlag_AbortRetryIgnore.Declare(Long,2)
+v.Global.MsgBoxFlag_YesNoCancel.Declare(Long,3)
+v.Global.MsgBoxFlag_YesNo.Declare(Long,4)
+v.Global.MsgBoxFlag_RetryCancel.Declare(Long,5)
+
+v.Global.MsgBoxRet_OK.Declare(Long,1)
+v.Global.MsgBoxRet_Cancel.Declare(Long,2)
+v.Global.MsgBoxRet_Abort.Declare(Long,3)
+v.Global.MsgBoxRet_Retry.Declare(Long,4)
+v.Global.MsgBoxRet_Ignore.Declare(Long,5)
+v.Global.MsgBoxRet_Yes.Declare(Long,6)
+v.Global.MsgBoxRet_No.Declare(Long,7)
+
+v.Global.AlignLeft.Declare(Long,0)
+v.Global.AlignRight.Declare(Long,1)
+v.Global.AlignCenter.Declare(Long,2)
+
+v.Global.GABVersionMajor.Declare(Long)
+Function.Intrinsic.String.Left(v.Ambient.GABVersion,1,v.Global.GABVersionMajor)
+
+v.Global.FormHeight.Declare(Long,0)
+v.Global.FormHeightTwips.Declare(Long,0)
+Function.Intrinsic.Control.If(v.Global.GABVersionMajor,>,1)
+	Function.Intrinsic.Math.Mult(31,v.Ambient.TwipsPerPixelY,v.Global.FormHeight)
+Function.Intrinsic.Control.Else
+	Function.Intrinsic.Math.Mult(39,v.Ambient.TwipsPerPixelY,v.Global.FormHeight)
+Function.Intrinsic.Control.EndIf
+f.Intrinsic.Math.Sub(v.Screen.Form.Height,v.Global.FormHeight,v.Global.FormHeightTwips)
+Function.Intrinsic.Math.Div(v.Global.FormHeightTwips,v.Ambient.TwipsPerPixelY,v.Global.FormHeight)
+
+v.Global.FormWidth.Declare(Long,0)
+v.Global.FormWidthTwips.Declare(Long,0)
+Function.Intrinsic.Math.Mult(16,v.Ambient.TwipsPerPixelX,v.Global.FormWidth)
+f.Intrinsic.Math.Sub(v.Screen.Form.Width,v.Global.FormWidth,v.Global.FormWidthTwips)
+Function.Intrinsic.Math.Div(v.Global.FormWidthTwips,v.Ambient.TwipsPerPixelX,v.Global.FormWidth)
+
+f.Data.Dictionary.Create("PartsLoaded")
+f.Data.Dictionary.SetDefaultReturn("PartsLoaded",False)
+
+f.Data.Dictionary.Create("PartUM")
+f.Data.Dictionary.SetDefaultReturn("PartUM","-")
+
+Program.Sub.InitializeGlobals.End
+
+Program.Sub.FormatControls.Start
+v.Local.iTop.Declare(Long)
+v.Local.iHeight.Declare(Long)
+v.Local.iLeft.Declare(Long)
+v.Local.sTemp.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+f.Intrinsic.Math.Sub(v.Global.FormHeightTwips,600,v.Local.iTop)
+f.Intrinsic.Math.Sub(v.Local.iTop,v.Screen.Form!dgPartList.Top,-15,v.Local.iHeight)
+
+' Header
+Gui.Form.pnlHeader.Anchor(v.Global.AnchorTopLeftRight)
+gui.Form.pictImport.Anchor(v.Global.AnchorTopRight)
+Gui.Form.lblTitle.Parent(pnlHeader)
+gui.Form.lblTitle.BackColor(6273113)
+gui.Form.lblTitle.ForeColor(16777215)
+Gui.Form.lblSubTitle.Parent(pnlHeader)
+gui.Form.lblSubTitle.BackColor(6273113)
+gui.Form.lblSubTitle.ForeColor(16777215)
+
+' Sidebar
+Gui.Form.dgPartList.Anchor(v.Global.AnchorTopBottomLeft)
+
+' Main area
+Gui.Form.dgForecast.Anchor(v.Global.AnchorTopBottomLeftRight)
+gui.Form.lblPdOverride.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.lblPd1.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.lblPd2.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.lblPd3.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.txtPd1.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.txtPd2.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.txtPd3.Anchor(v.Global.AnchorBottomLeft)
+gui.Form.cmdRemoveRow.anchor(v.Global.AnchorBottomRight)
+Gui.Form.dgPartList.Size(v.Screen.Form!dgPartList.Width,v.Local.iHeight)
+
+' Footer
+gui.Form.pnlFooter.BorderStyle(0)
+gui.Form.pnlFooter.Position(0,v.Local.iTop)
+Gui.Form.pnlFooter.Anchor(v.Global.AnchorBottomLeftRight)
+Gui.Form.cmdSave.Anchor(v.Global.AnchorBottomLeft)
+Gui.Form.cmdSave.Parent(pnlFooter)
+Gui.Form.cmdSave.Position(105,105)
+
+f.Intrinsic.Math.Sub(v.Global.FormWidthTwips,503,v.Local.iLeft)
+Gui.Form.pictNext.Anchor(v.Global.AnchorBottomRight)
+Gui.Form.pictNext.Parent(pnlFooter)
+Gui.Form.pictNext.Position(v.Local.iLeft,98)
+
+gui.Form.lblNextSubTitle.Anchor(v.Global.AnchorBottomRight)
+gui.Form.lblNextTitle.Anchor(v.Global.AnchorBottomRight)
+
+Function.Intrinsic.Control.If(v.Dictionary.Switches!n)
+	Gui.Form.pictNext.Visible(False)
+	Gui.Form.lblNextTitle.Visible(False)
+	Gui.Form.lblNextSubTitle.Visible(False)
+Function.Intrinsic.Control.EndIf
+
+f.Intrinsic.String.Build("{0}\ART\icon_next_white.png",v.dictionary.Settings!PROGRAMDIR,V.Local.sTemp)
+Function.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	gui.Form.pictNext.Picture(v.Local.sTemp)
+Function.Intrinsic.Control.EndIf
+
+f.Intrinsic.String.Build("{0}\ART\mrp_icon.png",v.dictionary.Settings!PROGRAMDIR,V.Local.sTemp)
+Function.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	gui.Form.pic1.Picture(v.Local.sTemp)
+Function.Intrinsic.Control.EndIf
+
+f.Intrinsic.String.Build("{0}\ART\icon_import_small.png",v.dictionary.Settings!PROGRAMDIR,V.Local.sTemp)
+Function.Intrinsic.File.Exists(v.Local.sTemp,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	gui.Form.pictImport.Picture(v.Local.sTemp)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.FormatControls.End
+
+Program.Sub.LoadParts.Start
+f.ODBC.Connection!Conx.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+f.Intrinsic.Control.If(v.Global.bPartsLoaded)
+	f.Data.DataTable.Close("PartsTable")
+f.Intrinsic.Control.EndIf
+'f.Data.DataTable.CreateFromSQL("PartsTable","Conx","select distinct INVENTORY_MSTR.PART, INVENTORY_MSTR.LOCATION, Cast(Case when MRP_Forecast.ForecastQty is null then 0 else 1 end as bit) as ForecastExists from INVENTORY_MSTR left join MRP_Forecast on INVENTORY_MSTR.PART=MRP_Forecast.PART and INVENTORY_MSTR.LOCATION=MRP_Forecast.LOCATION order by ForecastExists Desc, INVENTORY_MSTR.PART asc, INVENTORY_MSTR.Location asc;",True)
+
+
+f.Data.DataTable.CreateFromSQL("PartsTable","Conx","SELECT DISTINCT PART, LOCATION, PART + LOCATION AS PL, CAST(0 AS BIT) AS ForecastExists FROM INVENTORY_MSTR ORDER BY PART ASC, LOCATION ASC",True)
+'f.Data.Datatable.CreateFromSQL("dtForecastExists","Conx","SELECT DISTINCT PART, CAST(IF (LOCATION > '  ', LOCATION,'  ')AS CHAR(2)) AS LOCATION , CAST(1 AS BIT) AS ForecastExists FROM MRP_FORECAST")
+F.Data.Dictionary.CreateFromSQL("dcForecastExists","Conx","SELECT DISTINCT PART + LOCATION AS PLKey, CAST(1 AS BIT) AS ForecastExists FROM MRP_FORECAST")
+'f.Data.DataTable.AddExpressionColumn("dtForecastExists","PLKey","STRING","PART + LOCATION")
+'F.Data.Dictionary.CreateFromDatatable("dcForecastExists","dtForecastExists","PLKey","ForecastExists",16)
+f.Data.Dictionary.SetDefaultReturn("dcForecastExists","False")
+f.Data.DataTable.FillFromDictionary("PartsTable","dcForecastExists","PL","ForecastExists")
+f.Data.DataTable.RemoveColumn("PartsTable","PL")
+f.Data.Dictionary.Close("dcForecastExists")
+v.Global.bPartsLoaded.Set(True)
+f.ODBC.Connection!Conx.Close
+Program.Sub.LoadParts.End
+
+Program.Sub.InitializePartsGrid.Start
+F.Data.DataView.Create("PartsTable","vPartsTable")
+
+gui.Form.dgPartList.AddGridViewFromDataview("gvPartsTable","PartsTable","vPartsTable")
+gui.Form.dgPartList.SetGridViewProperty("gvPartsTable","optionsviewshowgrouppanel","False")
+gui.Form.dgPartList.SetGridViewProperty("gvPartsTable","readonly","True")
+gui.Form.dgPartList.SetGridViewProperty("gvPartsTable","Optionsdetailshowdetailtabs","False")
+
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","ReadOnly","True")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","HeaderFontBold","True")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","Width","220")
+'gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","HeaderBackColor",6273113)
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","AllowEdit","False")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","AllowFocus","False")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","PART","Caption","Part")
+
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","LOCATION","ReadOnly","True")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","LOCATION","HeaderFontBold","True")
+'gui.Form.dgPartList.SetColumnProperty("gvPartsTable","LOCATION","HeaderBackColor",6273113)
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","LOCATION","AllowEdit","False")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","LOCATION","AllowFocus","False")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","LOCATION","Caption","Loc.")
+
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","ReadOnly","True")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","HeaderFontBold","True")
+'gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","HeaderBackColor",6273113)
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","AllowEdit","False")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","AllowFocus","False")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","Caption","Has Forecast")
+gui.Form.dgPartList.SetColumnProperty("gvPartsTable","ForecastExists","MinWidth","40")
+
+gui.Form.dgPartList.SetGridviewProperty("gvPartsTable","OptionsViewShowAutoFilterRow",True)
+
+gui.Form.dgPartList.MainView("gvPartsTable")
+
+
+Program.Sub.InitializePartsGrid.End
+
+' ================================================================================
+' UI Handlers
+Program.Sub.Form_UnLoad.Start
+v.Local.iRet.Declare(Long)
+
+Function.Intrinsic.Control.If(v.Screen.Form!cmdSave.Enabled)
+	Function.Intrinsic.UI.Msgbox("Would you like to save changes before exiting?","Save Changes",v.Global.MsgBoxFlag_YesNoCancel,v.Local.iRet)
+	
+	Function.Intrinsic.Control.SelectCase(v.Local.iRet)
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Yes)
+			Function.Intrinsic.Control.CallSub(savechanges)
+			Function.Intrinsic.Control.CallSub(sendipmandend)
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_No)
+			Function.Intrinsic.Control.CallSub(sendipmandend)
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Cancel)
+			
+	Function.Intrinsic.Control.EndSelect
+Function.Intrinsic.Control.Else
+	Function.Intrinsic.Control.CallSub(sendipmandend)
+
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.pictImport_Click.Start
+v.Local.i.Declare(Long)
+v.Local.iRet.Declare(Long)
+v.Local.sRet.Declare(String)
+v.Local.sGas.Declare(String)
+v.Local.sTableNamePart.Declare(String)
+v.Local.sTableNameFore.Declare(String)
+
+Function.Intrinsic.Control.If(v.Screen.Form!cmdSave.Enabled)
+	Function.Intrinsic.UI.Msgbox("Would you like to save changes before reloading?","Save Changes",v.Global.MsgBoxFlag_YesNoCancel,v.Local.iRet)
+	
+	Function.Intrinsic.Control.SelectCase(v.Local.iRet)
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Yes)
+			Function.Intrinsic.Control.CallSub(savechanges)
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_No)
+			
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Cancel)
+			Function.Intrinsic.Control.ExitSub
+	Function.Intrinsic.Control.EndSelect
+
+Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.File.GetPathFromFQN(v.Caller.Scriptfile,v.Local.sGas)
+Function.Intrinsic.String.Concat(v.Local.sGas,"\GCG_4176_Forecast_Upload.g2u",v.Local.sGas)
+Function.Global.General.CallSyncGAS(v.Local.sGas)
+
+' Go through dictionary PartsLoaded, delete tables Part and Fore for all parts in dictionary. Then clear dictionary.
+'Function.Data.Dictionary.ReturnAllPairs("PartsLoaded",v.Local.sRet)
+'Function.Intrinsic.String.Split(v.Local.sRet,"!*!",v.Local.sRet)
+'Function.Intrinsic.Control.If(v.Local.sRet.UBound,>,0)
+'	Function.Intrinsic.String.Split(v.Local.sRet(0),"*!*",v.Local.sRet)
+'	
+'	f.Intrinsic.Control.For(v.Local.i,0,v.Local.sRet.UBound,1)
+'		Function.Intrinsic.String.Concat(v.Local.sRet(v.Local.i),"Part",v.Local.sTableNamePart)
+'		Function.Intrinsic.String.Concat(v.Local.sRet(v.Local.i),"Fore",v.Local.sTableNameFore)
+'		
+'		f.Data.DataTable.Close(v.Local.sTableNamePart)
+'		f.Data.DataTable.Close(v.Local.sTableNameFore)
+'	f.Intrinsic.Control.Next(v.Local.i)
+'Function.Intrinsic.Control.EndIf
+
+Function.Data.Dictionary.Clear("PartsLoaded")
+
+Function.Intrinsic.Control.CallSub(loadparts)
+Function.Intrinsic.Control.CallSub(initializepartsgrid)
+'Function.Intrinsic.Control.CallSub(setdirty)
+
+'Variable.Global.sForeTablesNeedUpdate.Set("")
+'Variable.Global.sPartTablesNeedUpdate.Set("")
+
+'Function.Intrinsic.Control.CallSub(loadpartdetails,"sPart",v.Global.sCurrentPart,"sLoc",v.Global.sCurrentLoc)
+
+Program.Sub.pictImport_Click.End
+
+Program.Sub.txtCustomer_LostFocus.Start
+' Select NAME from CUST_MAST_AUX where CUST_NO=''
+
+v.Local.sQuery.Declare(String)
+v.Local.sTxt.Declare(String)
+v.Local.iRet.Declare(Long)
+v.Local.sName.Declare(String)
+
+Function.Intrinsic.Control.If(v.Screen.Form!txtCustomer.Text,<>,"")
+	Function.Intrinsic.String.Trim(v.Screen.Form!txtCustomer.Text,v.Local.sTxt)
+	
+	Function.Intrinsic.String.Concat("Select Count(*) from CUST_MAST_AUX where CUST_NO='",v.Local.sTxt,"' and TYPE='C'",v.Local.sQuery)
+	f.ODBC.Connection!Conx.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+	f.ODBC.Connection!Conx.ExecuteAndReturn(v.Local.sQuery,v.Local.iRet)
+
+	Function.Intrinsic.Control.If(v.Local.iRet,>,0)
+		Function.Intrinsic.String.Concat("Select NAME from CUST_MAST_AUX where CUST_NO='",v.Local.sTxt,"' and TYPE='C'",v.Local.sQuery)
+		f.ODBC.Connection!Conx.ExecuteAndReturn(v.Local.sQuery,v.Local.sName)
+		Function.Intrinsic.String.Trim(v.Local.sName,v.Local.sName)
+		
+		v.Global.sCustID.Set(v.Local.sTxt)
+		
+		Function.Intrinsic.String.Concat(v.Local.sTxt," - ",v.Local.sName,v.Local.sTxt)
+		gui.Form.txtCustomer.Text(v.Local.sTxt)
+	Function.Intrinsic.Control.Else
+		gui.Form.txtCustomer.Text("")
+		v.Global.sCustID.Set("")
+	Function.Intrinsic.Control.EndIf
+	
+	f.ODBC.Connection!Conx.Close
+Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Control.If(v.Local.sTxt,<>,"")
+	gui.Form.cmdAddLine.SetFocus
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.txtCustomer_LostFocus.End
+
+Program.Sub.cmdCustBrowser_Click.Start
+v.Local.sRet.Declare(String)
+v.Local.sCustID.Declare(String)
+v.Local.sCustDesc.Declare(String)
+
+F.Intrinsic.UI.SetBrowserHotTypeAhead(True)
+f.Intrinsic.UI.SetBrowserHotTypeAheadColumn(1)
+Function.Intrinsic.UI.Browser(205,,v.Local.sRet)
+
+Function.Intrinsic.Control.If(v.Local.sRet,<>,"***CANCEL***")
+	Function.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+	Function.Intrinsic.String.Trim(v.Local.sRet(0),v.Local.sCustID)
+	Function.Intrinsic.String.Trim(v.Local.sRet(1),v.Local.sCustDesc)
+	v.Global.sCustID.Set(v.Local.sCustID)
+	Function.Intrinsic.String.Concat(v.Local.sCustID," - ",v.Local.sCustDesc,v.Local.sCustDesc)
+	
+	gui.Form.txtCustomer.Text(v.Local.sCustDesc)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.cmdCustBrowser_Click.End
+
+Program.Sub.txtQty_LostFocus.Start
+v.Local.sQty.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+Function.Intrinsic.String.Trim(v.Screen.Form!txtQty.Text,v.Local.sQty)
+Function.Intrinsic.Math.IsNumeric(v.Local.sQty,v.Local.bret)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	gui.Form.txtQty.Text(v.Local.sQty)
+	gui.Form.cmdAddLine.Enabled(True)
+Function.Intrinsic.Control.Else
+	gui.Form.txtQty.Text("")
+	gui.Form.cmdAddLine.Enabled(False)
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.txtQty_LostFocus.End
+
+Program.Sub.cmdAddLine_Click.Start
+f.Data.DataTable.AddRow(v.Global.sTableNameFore,"ID",-1,"ForecastQty",v.Screen.Form!txtQty.Text,"DateDue",v.Screen.Form!dtpDue.Value,"Customer",v.Global.sCustID,"Part",v.Global.sCurrentPart,"Location",v.Global.sCurrentLoc,"TimeModified",v.Ambient.Now)
+Function.Intrinsic.Control.CallSub(addforerowtodirty,"sTableName",v.Global.sTableNameFore)
+Function.Intrinsic.Control.CallSub(clearnewrow)
+gui.Form.txtQty.SetFocus
+Program.Sub.cmdAddLine_Click.End
+
+Program.Sub.dgPartList_RowClick.Start
+v.Local.sPart.Declare(String)
+v.Local.sLoc.Declare(String)
+
+v.Local.sPart.Set(v.DataTable.PartsTable(v.Args.RowIndex).PART!FIELDVALTRIM)
+v.Local.sLoc.Set(v.DataTable.PartsTable(v.Args.RowIndex).LOCATION!FIELDVALTRIM)
+
+'Gui.Form.dgPartList.GetCellValue("PartsTable",0,v.Args.RowIndex,v.Local.sPart)
+'Gui.Form.dgPartList.GetCellValue("PartsTable",1,v.Args.RowIndex,v.Local.sLoc)
+
+Function.Intrinsic.Control.CallSub(loadpartdetails,"sPart",v.Local.sPart,"sLoc",v.Local.sLoc)
+
+Program.Sub.dgPartList_RowClick.End
+
+Program.Sub.dgForecast_CellValueChanged.Start
+v.Local.iRowIndex.Declare(Long)
+v.Local.sColumn.Declare(String)
+v.Local.sQuery.Declare(String)
+v.Local.sTxt.Declare(String)
+v.Local.iRet.Declare(Long)
+	
+v.Local.iRowIndex.Set(v.Args.RowIndex)
+v.Local.sColumn.Set(v.Args.Column)
+
+Function.Intrinsic.Control.SelectCase(v.Local.sColumn)
+Function.Intrinsic.Control.Case("DateDue")
+	' Do nothing. Any date is acceptable here
+Function.Intrinsic.Control.Case("ForecastQty")
+	' Do nothing. Grid validates numeric value
+Function.Intrinsic.Control.Case("Customer")
+	' Check to make sure valid entry, clear if not.
+	Function.Intrinsic.Control.If(v.Args.Value,<>,"")
+		Function.Intrinsic.String.Trim(v.Args.Value,v.Local.sTxt)
+		
+		Function.Intrinsic.String.Concat("Select Count(*) from CUST_MAST_AUX where CUST_NO='",v.Local.sTxt,"' and TYPE='C'",v.Local.sQuery)
+		f.ODBC.Connection!Conx.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+		f.ODBC.Connection!Conx.ExecuteAndReturn(v.Local.sQuery,v.Local.iRet)
+	
+		Function.Intrinsic.Control.If(v.Local.iRet,=,0)
+			f.Data.DataTable.SetValue(v.Global.sTableNameFore,v.Local.iRowIndex,v.Local.sColumn,"")
+		Function.Intrinsic.Control.EndIf
+		
+		f.ODBC.Connection!Conx.Close
+	Function.Intrinsic.Control.EndIf	
+	
+Function.Intrinsic.Control.EndSelect
+
+Function.Intrinsic.Control.CallSub(addforerowtodirty,"sTableName",v.Global.sTableNameFore)
+Program.Sub.dgForecast_CellValueChanged.End
+
+Program.Sub.txtPd1_LostFocus.Start
+v.Local.bRet.Declare(Boolean)
+Function.Intrinsic.Math.IsNumeric(v.Screen.Form!txtPd1.Text,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	f.Data.DataTable.SetValue(v.Global.sTableNamePart,0,"Pd1Width",v.Screen.Form!txtPd1.Text)
+	Function.Intrinsic.Control.CallSub(addpartrowtodirty,"sTableName",v.Global.sTableNamePart)
+Function.Intrinsic.Control.Else
+	gui.Form.txtPd1.Text(v.DataTable.[v.Global.sTableNamePart](0).Pd1Width!FieldValLong)
+Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Control.CallSub(setpd3)
+
+Program.Sub.txtPd1_LostFocus.End
+
+Program.Sub.txtPd2_LostFocus.Start
+v.Local.bRet.Declare(Boolean)
+Function.Intrinsic.Math.IsNumeric(v.Screen.Form!txtPd2.Text,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	f.Data.DataTable.SetValue(v.Global.sTableNamePart,0,"Pd2Width",v.Screen.Form!txtPd2.Text)
+	Function.Intrinsic.Control.CallSub(addpartrowtodirty,"sTableName",v.Global.sTableNamePart)
+Function.Intrinsic.Control.Else
+	gui.Form.txtPd2.Text(v.DataTable.[v.Global.sTableNamePart](0).Pd2Width!FieldValLong)
+Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Control.CallSub(setpd3)
+
+Program.Sub.txtPd2_LostFocus.End
+
+Program.Sub.cmdSave_Click.Start
+Function.Intrinsic.Control.CallSub(savechanges)
+Program.Sub.cmdSave_Click.End
+
+Program.Sub.cmdRemoveLine_Click.Start
+v.Local.sRet.Declare(String)
+v.Local.i.Declare(Long)
+
+
+Gui.Form.dgForecast.GetSelectedRows("gvForecast", v.Local.sRet)
+Function.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+
+f.Intrinsic.Control.For(v.Local.i,v.Local.sRet.UBound,0,-1)
+	f.Data.DataTable.DeleteRow("Forecast",v.Local.sRet(v.Local.i))
+f.Intrinsic.Control.Next(v.Local.i)
+
+'Function.Intrinsic.Control.CallSub(addforerowtodirty,"sTableName",v.Global.sTableNameFore)
+Program.Sub.cmdRemoveLine_Click.End
+
+Program.Sub.pictNext_Click.Start
+' Call MRP Generation GUI
+v.Local.sGas.Declare(String)
+v.Local.iPID.Declare(Long)
+v.Local.iRet.Declare(Long)
+
+Function.Intrinsic.File.GetPathFromFQN(v.Caller.Scriptfile,v.Local.sGas)
+Function.Intrinsic.String.Concat(v.Local.sGas,"\GCG_4176_MRP_BUILD.g2u",v.Local.sGas)
+
+Function.Intrinsic.Control.If(v.Screen.Form!cmdSave.Enabled)
+	Function.Intrinsic.UI.Msgbox("Would you like to save changes before continuing?","Save Changes",v.Global.MsgBoxFlag_YesNoCancel,v.Local.iRet)
+	Function.Intrinsic.Control.SelectCase(v.Local.iRet)
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Yes)
+			Function.Intrinsic.Control.CallSub(savechanges)
+			Function.Global.General.CallAsyncGAS(v.Local.sGas,"-1",v.Local.iPID)
+			Function.Intrinsic.Control.CallSub(sendipmandend)
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_No)
+			Function.Global.General.CallAsyncGAS(v.Local.sGas,"-1",v.Local.iPID)
+			Function.Intrinsic.Control.CallSub(sendipmandend)
+
+		Function.Intrinsic.Control.Case(v.Global.MsgBoxRet_Cancel)
+	Function.Intrinsic.Control.EndSelect
+Function.Intrinsic.Control.Else
+	Function.Global.General.CallAsyncGAS(v.Local.sGas,"-1",v.Local.iPID)
+	Function.Intrinsic.Control.CallSub(sendipmandend)
+
+Function.Intrinsic.Control.EndIf
+
+Program.Sub.pictNext_Click.End
+
+' ================================================================================
+' UI Helpers
+Program.Sub.ClearNewRow.Start
+gui.Form.txtQty.Text("")
+gui.Form.txtCustomer.Text("")
+gui.Form.dtpDue.Value(v.Ambient.Now)
+Program.Sub.ClearNewRow.End
+
+Program.Sub.SetDirty.Start
+v.Local.bDirty.Declare(Boolean,True)
+Function.Intrinsic.Control.If(v.Global.sPartTablesNeedUpdate,=,"")
+	Function.Intrinsic.Control.If(v.Global.sForeTablesNeedUpdate,=,"")
+		v.Local.bDirty.Set(False)
+	Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf
+
+gui.Form.cmdSave.Enabled(v.Local.bDirty)
+
+Program.Sub.SetDirty.End
+
+Program.Sub.AddPartRowToDirty.Start
+v.Local.sTable.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+Function.Intrinsic.String.Concat(v.Args.sTableName,"*!*",v.Local.sTable)
+Function.Intrinsic.String.IsInString(v.Global.sPartTablesNeedUpdate,v.Local.sTable,True,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet,<>,True)
+	Function.Intrinsic.String.Concat(v.Global.sPartTablesNeedUpdate,v.Local.sTable,v.Global.sPartTablesNeedUpdate)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.CallSub(setdirty)
+Program.Sub.AddPartRowToDirty.End
+
+Program.Sub.AddForeRowToDirty.Start
+v.Local.sTable.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+Function.Intrinsic.String.Concat(v.Args.sTableName,"*!*",v.Local.sTable)
+Function.Intrinsic.String.IsInString(v.Global.sForeTablesNeedUpdate,v.Local.sTable,True,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet,<>,True)
+	Function.Intrinsic.String.Concat(v.Global.sForeTablesNeedUpdate,v.Local.sTable,v.Global.sForeTablesNeedUpdate)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.CallSub(setdirty)
+Program.Sub.AddForeRowToDirty.End
+
+Program.Sub.SetPd3.Start
+v.Local.iPd3.Declare(Long)
+v.Local.bPd1.Declare(Boolean)
+v.Local.bPd2.Declare(Boolean)
+v.Local.sPd3.Declare(String)
+
+Function.Intrinsic.Math.IsNumeric(v.DataTable.[v.Global.sTableNamePart](0).Pd1Width!FieldValLong,v.Local.bPd1)
+Function.Intrinsic.Math.IsNumeric(v.DataTable.[v.Global.sTableNamePart](0).Pd2Width!FieldValLong,v.Local.bPd2)
+Function.Intrinsic.Control.If(v.Local.bPd1,=,True,AND,v.Local.bPd2,=,True)
+	f.Intrinsic.Math.Add(v.DataTable.[v.Global.sTableNamePart](0).Pd1Width!FieldValLong,v.DataTable.[v.Global.sTableNamePart](0).Pd2Width!FieldValLong,1,v.Local.iPd3)
+	Function.Intrinsic.String.Concat(v.Local.iPd3,"+",v.Local.sPd3)
+	gui.Form.txtPd3.Text(V.Local.sPd3)
+Function.Intrinsic.Control.EndIf
+Program.Sub.SetPd3.End
+
+Program.Sub.SetGridColors.Start
+' TODO. All of this.
+Program.Sub.SetGridColors.End
+
+Program.Sub.SendIPMAndEnd.Start
+v.Local.bRet.Declare(Boolean)
+Function.Intrinsic.Math.IsNumeric(v.Dictionary.Switches!IPM,v.Local.bRet)
+Function.Intrinsic.Control.If(v.Local.bRet)
+	f.Intrinsic.IPM.SendMessage("COMPLETE",v.Dictionary.Switches!IPM)
+Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.End
+
+Program.Sub.SendIPMAndEnd.End
+
+' ================================================================================
+' Part loading
+Program.Sub.LoadPartDetails.Start
+v.Local.sPart.Declare(String)
+v.Local.sLoc.Declare(String)
+v.Local.sLocQ.Declare(String)
+v.Local.sTableName.Declare(String)
+v.Local.sTableNamePart.Declare(String)
+v.Local.sTableNameFore.Declare(String)
+v.Local.sQuery.Declare(String)
+v.Local.sUM.Declare(String)
+v.Local.bRet.Declare(Boolean)
+
+Function.Intrinsic.String.Trim(v.Args.sPart,v.Local.sPart)
+Function.Intrinsic.String.Trim(v.Args.sLoc,v.Local.sLoc)
+
+v.Global.sCurrentPart.Set(v.Local.sPart)
+v.Global.sCurrentLoc.Set(v.Local.sLoc)
+
+Function.Intrinsic.Debug.Stop
+
+'Function.Intrinsic.Control.CallSub(gettablename,"Part",v.Local.sPart,"Loc",v.Local.sLoc)
+'v.Local.sTableName.Set(v.Args.TableName)
+'Function.Intrinsic.String.Concat(v.Local.sTableName,"Part",v.Local.sTableNamePart)
+'Function.Intrinsic.String.Concat(v.Local.sTableName,"Fore",v.Local.sTableNameFore)
+
+' We only need to load each part once, so check if it's been loaded already
+Function.Intrinsic.Control.If(v.Dictionary.PartsLoaded![v.Local.sTableName],=,False)
+
+f.Intrinsic.Control.If(v.DataTable.Forecast.Exists)
+	f.Intrinsic.Control.CallSub(savechanges)
+f.Intrinsic.Control.EndIf
+
+f.ODBC.Connection!Conx.OpenCompanyConnection
+	Function.Intrinsic.String.Build("select Top 1 * from MRP_Forecast_Parts where MRP_Forecast_Parts.Part='{0}' and MRP_Forecast_Parts.Location='{1}';",v.Local.sPart,v.Local.sLoc,v.Local.sQuery)
+	
+	f.Data.DataTable.CreateFromSQL("PartProperties","Conx",v.Local.sQuery,True)
+	
+	Function.Intrinsic.Control.If(v.DataTable.PartProperties.RowCount,>,0)
+		Function.Intrinsic.Math.IsNumeric(v.DataTable.PartProperties(0).Pd1Width!FieldVal,v.Local.bRet)
+		Function.Intrinsic.Control.If(v.Local.bRet,<>,True)
+			Function.Intrinsic.Control.CallSub(getsetting,"Setting","DefaultWidthPd1")
+			f.Data.DataTable.SetValue("PartProperties",0,"Pd1Width",v.Args.DefaultWidthPd1,"TimeModified",v.Ambient.Now)
+		Function.Intrinsic.Control.EndIf
+	
+		Function.Intrinsic.Math.IsNumeric(v.DataTable.PartProperties(0).Pd2Width!FieldVal,v.Local.bRet)
+		Function.Intrinsic.Control.If(v.Local.bRet,<>,True)
+			Function.Intrinsic.Control.CallSub(getsetting,"Setting","DefaultWidthPd2")
+			f.Data.DataTable.SetValue("PartProperties",0,"Pd2Width",v.Args.DefaultWidthPd2,"TimeModified",v.Ambient.Now)
+		Function.Intrinsic.Control.EndIf
+		
+	Function.Intrinsic.Control.Else
+		Function.Intrinsic.Control.CallSub(getsetting,"Setting","DefaultWidthPd1*!*DefaultWidthPd2")
+		f.Data.DataTable.AddRow("PartProperties","Part",v.Local.sPart,"Location",v.Local.sLoc,"Pd1Width",v.Args.DefaultWidthPd1,"Pd2Width",v.Args.DefaultWidthPd2,"TimeModified",v.Ambient.Now)
+	Function.Intrinsic.Control.EndIf
+
+Function.Intrinsic.Debug.Stop
+
+'	'adjust sloc to account for NULL 
+'	f.Intrinsic.Control.If(v.local.sLoc.IsNullOrWhiteSpace)
+'		v.Local.sLocQ.Set(" IS NULL")
+'	F.Intrinsic.Control.Else
+'		F.Intrinsic.String.Build("= '{0}'",V.Local.sLoc,V.Local.sLocQ)
+'	f.Intrinsic.Control.EndIf
+	
+	Function.Intrinsic.String.Build("Select ID, Part, Location, DateDue, cast(ForecastQty as Double) as ForecastQty, TimeModified, Customer, MRP_Refreshed From MRP_Forecast where Part='{0}' and Location = '{1}';",v.Local.sPart,v.Local.sLoc,v.Local.sQuery)
+	f.Data.DataTable.CreateFromSQL("Forecast","Conx",v.Local.sQuery,True)
+	
+	Function.Intrinsic.Control.If(v.Dictionary.PartUM![v.Local.sPart],=,"-")
+		' Select UM_INVENTORY from INVENTORY_MSTR where Part='' and Location='';
+		Function.Intrinsic.String.Build("Select UM_INVENTORY from INVENTORY_MSTR where Part='{0}' and Location = '{1}';",v.Local.sPart,v.Local.sLoc,v.Local.sQuery)
+		f.ODBC.Connection!Conx.ExecuteAndReturn(v.Local.sQuery,v.Local.sUM)
+		f.Data.Dictionary.AddItem("PartUM",v.Local.sPart,v.Local.sUM)
+	Function.Intrinsic.Control.EndIf
+	
+	f.ODBC.Connection!Conx.Close
+	
+	f.Data.DataView.Create("Forecast","vForecast",22,"","DateDue ASC")
+	
+	f.Data.Dictionary.AddItem("PartsLoaded",v.Local.sPart,True)
+Function.Intrinsic.Control.EndIf
+
+'Set grid's view
+
+gui.Form.dgForecast.Visible(False)
+gui.Form.dgForecast.DataSource("Forecast")
+gui.Form.dgForecast.AddGridViewFromDataview("gvForecast","Forecast","vForecast")
+	
+gui.Form.dgForecast.SetGridViewProperty("gvForecast","optionsviewshowgrouppanel",False)
+gui.Form.dgForecast.SetGridViewProperty("gvForecast","Optionsdetailshowdetailtabs",False)
+gui.Form.dgForecast.SetGridViewProperty("gvForecast","ReadOnly",False)
+gui.Form.dgForecast.SetGridViewProperty("gvForecast","OptionBehaviorEditable",True)
+
+gui.Form.dgForecast.SetColumnProperty("gvForecast","ID","Visible",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","Part","Visible",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","Location","Visible",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","TimeModified","Visible",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","ForecastQty","Width","80")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","ForecastQty","Caption","Qty.")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","ForecastQty","AllowEdit",True)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","ForecastQty","ReadOnly",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","DateDue","Width","120")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","DateDue","Caption","Due")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","DateDue","AllowEdit",True)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","DateDue","ReadOnly",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","DateDue","DisplayCustomDateTime","d")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","Customer","Width","120")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","Customer","Caption","Customer")
+gui.Form.dgForecast.SetColumnProperty("gvForecast","Customer","AllowEdit",True)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","Customer","ReadOnly",False)
+gui.Form.dgForecast.SetColumnProperty("gvForecast","MRP_Refreshed","Visible",False)
+
+gui.Form.dgForecast.SetGridviewProperty("gvForecast","MultiSelect",True)
+
+gui.Form.dgForecast.MainView("gvForecast")
+
+gui.Form.dgForecast.Visible(True)
+
+v.Global.sTableNameFore.Set("Forecast")
+v.Global.sTableNamePart.Set("PartProperties")
+
+' Set other details
+Function.Intrinsic.Control.CallSub(clearnewrow)
+
+Function.Intrinsic.Control.If(v.Local.sLoc,<>,"")
+	Function.Intrinsic.String.Concat(v.Local.sPart,", ",v.Local.sLoc,v.Local.sPart)
+Function.Intrinsic.Control.EndIf
+gui.Form.lblPartLoc.Text(v.Local.sPart)
+gui.Form.lblUM.Text(v.Dictionary.PartUM![v.Local.sPart])
+
+' Set forecast widths
+gui.Form.txtPd1.Text(v.DataTable.PartProperties(0).Pd1Width!FieldValLong)
+gui.Form.txtPd2.Text(v.DataTable.PartProperties(0).Pd2Width!FieldValLong)
+Function.Intrinsic.Control.CallSub(setpd3)
+
+gui.Form.txtQty.Enabled(True)
+gui.Form.dtpDue.Enabled(True)
+gui.Form.txtCustomer.Enabled(True)
+gui.Form.cmdCustBrowser.Enabled(True)
+gui.Form.dgForecast.Enabled(True)
+gui.Form.txtPd1.Enabled(True)
+gui.Form.txtPd2.Enabled(True)
+gui.Form.cmdRemoveRow.Enabled(True)
+
+' Color the grid
+'Function.Intrinsic.Control.CallSub(setgridcolors)
+
+Program.Sub.LoadPartDetails.End
+
+Program.Sub.GetTableName.Start
+'v.Local.sTableName.Declare(String)
+
+'Function.Intrinsic.String.Trim(v.Args.Part,v.Local.sTableName)
+'f.Intrinsic.String.Replace(v.Local.sTableName,".","~",v.Local.sTableName)
+'Function.Intrinsic.String.RPad(v.Local.sTableName,"-",20,v.Local.sTableName)
+'Function.Intrinsic.String.Concat(v.Local.sTableName,v.Args.Loc,v.Local.sTableName)
+'Function.Intrinsic.String.Trim(v.Local.sTableName,v.Local.sTableName)
+'Function.Intrinsic.String.RPad(v.Local.sTableName,"-",22,v.Local.sTableName)
+
+'Function.Intrinsic.Variable.AddRV("TableName",v.Local.sTableName)
+
+Program.Sub.GetTableName.End
+
+' ================================================================================
+' Part saving
+Program.Sub.SaveChanges.Start
+v.Local.sTables.Declare(String)
+v.Local.i.Declare(Long)
+v.Local.j.Declare(Long)
+v.Local.iID.Declare(Long)
+v.Local.sTable.Declare(String)
+
+v.Local.sFilter.Declare
+
+
+f.Intrinsic.Control.If(v.DataTable.Forecast.RowCount,>,0)
+'lets first check if this part is flagged as having a forecast, if it's not, let's update it.
+	f.Intrinsic.String.Build("PART = '{0}'",V.DataTable.Forecast(0).PART!FIELDVALTRIM,v.Local.sFilter)
+	f.Data.DataView.Create("PartsTable","vPartsUpdate",22,v.Local.sFilter,"")
+	f.Intrinsic.Control.If(v.DataView.PartsTable!vPartsUpdate(0).ForecastExists!FIELDVAL,=,False,AND,V.DataTable.Forecast(0).ForecastQty!FIELDVAL,>,0)
+		F.Data.DataView.SetValue("PartsTable","vPartsUpdate",0,"ForecastExists",True)
+	f.Intrinsic.Control.ElseIf(v.DataView.PartsTable!vPartsUpdate(0).ForecastExists!FIELDVAL,=,True,AND,V.DataTable.Forecast(0).ForecastQty!FIELDVAL,>,0)
+		f.Data.DataView.SetValue("PartsTable","vPartsUpdate",0,"ForecastExists",True)
+	f.Intrinsic.Control.ElseIf(v.DataView.PartsTable!vPartsUpdate(0).ForecastExists!FIELDVAL,=,True,AND,V.DataTable.Forecast.RowCount,<,1)
+		f.Data.DataView.SetValue("PartsTable","vPartsUpdate",0,"ForecastExists",False)
+	f.Intrinsic.Control.EndIf
+	f.Data.DataView.Close("PartsTable","vPartsUpdate")
+f.Intrinsic.Control.EndIf
+
+f.ODBC.Connection!SAVFOR.OpenCompanyConnection
+
+'get the next ID from MRP_Forecast
+F.ODBC.Connection!SAVFOR.GetID("MRP_Forecast","ID",True,v.Local.iID)
+
+
+Function.Intrinsic.Debug.Stop
+
+'create a view of the forecast lines that don't already have an ID (mask = 4 = new lines)
+f.Data.DataView.Create("Forecast","dvForecast",4)
+f.Data.DataView.SetSeries("Forecast","dvForecast","ID",v.Local.iID,1)
+f.Data.DataView.SetValue("Forecast","dvForecast",-1,"MRP_Refreshed",False)
+f.Data.DataView.Close("Forecast","dvForecast")
+F.Data.DataTable.SaveToDB("Forecast","SAVFOR","MRP_Forecast","ID",7)
+f.Data.DataTable.SaveToDB("PartProperties","SAVFOR","MRP_Forecast_Parts","PART*!*LOCATION",7)
+
+f.Data.DataTable.Close("Forecast")
+f.Data.DataTable.Close("PartProperties")
+
+f.ODBC.Connection!SAVFOR.Close
+
+'Function.Intrinsic.String.Split(v.Global.sPartTablesNeedUpdate,"*!*",v.Local.sTables)
+'f.Intrinsic.Control.For(v.Local.i,0,v.Local.sTables.UBound,1)
+'	Function.Intrinsic.Control.If(v.Local.sTables(v.Local.i),<>,"")
+'		f.Data.DataTable.SaveToDB(v.Local.sTables(v.Local.i),"Conx","MRP_Forecast_Parts","Part*!*Location")
+'	Function.Intrinsic.Control.EndIf
+'f.Intrinsic.Control.Next(v.Local.i)
+'v.Global.sPartTablesNeedUpdate.Set("")
+
+'f.ODBC.Connection!Conx.ExecuteAndReturn("Select top 1 ID from MRP_Forecast Order by ID Desc",v.Local.iID)
+
+'Function.Intrinsic.String.Split(v.Global.sForeTablesNeedUpdate,"*!*",v.Local.sTables)
+'f.Intrinsic.Control.For(v.Local.i,0,v.Local.sTables.UBound,1)
+'	Function.Intrinsic.Control.If(v.Local.sTables(v.Local.i),<>,"")
+'		
+'		v.Local.sTable.Set(v.Local.sTables(v.Local.i))
+'		f.Data.DataView.Create(v.Local.sTable,"TableView")
+'				
+'		f.Intrinsic.Control.For(v.Local.j,0,v.DataView.[v.Local.sTable]!TableView.RowCount--,1)
+'			Function.Intrinsic.Control.If(v.DataView.[v.Local.sTable]!TableView(v.Local.j).ID!FieldValLong,=,-1)
+'				f.Intrinsic.Math.Add(v.Local.iID,1,v.Local.iID)
+'				f.Data.DataView.SetValue(v.Local.sTable,"TableView",v.Local.j,"ID",v.Local.iID)
+'			Function.Intrinsic.Control.EndIf
+'		
+'		f.Intrinsic.Control.Next(v.Local.j)
+'	
+'		f.Data.DataTable.SaveToDB(v.Local.sTables(v.Local.i),"Conx","MRP_Forecast","ID")
+'	Function.Intrinsic.Control.EndIf
+'f.Intrinsic.Control.Next(v.Local.i)
+'v.Global.sForeTablesNeedUpdate.Set("")
+
+'f.ODBC.Connection!Conx.Close
+
+'Function.Intrinsic.Control.CallSub(setdirty)
+'Function.Intrinsic.Control.CallSub(loadparts)
+Program.Sub.SaveChanges.End
+
+' ================================================================================
+' Settings and Switches
+Program.Sub.GetSwitches.Start
+v.Local.sSwitches.Declare(String)
+v.Local.sTokens.Declare(String)
+v.Local.i.Declare(Long)
+
+f.Data.Dictionary.Create("Switches")
+f.Data.Dictionary.SetDefaultReturn("Switches",False)
+Function.Intrinsic.String.Split(v.Caller.Switches,"-",v.Local.sSwitches)
+
+f.Intrinsic.Control.For(v.Local.i,0,v.Local.sSwitches.UBound,1)
+	Function.Intrinsic.String.Trim(v.Local.sSwitches(v.Local.i),v.Local.sSwitches(v.Local.i))
+	Function.Intrinsic.Control.If(v.Local.sSwitches(v.Local.i),<>,"")
+		Function.Intrinsic.String.Split(v.Local.sSwitches(v.Local.i)," ",v.Local.sTokens)
+		Function.Intrinsic.Control.If(v.Local.sTokens.UBound,>,0)
+			f.Data.Dictionary.AddItem("Switches",v.Local.sTokens(0),v.Local.sTokens(1))
+		Function.Intrinsic.Control.Else
+			f.Data.Dictionary.AddItem("Switches",v.Local.sTokens(0),True)
+		Function.Intrinsic.Control.EndIf	
+	Function.Intrinsic.Control.EndIf
+f.Intrinsic.Control.Next(v.Local.i)
+
+Program.Sub.GetSwitches.End
+
+Program.Sub.LoadSettings.Start
+Function.Intrinsic.Debug.Stop
+
+f.ODBC.Connection!Conx.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+f.Data.Dictionary.CreateFromSQL("Settings","Conx","Select upper(Name) as Name, Value from MRP_Settings")
+f.Data.Dictionary.SetDefaultReturn("Settings","|||NOTFOUND|||")
+f.ODBC.Connection!Conx.Close
+Program.Sub.LoadSettings.End
+
+Program.Sub.GetSetting.Start
+v.Local.bRet.Declare(Boolean)
+v.Local.sRet.Declare(String)
+v.Local.sSettingName.Declare(String)
+v.Local.sSettings.Declare(String)
+v.Local.sGas.Declare(String)
+v.Local.i.Declare(Long)
+
+f.Intrinsic.Variable.ArgExists("Setting",v.Local.bRet)
+f.Intrinsic.Control.If(v.Local.bRet)
+	
+	Function.Intrinsic.String.Split(v.Args.Setting,"*!*",v.Local.sSettings)
+	
+	f.Intrinsic.Control.For(v.Local.i,0,v.Local.sSettings.UBound,1)
+		v.Local.sSettingName.Set(v.Local.sSettings(v.Local.i))
+	
+		v.Local.sRet.Set(v.Dictionary.Settings![v.Local.sSettingName])
+		Function.Intrinsic.Control.If(v.Local.sRet,=,"|||NOTFOUND|||")
+			' If the defaults are incomplete, use Settings script to fill them and recreate the dictionary
+			Function.Intrinsic.UI.InvokeWaitDialog("Setting not found. Repairing Settings table.")
+				Function.Intrinsic.File.GetPathFromFQN(v.Caller.Scriptfile,v.Local.sGas)
+				Function.Intrinsic.String.Concat(v.Local.sGas,"\GCG_4176_MRP_Settings.g2u",v.Local.sGas)
+				Function.Global.General.CallSyncGAS(v.Local.sGas,"-s")
+			Function.Intrinsic.UI.CloseWaitDialog
+			
+			f.Data.Dictionary.Close("Settings")
+			f.Data.Dictionary.CreateFromSQL("Settings","Conx","Select upper(Name) as Name, Value from MRP_Settings")
+			f.Data.Dictionary.SetDefaultReturn("Settings","|||NOTFOUND|||")
+			
+			v.Local.sRet.Set(v.Dictionary.Settings![v.Local.sSettingName])	
+		Function.Intrinsic.Control.EndIf
+		
+		Function.Intrinsic.Variable.AddRV(v.Local.sSettingName,v.Local.sRet)
+		
+	f.Intrinsic.Control.Next(v.Local.i)
+
+f.Intrinsic.Control.EndIf
+
+Program.Sub.GetSetting.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$$}$6/6/2016 2:52:52 PM$}$False
+Program.Sub.Comments.End
