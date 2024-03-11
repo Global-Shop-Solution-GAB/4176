@@ -1,0 +1,1204 @@
+'CUSTOM REQUIREMENTS
+'MRP_FORECAST custom table
+'MRP_FORECAST_PARTS custom table
+'MRP_SETTINGS custom table
+'MRP_PLANNING custom table
+'V_MRP_FIELDS custom view
+
+'this script uses order_quantity, reorder point, minimum, and several custom values to generate material requirements without the use of work orders.
+'The basic concept is this:
+	'1. Pull in the entire BOM_MSTR table
+	'2. Using parent/child relationships, identify a parts lowest level in the BOM (0 being a parent, 10 being a child, 10 levels deep in the BOM).
+	'3. Once the levels (LLC) are identified, we'll pull in open orders, open purchase order, open work order, and open work order requirements
+	'4. Pull in the custom FORECAST table MRP_FORECAST
+	'5. Processing a  level at a time, it first calculates the requirements by date.
+	'6. Based on a date and qty on hand, it determines when to plan a purchase order, or work order
+	'7. The requirements (demand) and the planned orders (supply) are written to MRP_PLANNING custom table
+	'8. Start over with the next level (LLC) of parts.
+
+Program.Sub.Preflight.Start
+v.Global.dStartTime.Declare
+v.Global.dEndTime.Declare
+V.Global.iMax.Declare
+V.Global.iID.Declare
+v.Global.iFID.Declare(Long,1)
+v.Global.iPID.Declare
+v.Global.iDebug.Declare
+
+f.Data.DataTable.Create("MRPPlanning",True)
+f.data.datatable.addcolumn("MRPPlanning","FID","LONG")
+f.data.datatable.addcolumn("MRPPlanning","Reference","STRING")
+f.data.datatable.addcolumn("MRPPlanning","PART","string")
+f.data.datatable.addcolumn("MRPPlanning","Location","string")
+f.data.datatable.addcolumn("MRPPlanning","DateDue","dateTime")
+f.data.datatable.addcolumn("MRPPlanning","SUPPLY","FLOAT",0.0000)
+f.data.datatable.addcolumn("MRPPlanning","DEMAND","FLOAT",0.0000)
+f.data.datatable.addcolumn("MRPPlanning","EntryType","string")
+f.data.datatable.addcolumn("MRPPlanning","TypeDesc","string")
+f.Data.DataTable.AddColumn("MRPPlanning","Category","string")
+f.data.datatable.addcolumn("MRPPlanning","PID","LONG")
+f.data.datatable.addcolumn("MRPPlanning","LLC","LONG")
+f.data.datatable.addcolumn("MRPPlanning","Lead","LONG")
+f.data.datatable.addcolumn("MRPPlanning","DateStart","dateTime")
+f.data.datatable.addcolumn("MRPPlanning","Source","string")
+f.data.datatable.addcolumn("MRPPlanning","P1Start","dateTime",v.Ambient.Date)
+f.data.datatable.addcolumn("MRPPlanning","P1Width","LONG")
+f.data.datatable.addcolumn("MRPPlanning","P2Width","LONG")
+f.data.datatable.addcolumn("MRPPlanning","P2Start","dateTime")
+f.data.datatable.addcolumn("MRPPlanning","P3Start","dateTime")
+f.Data.DataTable.AddExpressionColumn("MRPPlanning","Period","LONG","IIF(DateDue > P1Start,IIF(DateDue > P2Start,IIF(DateDue > P3Start,3,2),1),0)")
+
+
+f.Data.DataTable.SetPK("MRPPlanning","FID")
+f.Data.DataTable.Clone("MRPPlanning","FcChildren",True)
+f.Data.DataView.Create("FcChildren","vFcChildren",22)
+f.Data.DataTable.SetPK("FcChildren","FID")
+Program.Sub.Preflight.End
+
+Program.Sub.Main.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sTime.Declare
+
+'LEAVE THIS HERE:  edit the custom menu and add 'B' in the switches.  This gives a nice benchmark report when the script is done running.
+F.Intrinsic.Control.If(V.Caller.Switches,=,"B")
+	F.Intrinsic.Debug.BenchmarkModeEnable
+F.Intrinsic.Control.EndIf
+'suppress the output of status messages if this is running from the task scheduler.
+f.Intrinsic.Control.If(V.Ambient.IsInTaskScheduler,=,True)
+	f.Intrinsic.UI.SuppressOutput(True)
+f.Intrinsic.Control.EndIf
+
+
+f.Intrinsic.UI.InvokeWaitDialog("Loading Settings....")
+f.Intrinsic.control.CallSub(loadsettings)
+
+f.Intrinsic.UI.ChangeWaitStatus("Building LLC's from BOM....")
+f.Intrinsic.Control.CallSub(build_llc)
+
+F.Intrinsic.UI.ChangeWaitStatus("Building Demand....")
+f.Intrinsic.Control.CallSub(build_Firm_data)
+
+f.Intrinsic.Control.CallSub(Fill_Firm_FromDictionary)
+
+f.Intrinsic.Control.CallSub(build_mrp_records)
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.Main.End
+
+Program.Sub.Catching.Start
+v.Local.sError.declare(string)
+F.Intrinsic.String.Build("Project: {0}{1}Subroutine: {2}{1}Error Occurred {3} with description {4}","GCG_4176_MRP_BUILD.g2u",V.Ambient.NewLine,v.Args.sub,V.Args.errorno,V.args.errordesc,V.Local.sError)
+f.Intrinsic.UI.Msgbox(v.Local.sError)
+f.Intrinsic.Control.End
+Program.Sub.Catching.End
+
+Program.Sub.build_llc.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sStatus.Declare
+V.Local.iLevel.Declare(Long,0)
+v.Local.sTime.Declare
+v.Local.sRet.Declare
+v.Local.iTotal.Declare
+v.Local.iMax.Declare
+
+
+f.ODBC.Connection!coredb.opencompanyconnection(5000)
+
+'pull in a distinct pairing of parent and part.
+'f.Data.DataTable.CreateFromSQL("BOM_MASTER","COREDB","SELECT LTRIM(RTRIM(UCASE(PARENT))) AS BPARENT, LTRIM(RTRIM(UCASE(PART))) AS PART, QUANTITY, CATEGORY, SOURCE FROM BOM_MSTR WHERE CATEGORY NOT IN ('X','R') AND PART > '' AND INACTIVE <> 1 AND SEQUENCE_BOM <> '0000'",True)
+'v.Global.iMax.Set(v.DataTable.BOM_MASTER.RowCount)
+
+
+''create a datatable of the top level parents
+'f.Data.DataTable.CreateFromSQL("BOM_PARENT","COREDB","select distinct LTRIM(rtrim(UCASE(PARENT))) as BPARENT from bom_mstr where SEQUENCE_BOM = '0000' AND INACTIVE <> 1 and parent not in (select distinct part from bom_mstr)",True)
+
+'changed on 5/7/19 to ignore active versus inactive bom lines
+f.Data.DataTable.CreateFromSQL("BOM_MASTER","COREDB","SELECT LTRIM(RTRIM(UCASE(PARENT))) AS BPARENT, LTRIM(RTRIM(UCASE(PART))) AS PART, QUANTITY, CATEGORY, SOURCE FROM BOM_MSTR WHERE CATEGORY NOT IN ('X','R') AND PART > '' AND SEQUENCE_BOM <> '0000'",True)
+v.Global.iMax.Set(v.DataTable.BOM_MASTER.RowCount)
+
+
+'create a datatable of the top level parents
+f.Data.DataTable.CreateFromSQL("BOM_PARENT","COREDB","select distinct LTRIM(rtrim(UCASE(PARENT))) as BPARENT from bom_mstr where SEQUENCE_BOM = '0000' AND parent not in (select distinct part from bom_mstr)",True)
+
+
+F.ODBC.Connection!coredb.Close
+
+'add LLC column and set the first level to 0
+F.Data.DataTable.AddColumn("BOM_PARENT","LLC","LONG")
+F.Data.DataTable.SetValue("BOM_PARENT",-1,"LLC",0)
+
+'create the LEVEL datatable that we'll use for storing all of the LLC's
+f.Data.DataTable.Clone("BOM_PARENT","LEVEL",True)
+'set the PK for merging: false switch on merge indicates that the new records being brought in can update existing records instead of being appended to the list.
+F.Data.DataTable.SetPK("LEVEL","BPARENT")
+f.Data.DataTable.Merge("BOM_PARENT","LEVEL",False,1)
+
+	'update the wait status
+	f.Intrinsic.String.Build("LLC {0}: total loaded {1}:  of {2}",v.Local.iLevel,v.DataTable.LEVEL.RowCount,v.DataTable.LEVEL.RowCount,V.Local.sStatus)
+	F.Intrinsic.UI.ChangeWaitStatus(V.Local.sStatus)
+
+'bom parent datatable will always represent the parent items in the next LLC after each loop
+f.Intrinsic.Control.DoUntil(v.DataTable.BOM_PARENT.RowCount,<,1)
+
+	f.Data.Linq.Join("INNERJOIN","DATATABLE","BOM_PARENT*!*P","DATATABLE","BOM_MASTER*!*M","P.BPARENT = M.BPARENT","M.PART AS BPARENT","M.CATEGORY <> 'R' AND M.CATEGORY <> 'X'","M.PART","","TEMP",True)
+	'if the return table has records - continue to process
+	f.Intrinsic.Control.If(v.DataTable.TEMP.RowCount,>,0)
+		f.Intrinsic.Math.Add(v.Local.iLevel,1,v.Local.iLevel)
+		'create a veiw to make a distinct list
+		f.Data.DataView.Create("TEMP","vTEMP",22)
+		F.Data.DataView.ToDataTableDistinct("TEMP","vTEMP","TEMP_PARENT","BPARENT",True)
+		'add the LLC column and set the value to the current LLC we are building
+		f.Data.DataTable.AddColumn("TEMP_PARENT","LLC","LONG")
+		F.Data.DataTable.SetValue("TEMP_PARENT",-1,"LLC",V.Local.iLevel)
+		
+		'merge this LLC in to the LEVEL table and then to BOM PARENT for the next loop
+		F.Data.DataTable.Merge("TEMP_PARENT","LEVEL",False,1)
+		F.Data.DataTable.DeleteRow("BOM_PARENT")
+		F.Data.DataTable.AcceptChanges("BOM_PARENT")
+		f.Data.DataTable.Merge("TEMP_PARENT","BOM_PARENT",False,1)
+		'close temp tables, update the LLC and loop to the next set of parents
+		f.Data.DataTable.Close("TEMP_PARENT")
+		F.Data.DataTable.Close("TEMP")
+	F.Intrinsic.Control.Else
+		'the return table has no records, that means we've reached the deepest tier of the bom master table - exit the loop
+		F.Intrinsic.Control.ExitDo
+	F.Intrinsic.Control.EndIf
+	'update the wait status after each loop
+	f.Intrinsic.String.Build("LLC {0}: total loaded {1}:  of {2}",v.Local.iLevel,v.DataTable.BOM_PARENT.RowCount,v.DataTable.LEVEL.RowCount,V.Local.sStatus)
+	F.Intrinsic.UI.ChangeWaitStatus(V.Local.sStatus)
+	
+f.Intrinsic.Control.Loop
+
+'update the wait status after exiting the loop
+f.Intrinsic.String.Build("LLC {0}: total loaded {1}:  of {2}",v.Local.iLevel,v.DataTable.BOM_PARENT.RowCount,v.DataTable.LEVEL.RowCount,V.Local.sStatus)
+F.Intrinsic.UI.ChangeWaitStatus(V.Local.sStatus)
+
+'create a dictionary LLC from Level datatable
+f.Data.DataTable.Compute("LEVEL","MAX(LLC)","",V.Local.iMax)
+f.Data.Dictionary.CreateFromDatatable("dLLC","LEVEL","BPARENT","LLC",20)
+f.Data.Dictionary.SetDefaultReturn("dLLC",V.Local.iMax)
+
+'close what we no longer need
+f.Intrinsic.Control.If(v.DataTable.TEMP.Exists)
+	F.Data.DataTable.Close("TEMP")
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.If(V.DataTable.BOM_PARENT.Exists)
+	F.Data.DataTable.Close("BOM_PARENT")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.build_llc.End
+
+Program.Sub.loadsettings.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.iDefault.Declare
+v.Local.sSql.Declare
+
+f.ODBC.Connection!coredb.opencompanyconnection(5000)
+'creating multiple dictionaries to mass populate data during the build
+
+'pull in the QTY and REORDER settings for each part.
+f.Data.DataTable.CreateFromSQL("SETTINGS","COREDB","SELECT LTRIM(RTRIM(UCASE(PART))) AS PART, LOCATION, PRODUCT_LINE AS PL, QTY_ORDER, QTY_ONHAND, QTY_REORDER, CODE_SORT, IF(PURCHASE_LEAD <> 0,PURCHASE_LEAD,1) AS PURCHASE_LEAD, IF(MFG_LEAD <> 0, MFG_LEAD,1) AS MFG_LEAD, FLAG_DROP, FLAG_INACTIVE, QTY_MAXIMUM, IF(CODE_SOURCE > '',CODE_SOURCE,'J') as CODE_SOURCE, TEMP_PURCH, MFG_QTY_MINIMUM, MFG_QTY_MULTIPLE FROM V_MRP_FIELDS",True)
+'f.Data.DataTable.AddExpressionColumn("SETTINGS","LEAD","LONG","IIF(CODE_SOURCE = 'J' OR CODE_SOURCE = 'P' OR TEMP_PURCH = 'Y', PURCHASE_LEAD, MFG_LEAD)")
+f.Data.DataTable.AddExpressionColumn("SETTINGS","LEAD","LONG","IIF(CODE_SOURCE = 'J' OR CODE_SOURCE = 'P' OR TEMP_PURCH = 'Y', PURCHASE_LEAD, PURCHASE_LEAD)")
+f.Data.DataTable.AddExpressionColumn("SETTINGS","SOURCE","STRING","IIF(TEMP_PURCH = 'Y','P', CODE_SOURCE)")
+'inverse
+F.Data.DataTable.AddExpressionColumn("SETTINGS","INVERSE","LONG","LEAD * -1")
+
+'QTY_ORDER
+F.Data.Dictionary.CreateFromDatatable("dQtyOrder","SETTINGS","PART","QTY_ORDER",20)
+F.Data.Dictionary.SetDefaultReturn("dQtyOrder",0)
+'QTY_REORDER
+F.Data.Dictionary.CreateFromDatatable("dQtyReorder","SETTINGS","PART","QTY_REORDER",20)
+F.Data.Dictionary.SetDefaultReturn("dQtyReorder",0)
+'QTY_ONHAND
+f.Data.Dictionary.CreateFromDatatable("dOnHand","SETTINGS","PART","QTY_ONHAND",20)
+F.Data.Dictionary.SetDefaultReturn("dOnHand",0)
+'LEAD
+f.Data.Dictionary.CreateFromDatatable("dLead","SETTINGS","PART","INVERSE",20)
+F.Data.Dictionary.SetDefaultReturn("dLead",0)
+'QTY_MAXIMUM
+f.Data.Dictionary.CreateFromDatatable("dQtyMax","SETTINGS","PART","QTY_MAXIMUM",20)
+F.Data.Dictionary.SetDefaultReturn("dQtyMax",0)
+'MFG_QTY_MINIMUM
+F.Data.Dictionary.CreateFromDatatable("dMfgMin","SETTINGS","PART","MFG_QTY_MINIMUM",20)
+F.Data.Dictionary.SetDefaultReturn("dMfgMin",0)
+'MFG_QTY_MULTIPLE
+F.Data.Dictionary.CreateFromDatatable("dMfgMult","SETTINGS","PART","MFG_QTY_MULTIPLE",20)
+F.Data.Dictionary.SetDefaultReturn("dMfgMult",0)
+'SOURCE
+F.Data.Dictionary.CreateFromDatatable("dSource","SETTINGS","PART","SOURCE",20)
+F.Data.Dictionary.SetDefaultReturn("dSource",J)
+
+'pull in the standard settings - these will be used for all parts that don't have specific settings created for MRP 
+F.Data.Dictionary.CreateFromSQL("dSettings","coredb","SELECT NAME, VALUE FROM MRP_SETTINGS",20)
+'it's possible that the specific part settings may not have a width defined.  Replace it with the default width.
+f.Intrinsic.String.Build("SELECT PART, if(pd1width > 0, pd1width, {0}) as PD1WIDTH FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTWIDTHPD1,V.Local.sSql)
+f.Data.Dictionary.CreateFromSQL("fcWidth1","coredb",v.Local.sSql,20)
+f.Intrinsic.String.Build("SELECT PART, if(pd1width > 0, pd2width, {0}) as PD2WIDTH FROM MRP_FORECAST_PARTS",v.dictionary.dSettings!DEFAULTWIDTHPD2,V.Local.sSql)
+F.Data.Dictionary.CreateFromSQL("fcWidth2","coredb",v.Local.sSql,20)
+F.Data.Dictionary.SetDefaultReturn("fcWidth1",v.dictionary.dSettings!DEFAULTWIDTHPD1)
+F.Data.Dictionary.SetDefaultReturn("fcWidth2",v.dictionary.dSettings!DEFAULTWIDTHPD2)
+
+'get the highest ID number from MRP_Forecast
+f.ODBC.Connection!coredb.executeandreturn("select max(ID) from MRP_Forecast",v.Global.iID)
+f.Intrinsic.Math.Add(v.Global.iID,1,v.Global.iID)
+
+
+F.ODBC.Connection!coredb.Close
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.loadsettings.End
+
+
+Program.Sub.build_Firm_data.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.iLLC.Declare
+v.Local.sFilter.Declare
+v.Local.dtPd2Start.Declare
+'today plus part setting for pd1Width or defaultwidthpd1 (create a dictionary for width)
+v.Local.dtPd3Start.Declare 
+'dtPD2Start plus dtPD2width or defaultwidthpd2 (create dictionary for width)
+v.Local.sPd2Start.Declare
+v.Local.sPd3Start.Declare
+V.Local.sSql.Declare
+
+
+'===============================this pulls all records for a complete build=========================================
+
+'start date for period 1 is today, create the start for period 2 by adding the default width in work days and use the defult work day mask.
+f.Intrinsic.Date.DateAddWorkdays(v.Ambient.Date,v.dictionary.dsettings!DEFAULTWIDTHPD1,v.dictionary.dsettings!DAYFILTER,V.Local.dtPd2Start)
+
+f.ODBC.Connection!coredb.opencompanyconnection(5000)
+'create the planning table that will hold all records ready to write to the DB
+f.ODBC.Connection!coredb.execute("delete from MRP_Planning")
+
+'------------------FORECAST CUSTOMER ORDERS-------------------
+
+f.Intrinsic.UI.ChangeWaitStatus("Loading Forecasts....")
+'get forecast lines where updated is false.  we will update by ID later on so we don't have to calculate all of the mrp records every single time.
+'F.Intrinsic.String.Build("select cast(0 as integer) as FID, CAST(ID as CHAR(20)) as Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, LOCATION, DATEDUE, FORECASTQTY as DEMAND, CAST('S' AS CHAR(1)) AS EntryType, 'SO Forecast' as TypeDesc, 0 as PID, 0 as LLC from MRP_Forecast where DATEDUE >= '{0}' AND MRP_Refreshed = 0",V.Local.dtPd2Start.PervasiveDate,V.Local.sSql)
+
+'this includes customer forecast records in period 1 as an example
+v.Local.sSql.Set("select cast(0 as integer) as FID, CAST(ID as CHAR(20)) as Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, LOCATION, DATEDUE, FORECASTQTY as DEMAND, CAST('S' AS CHAR(1)) AS EntryType, 'SO Forecast' as TypeDesc, 0 as PID, 0 as LLC from MRP_Forecast where MRP_Refreshed = 0")
+
+f.Data.DataTable.CreateFromSQL("Forecast","coredb",v.Local.sSql,True)
+
+'---------------------FIRM DEMAND RECORDS FROM SALES ORDERS AND WORK ORDERS---------------------
+'columns needed for each table
+'FID, PART, LOCATION, DATEDUE, (DEMAND OR SUPPLY), EntryType, TypeDesc, PID, LLC
+f.Intrinsic.UI.ChangeWaitStatus("Loading Firm Demand and Supply....")
+'Sales  6 - Sales Order
+f.Data.DataTable.CreateFromSQL("Sales","coredb","select cast(0 as integer) as FID, (ORDER_NO + '-' + RECORD_NO) AS Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, Location, DATE_ITEM_PROM as DateDue, Qty_BO as DEMAND, cast('6' as CHAR(1)) as EntryType, 'Firm SO Demand' as TypeDesc, -1 as PID, 0 as LLC from V_ORDER_LINES where QTY_BO > 0",True)
+
+'Materials - 7 - work order
+'material requirements for work orders. (Dependant Demand)
+f.Data.DataTable.CreateFromSQL("JobReqs","coredb","select cast(0 as integer) as FID, (JOB + '-' + SUFFIX + '-' + SEQUENCE) AS Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, LOCATION, DATE_DUE AS DateDue, (QTY_COMMITTED - QTY_ISSUED) AS DEMAND, cast('7' as CHAR(1)) as EntryType, 'Firm WO Demand' as TypeDesc, -1 as PID, 0 as LLC from V_JOB_COMMITMENTS",True)
+
+
+'---------------------FIRM SUPPLY RECORDS---------------------
+'Receipts - 1 - PO
+'Fill Scheduled Receipts for Periods 1 and 2 Table from database  (from po lines)
+f.Data.DataTable.CreateFromSQL("POReceipts","coredb","select cast(0 as integer) as FID, (PURCHASE_ORDER + '-' + RECORD_NO) AS Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, Location, DUE_DATE_L as DateDue, (QTY_ORDER - QTY_RECEIVED) as SUPPLY, cast('1' as CHAR(1)) as EntryType, 'PO Receipts' as TypeDesc, -1 as PID, 0 as LLC from V_PO_LINES where FLAG_RECV_CLOSE <> 'Y' and (QTY_ORDER - QTY_RECEIVED) > 0",True)
+
+'Work orders due - 2 - Job
+f.Data.DataTable.CreateFromSQL("WOReceipts","coredb","select cast(0 as integer) as FID, (JOB + '-' + SUFFIX) as Reference, LTRIM(RTRIM(UCASE(PART))) AS PART, Location, DATE_DUE as DateDue, (QTY_ORDER - QTY_COMPLETED) as SUPPLY, cast('2' as CHAR(1)) as EntryType, 'WO Receipts' as TypeDesc, -1 as PID, 0 as LLC from V_Job_Header where (QTY_ORDER - QTY_COMPLETED) > 0 and Part != '' and date_closed = '1900-01-01'",True)
+
+F.ODBC.Connection!coredb.close
+
+'determine period based on today + period width.
+	'depend demand all periods
+	'sales orders period 1
+	'forecast sales period 3
+	'sales period 2 is the greater of sales and forecast
+	'firm po's in period 1
+	'firm wo's in period 1
+'do calcs for requirements
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.build_Firm_data.End
+
+Program.Sub.Fill_Firm_FromDictionary.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.iMax.Declare(long,1)
+V.Local.iFID.Declare
+v.Local.sCol.Declare
+
+
+
+f.Intrinsic.UI.ChangeWaitStatus("Setting key properties...")
+'fill Forecast with dictionary values and calculate dates, period starts, and period.
+f.Data.DataTable.AddColumn("Forecast","Lead","LONG")
+f.Data.DataTable.AddColumn("Forecast","DateStart","Date")
+f.Data.DataTable.AddColumn("Forecast","Source","String","",1)
+f.Data.DataTable.AddColumn("Forecast","P1Start","Date",v.Ambient.Date)
+f.Data.DataTable.AddColumn("Forecast","P1Width","Long")
+f.Data.DataTable.AddColumn("Forecast","P2Width","Long")
+f.Data.DataTable.AddColumn("Forecast","P2Start","Date")
+f.Data.DataTable.AddColumn("Forecast","P3Start","Date")
+
+F.Data.DataTable.FillFromDictionary("Forecast","dLLC","PART","LLC")
+f.Data.DataTable.FillFromDictionary("Forecast","dSource","Part","Source")
+F.Data.DataTable.FillFromDictionary("Forecast","dLead","PART","Lead")
+f.Data.DataTable.DateAdd("Forecast","DateDue","w","Lead","DateStart",62)
+'f.Data.DataTable.DateAdd("Forecast","DateDue","w","Lead","DateStart",62)
+f.Data.DataTable.FillFromDictionary("Forecast","fcWidth1","Part","P1Width")
+F.Data.DataTable.FillFromDictionary("Forecast","fcWidth2","Part","P2Width")
+f.Data.DataTable.DateAdd("Forecast","P1Start","w","P1Width","P2Start",62)
+f.Data.DataTable.DateAdd("Forecast","P2Start","w","P2Width","P3Start",62)
+f.Data.DataTable.AddExpressionColumn("Forecast","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+f.Data.DataView.Create("Forecast","vForecast",22)
+
+'fill Sales with dictionary values and calculate dates, period starts, and period.
+f.Data.DataTable.AddColumn("Sales","Lead","LONG")
+f.Data.DataTable.AddColumn("Sales","DateStart","DateTime")
+f.Data.DataTable.AddColumn("Sales","Source","String","",1)
+f.Data.DataTable.AddColumn("Sales","P1Start","DateTime",v.Ambient.Date)
+f.Data.DataTable.AddColumn("Sales","P1Width","Long")
+f.Data.DataTable.AddColumn("Sales","P2Width","Long")
+f.Data.DataTable.AddColumn("Sales","P2Start","Date")
+f.Data.DataTable.AddColumn("Sales","P3Start","Date")
+
+
+F.Data.DataTable.FillFromDictionary("Sales","dLLC","PART","LLC")
+f.Data.DataTable.FillFromDictionary("Sales","dSource","Part","Source")
+F.Data.DataTable.FillFromDictionary("Sales","dLead","PART","Lead")
+f.Data.DataTable.DateAdd("Sales","DateDue","w","Lead","DateStart",62)
+f.Data.DataTable.FillFromDictionary("Sales","fcWidth1","Part","P1Width")
+F.Data.DataTable.FillFromDictionary("Sales","fcWidth2","Part","P2Width")
+f.Data.DataTable.DateAdd("Sales","P1Start","w","P1Width","P2Start",62)
+f.Data.DataTable.DateAdd("Sales","P2Start","w","P2Width","P3Start",62)
+f.Data.DataTable.AddExpressionColumn("Sales","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+f.Data.DataView.Create("Sales","vSales",22)
+
+'fill JobReqs with dictionary values and calculate dates, period starts, and period.
+f.Data.DataTable.AddColumn("JobReqs","Lead","LONG")
+f.Data.DataTable.AddColumn("JobReqs","DateStart","DateTime")
+f.Data.DataTable.AddColumn("JobReqs","Source","String","Z",1)
+f.Data.DataTable.AddColumn("JobReqs","P1Start","DateTime",v.Ambient.Date)
+f.Data.DataTable.AddColumn("JobReqs","P1Width","Long")
+f.Data.DataTable.AddColumn("JobReqs","P2Width","Long")
+f.Data.DataTable.AddColumn("JobReqs","P2Start","Date")
+f.Data.DataTable.AddColumn("JobReqs","P3Start","Date")
+
+F.Data.DataTable.FillFromDictionary("JobReqs","dLLC","Part","LLC")
+f.Data.DataTable.FillFromDictionary("JobReqs","dSource","Part","Source")
+F.Data.DataTable.FillFromDictionary("JobReqs","dLead","Part","Lead")
+f.Data.DataTable.DateAdd("JobReqs","DateDue","w","Lead","DateStart",62)
+f.Data.DataTable.FillFromDictionary("JobReqs","fcWidth1","Part","P1Width")
+F.Data.DataTable.FillFromDictionary("JobReqs","fcWidth2","Part","P2Width")
+f.Data.DataTable.DateAdd("JobReqs","P1Start","w","P1Width","P2Start",62)
+f.Data.DataTable.DateAdd("JobReqs","P2Start","w","P2Width","P3Start",62)
+f.Data.DataTable.AddExpressionColumn("JobReqs","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+f.Data.DataView.Create("JobReqs","vJobReqs",22)
+
+'fill POReceipts with dictionary values and calculate dates, period starts, and period.
+f.Data.DataTable.AddColumn("POReceipts","Lead","LONG")
+f.Data.DataTable.AddColumn("POReceipts","DateStart","DateTime")
+f.Data.DataTable.AddColumn("POReceipts","Source","String","",1)
+f.Data.DataTable.AddColumn("POReceipts","P1Start","DateTime",v.Ambient.Date)
+f.Data.DataTable.AddColumn("POReceipts","P1Width","Long")
+f.Data.DataTable.AddColumn("POReceipts","P2Width","Long")
+f.Data.DataTable.AddColumn("POReceipts","P2Start","Date")
+f.Data.DataTable.AddColumn("POReceipts","P3Start","Date")
+
+F.Data.DataTable.FillFromDictionary("POReceipts","dLLC","PART","LLC")
+f.Data.DataTable.FillFromDictionary("POReceipts","dSource","Part","Source")
+F.Data.DataTable.FillFromDictionary("POReceipts","dLead","PART","Lead")
+f.Data.DataTable.DateAdd("POReceipts","DateDue","w","Lead","DateStart",62)
+f.Data.DataTable.FillFromDictionary("POReceipts","fcWidth1","Part","P1Width")
+F.Data.DataTable.FillFromDictionary("POReceipts","fcWidth2","Part","P2Width")
+f.Data.DataTable.DateAdd("POReceipts","P1Start","w","P1Width","P2Start",62)
+f.Data.DataTable.DateAdd("POReceipts","P2Start","w","P2Width","P3Start",62)
+f.Data.DataTable.AddExpressionColumn("POReceipts","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+f.Data.DataView.Create("POReceipts","vPOReceipts",22)
+
+'fill WOReceipts with dictionary values and calculate dates, period starts, and period.
+f.Data.DataTable.AddColumn("WOReceipts","Lead","LONG")
+f.Data.DataTable.AddColumn("WOReceipts","DateStart","DateTime")
+f.Data.DataTable.AddColumn("WOReceipts","Source","String","",1)
+f.Data.DataTable.AddColumn("WOReceipts","P1Start","DateTime",v.Ambient.Date)
+f.Data.DataTable.AddColumn("WOReceipts","P1Width","Long")
+f.Data.DataTable.AddColumn("WOReceipts","P2Width","Long")
+f.Data.DataTable.AddColumn("WOReceipts","P2Start","Date")
+f.Data.DataTable.AddColumn("WOReceipts","P3Start","Date")
+
+F.Data.DataTable.FillFromDictionary("WOReceipts","dLLC","PART","LLC")
+f.Data.DataTable.FillFromDictionary("WOReceipts","dSource","Part","Source")
+F.Data.DataTable.FillFromDictionary("WOReceipts","dLead","PART","Lead")
+
+
+f.Data.DataTable.DateAdd("WOReceipts","DateDue","w","Lead","DateStart",62)
+f.Data.DataTable.FillFromDictionary("WOReceipts","fcWidth1","Part","P1Width")
+F.Data.DataTable.FillFromDictionary("WOReceipts","fcWidth2","Part","P2Width")
+f.Data.DataTable.DateAdd("WOReceipts","P1Start","w","P1Width","P2Start",62)
+f.Data.DataTable.DateAdd("WOReceipts","P2Start","w","P2Width","P3Start",62)
+f.Data.DataTable.AddExpressionColumn("WOReceipts","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+F.Data.DataView.Create("WOReceipts","vWOReceipts",22)
+
+
+
+'fill the ID's for each firm table.
+f.Data.DataTable.SetSeries("Forecast","FID",V.Global.iFID,1)
+f.Intrinsic.Math.Add(v.Global.iFID,v.DataTable.Forecast.RowCount,v.Global.iFID)
+f.Data.DataTable.SetSeries("Sales","FID",v.Global.iFID,1)
+F.Intrinsic.Math.Add(V.Global.iFID,v.DataTable.Sales.RowCount,V.Global.iFID)
+f.Data.DataTable.SetSeries("JobReqs","FID",v.Global.iFID,1)
+F.Intrinsic.Math.Add(V.Global.iFID,v.DataTable.JobReqs.RowCount,V.Global.iFID)
+f.Data.DataTable.SetSeries("POReceipts","FID",v.Global.iFID,1)
+F.Intrinsic.Math.Add(V.Global.iFID,v.DataTable.POReceipts.RowCount,V.Global.iFID)
+f.Data.DataTable.SetSeries("WOReceipts","FID",v.Global.iFID,1)
+F.Intrinsic.Math.Add(V.Global.iFID,v.DataTable.WOReceipts.RowCount,V.Global.iFID)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.Fill_Firm_FromDictionary.End
+
+Program.Sub.build_mrp_records.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.iLevel.Declare(Long,0)
+v.Local.sFilter.Declare
+v.Local.sForeCastFilter.Declare
+V.Local.sSalesFilter.Declare
+v.Local.sMessage.Declare
+v.Local.sFields.Declare
+
+'MRPPlanning is where reorders, beginning, ending onhand is calculated before it's saved to the database
+'ForecastLines is used to pull in the child records from forecast parents before it's dumped to MRPPlanning for calculations
+'see comments section for source tables and relevant relationships.
+
+'filter by LLC starting at 0 and incrementing each loop
+f.Data.DataView.Create("LEVEL","vLEVEL",22)
+
+f.Intrinsic.String.Build("LLC = {0}",V.Local.iLevel,V.Local.sFilter)
+
+f.Data.DataView.SetFilter("LEVEL","vLEVEL",v.Local.sFilter)
+
+'f.Intrinsic.Control.DoUntil(v.Local.iLevel,>,5)
+f.Intrinsic.Control.DoUntil(v.DataView.LEVEL!vLEVEL.RowCount,=,0)
+
+	'specific filter for Forecasts
+	f.Intrinsic.String.Build("{0} AND (Period > 1 or PID > -1)",v.Local.sFilter,v.Local.sForeCastFilter)
+	'filter the forecast table based on current LLC and forecast specifics
+	f.Data.DataView.SetFilter("Forecast","vForecast",v.Local.sForeCastFilter)
+	f.Intrinsic.Control.If(v.DataView.Forecast!vForecast.RowCount,>,0)
+		'Update status for the user if they're watching or buiding by menu.
+		f.Intrinsic.String.Build("Processing: LLC {0} appending {1} records",v.Local.iLevel,v.DataView.Forecast!vForecast.RowCount,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		'make temp table from filtered view and merge temp to MRPPlanning
+		f.Data.DataView.ToDataTable("Forecast","vForecast","temp",True)
+		f.Data.DataTable.RemoveColumn("temp","period")
+		f.Data.DataTable.Merge("temp","MRPPlanning",False,2)
+		f.Data.DataTable.Close("temp")
+	f.Intrinsic.Control.EndIf
+	
+	'specific filter for sales
+	'f.Intrinsic.String.Build("{0} and period < 3",v.Local.sFilter,v.Local.sSalesFilter)
+	f.Intrinsic.String.Build("{0}",v.Local.sFilter,v.Local.sSalesFilter)
+	'filter the sales table based on current LLC
+	f.Data.DataView.SetFilter("Sales","vSales",v.Local.sSalesFilter)
+	f.Intrinsic.Control.If(v.DataView.Sales!vSales.RowCount,>,0)
+		'update status for the user if they're watching or building by menu.
+		f.Intrinsic.String.Build("Processing: LLC {0} appending {1} Sales Orders",v.Local.iLevel,v.DataView.Sales!vSales.RowCount,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		'make temp table from filtered view and merge temp to MRPPlanning
+		f.Data.DataView.ToDataTable("Sales","vSales","temp",True)
+		f.Data.DataTable.RemoveColumn("temp","period")
+		'f.Data.DataTable.AcceptChanges("temp")
+		f.Data.DataTable.Merge("temp","MRPPlanning",False,2)
+		f.Data.DataTable.Close("temp")
+	f.Intrinsic.Control.EndIf
+	
+	'filter the JobRequirements based on current LLC
+	f.Data.DataView.SetFilter("JobReqs","vJobReqs",v.Local.sFilter)
+	f.Intrinsic.Control.If(v.DataView.JobReqs!vJobReqs.RowCount,>,0)
+		'update status
+		f.Intrinsic.String.Build("Processing: LLC {0} appending {1} Job Requirements",v.Local.iLevel,v.DataView.JobReqs!vJobReqs.RowCount,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		'make temp table from filtered view and merge temp to MRPPlanning
+		f.Data.DataView.ToDataTable("JobReqs","vJobReqs","temp",True)
+		f.Data.DataTable.RemoveColumn("temp","period")
+		f.Data.DataTable.Merge("temp","MRPPlanning",False,2)
+		f.Data.DataTable.Close("temp")
+	f.Intrinsic.Control.EndIf
+	
+	'filter FcChildren (dependant demand records that are driven by the parent)
+	f.Data.DataView.SetFilter("FcChildren","vFcChildren",v.Local.sFilter)
+	f.Intrinsic.Control.If(v.DataView.FcChildren!vFcChildren.RowCount,>,0)
+		f.Intrinsic.String.Build("Processing: LLC {0} appending {1} Dependant Demand",v.Local.iLevel,v.DataView.FcChildren!vFcChildren.RowCount,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		'make temp table from filtered view and merge temp to MRPPlanning
+		f.Data.DataView.ToDataTable("FcChildren","vFcChildren","temp",True)
+		f.Data.DataTable.RemoveColumn("temp","period")
+		f.Data.DataTable.Merge("temp","MRPPlanning",False,2)
+		f.Data.DataTable.Close("temp")
+	f.Intrinsic.Control.EndIf
+		
+	'filter purchase order records on current LLC
+	f.Data.DataView.SetFilter("POReceipts","vPOReceipts",v.Local.sFilter)
+	f.Intrinsic.Control.If(v.DataView.POReceipts!vPOReceipts.RowCount,>,0)
+		f.Intrinsic.String.Build("Processing: LLC {0} appending {1} Purchase Orders",v.Local.iLevel,v.DataView.POReceipts!vPOReceipts.RowCount,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		'make temp table from filtered view and merge temp to MRPPlanning
+		f.Data.DataView.ToDataTable("POReceipts","vPOReceipts","temp",True)
+		f.Data.DataTable.RemoveColumn("temp","period")
+		f.Data.DataTable.Merge("temp","MRPPlanning",False,2)
+		f.Data.DataTable.Close("temp")
+	f.Intrinsic.Control.EndIf
+	
+	'filter open work orders on current LLC
+	f.Data.DataView.SetFilter("WOReceipts","vWOReceipts",v.Local.sFilter)
+	f.Intrinsic.Control.If(v.DataView.WOReceipts!vWOReceipts.RowCount,>,0)
+		f.Intrinsic.String.Build("Processing: LLC {0} appending {1} Work Orders",v.Local.iLevel,v.DataView.WOReceipts!vWOReceipts.RowCount,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		'make temp table from filtered view and merge temp to MRPPlanning
+		f.Data.DataView.ToDataTable("WOReceipts","vWOReceipts","temp",True)
+		f.Data.DataTable.RemoveColumn("temp","period")
+		f.Data.DataTable.Merge("temp","MRPPlanning",False,2)
+		f.Data.DataTable.Close("temp")
+	f.Intrinsic.Control.EndIf
+
+
+	'This is where the magic begins
+	f.Intrinsic.Control.If(v.DataTable.MRPPlanning.RowCount,>,0)
+		'we have all the parts for this level - time to build planned orders
+		f.Intrinsic.Control.CallSub(buildplannedorders,"LEVEL",V.Local.iLevel)
+		
+		'orders have been built for that tier.  Next we need to get the children parts (the next LLC)	
+		f.Intrinsic.Control.CallSub(getchildren,"LEVEL",V.Local.iLevel)
+
+
+		'next we'll save this level and load the children in to mrpplanning for the next loop
+		f.Intrinsic.Control.CallSub(save_build,"LEVEL",V.Local.iLevel)		
+			
+	f.Intrinsic.Control.EndIf
+
+	'End of loop - reset filter and return
+	F.Intrinsic.Math.Add(V.Local.iLevel,1,V.Local.iLevel)
+	F.Intrinsic.String.Build("LLC = {0}",V.Local.iLevel,V.Local.sFilter)
+	F.Data.DataView.SetFilter("LEVEL","vLEVEL",V.Local.sFilter)
+
+f.Intrinsic.Control.Loop
+
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.build_mrp_records.End
+
+Program.Sub.buildplannedorders.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sFilter.Declare
+v.Local.iCount.Declare
+V.Local.sStatus.Declare
+v.Local.sMessage.Declare
+
+
+
+F.Intrinsic.Control.If(V.DataTable.MRPPlanning.RowCount,>,0)
+	
+	f.Intrinsic.String.Build("Building Forecast orders: Level {0}",v.Args.level,v.Local.sStatus)
+	f.Intrinsic.UI.ChangeWaitStatus(v.Local.sStatus)
+	f.Intrinsic.Control.If(v.DataView.MRPPlanning!vPart.Exists)
+		f.Data.DataView.Close("MRPPlanning","vPart")
+	f.Intrinsic.Control.EndIf
+	
+	f.Data.DataView.Create("MRPPlanning","vPart",22,"","PART ASC, DATESTART ASC, ENTRYTYPE ASC")
+	'view to table distinct (part only)
+	F.Data.DataView.ToDataTableDistinct("MRPPlanning","vPart","PARTS","PART",True)
+	'f.Data.DataView.ToDataTable("MRPPlanning","vPart","RUN",True)
+	
+	'f.Intrinsic.Control.CallSub(build_runtable,"LEVEL",V.Args.LEVEL)
+
+	'loop through the distinct "parts" table to pull records from MRPPlanning for calculating run quantities
+	f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.parts.RowCount--,1)
+
+'	this IF block is just here for testing.
+'		f.Intrinsic.Control.If(v.DataTable.parts(v.Local.iCount).PART!FIELDVALTRIM,=,"0801264P107      C")
+'			v.Global.iDebug.Set(1)
+''			F.Intrinsic.Debug.InvokeDebugger
+''			Function.Intrinsic.Debug.Stop		
+'		f.Intrinsic.Control.EndIf
+		
+		f.Intrinsic.String.Build("{0}  Records {1} of {2}",v.Local.sStatus,v.Local.iCount,v.DataTable.parts.RowCount--,v.Local.sMessage)
+		f.Intrinsic.UI.ChangeWaitStatus(v.Local.sMessage)
+		f.Intrinsic.String.Build("PART = '{0}'",v.DataTable.parts(v.Local.iCount).PART!FIELDVALSTRING,V.Local.sFilter)
+		F.Data.DataView.SetFilter("MRPPlanning","vPart",v.Local.sFilter)
+			
+		'we have to compare the current onhand quantity, the safety stock, and the first required date.
+		'this may require us to add a single row with today's date to take care of the safety stock.
+		'
+		F.Intrinsic.Control.CallSub(satisfy_safety_stock,"PART",V.DataView.MRPPlanning!vPart(0).PART!FIELDVALSTRING)
+		
+		
+		f.Data.DataView.ToDataTable("MRPPlanning","vPart","RUNA",True)
+		F.Data.DataTable.Clone("MRPPlanning","RUN",True)
+		'we have to compare the current onhand quantity, the safety stock, and the first required date.
+		'this may require us to add a single row with today's date to take care of the safety stock.
+		
+		f.Data.DataTable.Merge("RUNA","RUN",True,4)
+		f.Data.DataTable.Close("RUNA")
+		F.Data.DataTable.SetPK("RUN","FID")
+
+		f.Intrinsic.Control.CallSub(build_runtable,"LEVEL",v.Args.level,"PART",V.DataTable.RUN(0).PART!FIELDVALSTRING)
+		
+	f.Intrinsic.Control.Next(v.Local.iCount)
+
+	f.Data.DataTable.Close("PARTS")
+	
+'	f.Data.DataTable.Merge("TEMPRUN","MRPPlanning",False,4)
+'	f.Data.DataTable.Close("TEMPRUN")
+	
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.buildplannedorders.End
+
+Program.Sub.satisfy_safety_stock.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.fOnHand.Declare
+v.Local.dOldest.Declare
+v.Local.sFilter.Declare
+V.Local.fDemand.Declare
+v.Local.dStart.Declare
+v.Local.iDays.Declare
+
+
+'dQTYREORDER
+'dONHAND
+'dQTYORDER
+
+
+
+'v.Local.sRow.Set(v.DataTable.MRPPlanning(v.DataView.MRPPlanning!vPart(0).DatatableIndex).fullrow)
+'first check to see if the current onHand quantity is less than the reorder point.
+F.Intrinsic.Control.If(V.Dictionary.dONHAND![v.Args.PART],<,V.Dictionary.dQTYREORDER![V.Args.PART])
+	'if it is, let's get the StartDate of the first row and compare that date with today.
+	f.Intrinsic.Control.If(v.DataView.MRPPlanning!vPart(0).DATESTART!FIELDVAL,>,V.Ambient.Date)
+		v.Local.fDemand.Set(v.dictionary.dQTYREORDER![v.Args.PART])
+		'if the start date of the first row is > than today, this means we need to add a demand record for today that satisfies the reorder point.
+		f.Intrinsic.String.Build("FID = {0}",v.DataView.MRPPlanning!vPart(0).FID!FIELDVALLONG,V.Local.sFilter)
+		F.Data.DataView.Create("MRPPlanning","vSafetyStock",22,V.Local.sFilter,"")
+		F.Data.DataView.ToDataTable("MRPPlanning","vSafetyStock","SafetyStock",True)
+		v.Local.iDays.Set(v.dictionary.dLead![v.Args.PART])
+'		f.Intrinsic.Control.If(v.Local.iDays,<,0)
+'			f.Intrinsic.Math.Mult(v.Local.iDays,-1,v.Local.iDays)
+'		f.Intrinsic.Control.EndIf
+'		f.Intrinsic.Date.DateSubtractWorkdays(v.Ambient.Date,v.Local.iDays,62,V.Local.dStart)
+		f.Intrinsic.Date.DateAddWorkDays(v.Ambient.Date,v.Local.iDays,62,V.Local.dStart)
+		f.Data.DataTable.SetValue("SafetyStock",0,"FID",V.Global.iFID,"Reference","Safety","EntryType","I","TypeDesc","SafetyStock","PID",-1,"Supply",0,"Demand",0,"DateDue",V.Ambient.Date,"DateStart",V.Local.dStart)
+		f.Data.DataTable.Merge("SafetyStock","MRPPlanning",False,2)
+		f.Data.DataTable.Close("SafetyStock")
+		f.Data.DataView.Close("MRPPlanning","vSafetyStock")
+		F.Intrinsic.Math.Add(V.Global.iFID,1,V.Global.iFID)
+	f.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.EndIf
+	
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.satisfy_safety_stock.End
+
+Program.Sub.build_runtable.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+V.Local.fStartQty.Declare
+V.Local.iCount.Declare
+V.Local.iRow.Declare
+V.Local.fOnHand.Declare
+v.Local.fSales.Declare
+v.Local.fForecast.Declare
+v.Local.sFilter.Declare
+V.Local.fTotalForecast.Declare
+v.Local.fTotalSales.Declare
+v.Local.fUnconsumed.Declare
+v.Local.iUncTotal.Declare
+v.Local.iSales.Declare
+v.Local.fConsumed.Declare
+
+'use a consumption method here to drive total demand.  This way planned orders are generated based off of total demand within a zone and the planned orders will match up better with firm demand instead of matching up to forecast orders.
+
+
+
+
+'beginning on hand
+f.Data.DataTable.AddColumn("RUN","ONHAND","FLOAT",0)
+'reorder point
+F.Data.DataTable.AddColumn("RUN","REORDER","FLOAT")
+'minimum amount to order - MFG parts have a minimum manufacture quantity - purchase parts just have a reorder quantity
+F.Data.DataTable.AddColumn("RUN","MINORDER","FLOAT")
+'incremental amount to order - this is the manufacturing multiple or purchase reorder qty.
+F.Data.DataTable.AddColumn("RUN","INCREMENT","FLOAT")
+
+
+F.Data.DataTable.AddExpressionColumn("RUN","FORECAST2","FLOAT","IIF(PERIOD = 2 AND ENTRYTYPE = 'S',0 + DEMAND,0)")
+F.Data.DataTable.AddExpressionColumn("RUN","SALES2","FLOAT","IIF(PERIOD = 2 AND ENTRYTYPE = '6',0 + DEMAND,0)")
+F.Data.DataTable.AddColumn("RUN","TOTALFORECAST","FLOAT")
+F.Data.DataTable.AddColumn("RUN","TOTALSALES","FLOAT")
+F.Data.DataTable.AddColumn("RUN","MONTH","STRING")
+F.Data.DataTable.SetValueFormat("RUN",-1,"DateDue","MONTH","YYMM")
+F.Data.DataTable.AddColumn("RUN","TOTALDEMAND","FLOAT",-1)
+
+
+
+'look at each bucket in period 2 and determine the total demand within the bucket
+F.Data.DataView.Create("RUN","vBuckets",22,"PERIOD = 2 AND ENTRYTYPE IN ('S','6')","")
+F.Intrinsic.Control.If(V.DataView.RUN!vBuckets.RowCount,>,0)
+	F.Data.DataView.ToDataTableDistinct("RUN","vBuckets","MONTHS","MONTH")
+	
+	'loop through months and filter the records in the data table
+	f.Intrinsic.Control.For(v.Local.iCount,0,v.DataTable.MONTHS.RowCount--,1)
+		'set the variables for each loop
+			V.Local.fTotalForecast.Set(0)
+			V.Local.fTotalSales.Set(0)
+			v.Local.fUnconsumed.Set(0)
+			v.Local.iUncTotal.Set(0)
+			v.Local.fConsumed.Set(0)
+	
+		F.Intrinsic.String.Build("PERIOD = 2 AND MONTH = '{0}'",V.DataTable.MONTHS(V.Local.iCount).MONTH!FIELDVAL,V.Local.sFilter)
+		F.Data.DataView.SetFilter("RUN","vBuckets",V.Local.sFilter)
+		'calculate the total sales and total forecast for this bucket(month)
+		f.Intrinsic.String.Build("{0} AND ENTRYTYPE = 'S'",V.Local.sFilter,V.Local.sFilter)
+		F.Data.DataTable.Compute("RUN","SUM(DEMAND)",V.Local.sFilter,V.Local.fTotalForecast)
+		V.Local.iUncTotal.Set(V.Local.fTotalForecast)
+		F.Intrinsic.String.Replace(V.Local.sFilter,"ENTRYTYPE = 'S'","ENTRYTYPE = '6'",V.Local.sFilter)
+		F.Data.DataTable.Compute("RUN","SUM(DEMAND)",V.Local.sFilter,V.Local.fTotalSales)
+		v.Local.iSales.Set(v.Local.fTotalSales)
+		'forecast  > sales
+		F.Intrinsic.Control.If(V.Local.fTotalForecast,>,V.Local.fTotalSales)
+			'EntryType = S = SO Forecast
+			'EntryType = 6 = Firm Sales Order
+			'loop through the month and calculate the total demand for each line (this is consuming the forcast)
+			f.Intrinsic.Control.For(v.Local.iRow,0,v.DataView.RUN!vBuckets.RowCount--,1)
+				'if this is a forecast line
+				f.Intrinsic.Control.If(v.DataView.RUN!vBuckets(v.Local.iRow).EntryType!FIELDVALTRIM,=,"S")
+					'check to see if we've depleted sales yet
+					f.Intrinsic.Math.Add(v.Local.fConsumed,v.DataView.RUN!vBuckets(V.Local.iRow).DEMAND!FIELDVAL,V.Local.fConsumed)
+					
+					F.Intrinsic.Control.If(V.Local.fConsumed,<=,V.Local.fTotalSales)
+						V.Local.fUnconsumed.Set(0)
+					F.Intrinsic.Control.Else
+						F.Intrinsic.Math.Sub(V.Local.fConsumed,V.Local.fTotalSales,V.Local.fUnconsumed)
+						F.Intrinsic.Math.Sub(V.Local.fConsumed,V.Local.fUnconsumed,V.Local.fConsumed)
+					F.Intrinsic.Control.EndIf
+
+				'if this is a sales line
+				f.Intrinsic.Control.ElseIF(v.DataView.RUN!vBuckets(v.Local.iRow).EntryType!FIELDVALTRIM,=,"6")
+					F.Intrinsic.Control.If(V.Local.fConsumed,<=,V.Local.fTotalSales)
+						V.Local.fUnconsumed.Set(v.DataView.RUN!vBuckets(V.Local.iRow).DEMAND!FIELDVAL)
+					F.Intrinsic.Control.Else
+						V.Local.fUnconsumed.Set(0)
+					F.Intrinsic.Control.EndIf
+				f.Intrinsic.Control.EndIf
+				
+				F.Data.DataView.SetValue("RUN","vBuckets",V.Local.iRow,"TOTALDEMAND",V.Local.fUnconsumed)
+
+			F.Intrinsic.Control.Next(V.Local.iRow)
+			
+		'sales > forecast
+		f.Intrinsic.Control.ElseIf(v.Local.fTotalSales,>=,v.Local.fForecast)
+			f.Intrinsic.Control.For(v.Local.iRow,0,v.DataView.RUN!vBuckets.RowCount--,1)
+				f.Intrinsic.Control.If(v.DataView.RUN!vBuckets(V.Local.iRow).ENTRYTYPE!FIELDVALTRIM,=,"6")
+					F.Data.DataView.SetValue("RUN","vBuckets",V.Local.iRow,"TOTALDEMAND",v.DataView.RUN!vBuckets(V.Local.iRow).DEMAND!FIELDVAL)
+				F.Intrinsic.Control.Else
+					F.Data.DataView.SetValue("RUN","vBuckets",V.Local.iRow,"TOTALDEMAND",0)
+				f.Intrinsic.Control.EndIf
+			f.Intrinsic.Control.Next(v.Local.iRow)
+		
+		F.Intrinsic.Control.EndIf
+
+	
+	f.Intrinsic.Control.Next(v.Local.iCount)
+
+F.Intrinsic.Control.EndIf
+
+f.Data.DataTable.AcceptChanges("RUN")
+
+'now that we've addressesed Sales and Forecast in zone 2, let's address everthing else
+f.Data.DataView.SetFilter("RUN","vBuckets","TOTALDEMAND = -1")
+F.Intrinsic.Control.For(V.Local.iRow,v.DataView.RUN!vBuckets.RowCount--,0,-1)
+	F.Intrinsic.Control.If(v.DataView.RUN!vBuckets(V.Local.iRow).ENTRYTYPE!FIELDVALTRIM,=,"S",AND,v.DataView.RUN!vBuckets(V.Local.iRow).PERIOD!FIELDVAL,<,2)
+		F.Data.DataView.SetValue("RUN","vBuckets",v.Local.iRow,"TOTALDEMAND",0)
+	F.Intrinsic.Control.Else
+		F.Data.DataView.SetValue("RUN","vBuckets",v.Local.iRow,"TOTALDEMAND",V.DataView.RUN!vBuckets(v.Local.iRow).DEMAND!FIELDVAL)
+	F.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(V.Local.iRow)
+
+
+F.Data.DataTable.AddExpressionColumn("RUN","NET","FLOAT","ONHAND + SUPPLY - TOTALDEMAND")
+
+
+'BUILD QUANTITY STEP 1
+f.Data.DataTable.AddExpressionColumn("RUN","REQUIRED","FLOAT","IIF(NET < REORDER,REORDER - NET,0)")
+'build says we need some, now we have to determine greater than / less than values for build
+f.Data.DataTable.AddExpressionColumn("RUN","MULTIPLIER","FLOAT","IIF(REQUIRED > MINORDER AND INCREMENT > 0,REQUIRED/INCREMENT,IIF(REQUIRED > MINORDER AND INCREMENT = 0,REQUIRED,0))")
+F.Data.DataTable.AddExpressionColumn("RUN","WHOLE","LONG","IIF(MULTIPLIER > 0,MULTIPLIER,0)")
+F.Data.DataTable.AddExpressionColumn("RUN","DECIMAL","FLOAT","IIF(MULTIPLIER > 0,MULTIPLIER - WHOLE,0)")
+f.Data.DataTable.AddExpressionColumn("RUN","NUMINCREMENTS","FLOAT","IIF(DECIMAL > 0,WHOLE + 1,WHOLE)")
+F.Data.DataTable.AddExpressionColumn("RUN","RUNQTY","FLOAT","IIF(PID = 0 AND PERIOD < 2,0,IIF(INCREMENT > 0,IIF(REQUIRED > 0,IIF(REQUIRED > MINORDER,NUMINCREMENTS * INCREMENT,MINORDER),REQUIRED),REQUIRED))")
+
+F.Data.DataTable.AddExpressionColumn("RUN","NETCHANGE","FLOAT","SUPPLY - TOTALDEMAND + RUNQTY")
+'f.Data.DataTable.AddExpressionColumn("RUN","NETCHANGE","FLOAT","IIF(TOTALFORECAST > TOTALSALES,IIF(PID = 0 AND PERIOD < 2,0,IIF(PERIOD = 2 AND EntryType = '6',0,IIF(PERIOD = 3 AND EntryType = '6',0,0 + SUPPLY - DEMAND + RUNQTY))),IIF(PID = 0 AND PERIOD < 2,0,IIF(PERIOD = 2 AND EntryType = 'S',0,IIF(PERIOD = 3 AND EntryType = '6',0,0 + SUPPLY - DEMAND + RUNQTY))))")
+
+
+F.Data.DataTable.AddExpressionColumn("RUN","BALANCE","FLOAT","ONHAND + NETCHANGE")
+
+
+'v.Local.fStartQty.Set(v.dictionary.dONHAND![v.DataTable.RUN(0).PART!FIELDVAL])
+	F.Data.DataTable.FillFromDictionary("RUN","dOnHand","PART","ONHAND")
+	F.Data.DataTable.FillFromDictionary("RUN","dQtyReorder","PART","REORDER")
+	F.Data.DataTable.FillFromDictionary("RUN","dQtyOrder","PART","MINORDER")
+	F.Data.DataTable.FillFromDictionary("RUN","dQtyOrder","PART","INCREMENT")
+
+'set the beginning balance  on the first row
+'f.Data.Datatable.SetValue("RUN",0,"ONHAND",V.Local.fStartQty)
+
+
+'this command sets the start balance on each row equal to the end balance of the previous row.
+'far faster than looping in this instance
+F.Data.DataTable.SetValueOnNextLine("RUN","BALANCE","ONHAND")
+
+
+
+f.Intrinsic.Control.If(v.DataTable.TEMPRUN.Exists)
+	f.Data.DataTable.Merge("RUN","TEMPRUN",True,2)
+f.Intrinsic.Control.Else
+	F.Intrinsic.Control.CallSub(build_temprun)
+	F.Data.DataTable.Merge("RUN","TEMPRUN",True,2)
+f.Intrinsic.Control.EndIf
+
+
+
+'close the run table for the next loop
+F.Data.DataTable.Close("RUN")
+f.Intrinsic.Control.If(v.DataTable.MONTH.Exists)
+	F.Data.DataTable.Close("MONTH")
+F.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.build_runtable.End
+
+Program.Sub.getchildren.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.sFilter.Declare
+V.Local.iFID.Declare
+V.Local.iLevel.Declare
+V.Local.sStatus.Declare
+
+'Need to prevent open work orders from pulling in their BOM children.  Those BOM children are already accounted for in material requirements being pulled in from the job_commitments table.
+
+f.Intrinsic.String.Build("Building Supply records for level {0}",v.Args.LEVEL,v.Local.sStatus)
+f.Intrinsic.UI.ChangeWaitStatus(v.Local.sStatus)
+'This pulls out the planned orders to make unique records for the supply side
+f.Data.Linq.Join("INNERJOIN","DATATABLE","TEMPRUN*!*M","DATATABLE","SETTINGS*!*B","M.PART = B.PART","M.PART*!*M.LOCATION*!*M.RUNQTY AS SUPPLY*!*M.DateStart*!*M.DATEDUE*!*M.CATEGORY*!*M.FID AS PID*!*M.EntryType + '-' + M.TYPEDESC AS REFERENCE","M.RUNQTY > 0 ","","M.DateStart ASC","Supply",True)
+
+f.Intrinsic.Control.If(v.DataTable.Supply.Exists)
+	f.Intrinsic.Control.If(v.DataTable.SUPPLY.RowCount,>,0)
+		f.Intrinsic.UI.ChangeWaitStatus("Writing Supply........")
+		'adding columns and values to the Supply table
+		F.Data.DataTable.AddColumn("Supply","FID","LONG")
+		F.Data.DataTable.AddColumn("Supply","Demand","Float",0)
+		f.Data.DataTable.AddColumn("Supply","EntryType","STRING","",1)
+		F.Data.DataTable.AddColumn("Supply","TYPEDESC","STRING")
+		f.Data.DataTable.AddColumn("Supply","LLC","LONG")
+		f.Data.DataTable.AddColumn("Supply","Lead","LONG")
+		f.Data.DataTable.AddColumn("Supply","Source","String","",1)
+		f.Data.DataTable.AddColumn("Supply","P1Start","DateTime",v.Ambient.Date)
+		f.Data.DataTable.AddColumn("Supply","P1Width","Long")
+		f.Data.DataTable.AddColumn("Supply","P2Width","Long")
+		f.Data.DataTable.AddColumn("Supply","P2Start","Date")
+		f.Data.DataTable.AddColumn("Supply","P3Start","Date")
+		f.Data.DataTable.AddColumn("Supply","BuildDate","DateTime",v.Ambient.Now)
+		
+	
+		F.Data.DataTable.SetSeries("Supply","FID",V.Global.iFID,1)
+		F.Intrinsic.Math.Add(V.Global.iFID,v.DataTable.Supply.RowCount,V.Global.iFID)
+		F.Data.DataTable.FillFromDictionary("Supply","dLLC","PART","LLC")
+		f.Data.DataTable.FillFromDictionary("Supply","dSource","Part","Source")
+		F.Data.DataTable.FillFromDictionary("Supply","dLead","PART","Lead")
+		f.Data.DataTable.FillFromDictionary("Supply","fcWidth1","Part","P1Width")
+		F.Data.DataTable.FillFromDictionary("Supply","fcWidth2","Part","P2Width")
+		f.Data.DataTable.DateAdd("Supply","P1Start","w","P1Width","P2Start",62)
+		f.Data.DataTable.DateAdd("Supply","P2Start","w","P2Width","P3Start",62)
+		f.Data.DataTable.AddExpressionColumn("Supply","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndIf
+
+
+f.Intrinsic.Math.Add(v.Args.LEVEL,1,V.Local.iLevel)
+f.Intrinsic.String.Build("Building Dependant Demand Records for level {0}",v.Local.iLevel,v.Local.sStatus)
+f.Intrinsic.UI.ChangeWaitStatus(v.Local.sStatus)
+'This query generates dependant demand based on the planned orders being created at the parent level.
+f.Data.Linq.Join("INNERJOIN","DATATABLE","TEMPRUN*!*M","DATATABLE","BOM_MASTER*!*B","M.PART = B.BPARENT","B.PART*!*M.LOCATION*!*B.QUANTITY * M.RUNQTY AS DEMAND*!*M.DateStart AS DATEDUE*!*B.CATEGORY*!*M.FID AS PID*!*M.EntryType + '-' + M.TYPEDESC AS REFERENCE","M.RUNQTY > 0 AND M.ENTRYTYPE <> '2'","","M.DateStart ASC","DDemand",True)
+'f.Intrinsic.Control.If(v.Global.iDebug,=,1)
+'	v.Global.iDebug.Set(0)
+'	Function.Intrinsic.Debug.InvokeDebugger
+'	Function.Intrinsic.Debug.Stop
+'f.Intrinsic.Control.EndIf
+
+f.Intrinsic.Control.If(v.DataTable.DDemand.Exists)
+	f.Intrinsic.Control.If(v.DataTable.DDemand.RowCount,>,0)
+		f.Intrinsic.UI.ChangeWaitStatus("Writing Dependant Demand....")
+	'adding columns and values to the dependent demand table
+		F.Data.DataTable.AddColumn("DDemand","FID","LONG")
+		F.Data.DataTable.AddColumn("DDemand","Supply","FLOAT",0)
+		f.Data.DataTable.AddColumn("DDemand","EntryType","STRING","",1)
+		F.Data.DataTable.AddColumn("DDemand","TYPEDESC","STRING")
+		f.Data.DataTable.AddColumn("DDemand","LLC","LONG")
+		f.Data.DataTable.AddColumn("DDemand","Lead","LONG")
+		f.Data.DataTable.AddColumn("DDemand","DateStart","DateTime")
+		f.Data.DataTable.AddColumn("DDemand","Source","String","",1)
+		f.Data.DataTable.AddColumn("DDemand","P1Start","DateTime",v.Ambient.Date)
+		f.Data.DataTable.AddColumn("DDemand","P1Width","Long")
+		f.Data.DataTable.AddColumn("DDemand","P2Width","Long")
+		f.Data.DataTable.AddColumn("DDemand","P2Start","Date")
+		f.Data.DataTable.AddColumn("DDemand","P3Start","Date")
+		f.Data.DataTable.AddColumn("DDemand","BuildDate","DateTime",v.Ambient.Now)
+		
+		F.Data.DataTable.SetSeries("DDemand","FID",V.Global.iFID,1)
+		F.Intrinsic.Math.Add(V.Global.iFID,v.DataTable.DDemand.RowCount,V.Global.iFID)
+		F.Data.DataTable.FillFromDictionary("DDemand","dLLC","PART","LLC")
+		f.Data.DataTable.FillFromDictionary("DDemand","dSource","Part","Source")
+		F.Data.DataTable.FillFromDictionary("DDemand","dLead","PART","Lead")
+		f.Data.DataTable.DateAdd("DDemand","DateDue","w","Lead","DateStart",62)
+		f.Data.DataTable.FillFromDictionary("DDemand","fcWidth1","Part","P1Width")
+		F.Data.DataTable.FillFromDictionary("DDemand","fcWidth2","Part","P2Width")
+		f.Data.DataTable.DateAdd("DDemand","P1Start","w","P1Width","P2Start",62)
+		f.Data.DataTable.DateAdd("DDemand","P2Start","w","P2Width","P3Start",62)
+		f.Data.DataTable.AddExpressionColumn("DDemand","Period","LONG","IIF(DateDue >= P1Start,IIF(DateDue >= P2Start,IIF(DateDue >= P3Start,3,2),1),0)")
+		F.Data.DataView.Create("DDemand","vDDemand",22)
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.getchildren.End
+
+Program.Sub.save_build.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+v.Local.iCurrent.Declare
+v.Local.iNext.Declare
+v.Local.sFilter.Declare
+v.Local.sMap.Declare
+
+v.Local.sMap.Set("FID@!@FID*!*PART@!@PART*!*LOCATION@!@LOCATION*!*SUPPLY@!@SUPPLY*!*DEMAND@!@DEMAND*!*DATESTART@!@DATESTART*!*DATEDUE@!@DATEDUE*!*PERIOD@!@PERIOD*!*ENTRYTYPE@!@ENTRYTYPE*!*TYPEDESC@!@TYPEDESC*!*REFERENCE@!@REFERENCE*!*CATEGORY@!@CATEGORY*!*PID@!@PID*!*BUILDDATE@!@BUILDDATE")
+
+v.Local.iCurrent.Set(v.Args.LEVEL)
+f.Intrinsic.Math.Add(v.Local.iCurrent,1,v.Local.iNext)
+
+'open a connection so we can write records
+f.ODBC.Connection!coredb.opencompanyconnection(1000)
+'add the EntryType and TypeDesc
+'"3 - Forecast WO" for mfg parts
+'"P - Forecast PO" for purchased and consigned parts
+'fill in the correct values for type and type description.
+f.Intrinsic.Control.If(v.DataTable.DDemand.Exists)
+	f.Intrinsic.Control.If(v.DataTable.DDemand.RowCount,>,0)
+		f.Data.DataView.SetFilter("DDemand","vDDemand","SOURCE = 'P' OR SOURCE = 'J'")
+		f.Data.DataView.SetValue("DDemand","vDDemand",-1,"EntryType","9","TYPEDESC","DepDmd Purchase")
+		f.Data.DataView.SetFilter("DDemand","vDDemand","SOURCE = 'M' OR SOURCE = 'F'")
+		f.Data.DataView.SetValue("DDemand","vDDemand",-1,"EntryType","F","TYPEDESC","DepDmd Work Order")
+	f.Intrinsic.Control.EndIf
+f.Intrinsic.Control.EndIf
+
+
+f.Intrinsic.Control.If(v.DataTable.Supply.Exists)
+	f.Intrinsic.Control.If(v.DataTable.Supply.RowCount,>,0)
+		f.Data.DataView.Create("Supply","vSupply",22,"SOURCE = 'P' OR SOURCE = 'J'","")
+		F.Data.DataView.SetValue("Supply","vSupply",-1,"EntryType","P","TypeDesc","Planned PO")
+		f.Data.DataView.SetFilter("Supply","vSupply","SOURCE = 'M' OR SOURCE = 'F'")
+		F.Data.DataView.SetValue("Supply","vSupply",-1,"EntryType","3","TypeDesc","Planned WO")
+		
+		F.Data.DataTable.SaveToDB("Supply","coredb","MRP_Planning","FID",128,V.Local.sMap)
+	f.Intrinsic.Control.EndIf
+	f.Data.DataTable.Close("Supply")
+f.Intrinsic.Control.EndIf
+
+
+f.Intrinsic.String.Build("Saving LLC {0} to database...",v.Local.iCurrent,v.Local.sFilter)
+f.Intrinsic.UI.ChangeWaitStatus(v.Local.sFilter)
+
+'close the supply table and delete the records from MRPPlanning
+f.Data.DataTable.AddColumn("TEMPRUN","BuildDate","DateTime",v.Ambient.Now)
+F.Data.DataTable.SaveToDB("TEMPRUN","coredb","MRP_Planning","FID",128,V.Local.sMap)
+F.Data.DataTable.Close("TEMPRUN")
+f.Data.DataTable.DeleteRow("MRPPlanning")
+f.Data.DataTable.AcceptChanges("MRPPlanning")
+
+f.Intrinsic.Control.If(v.DataTable.DDemand.Exists)
+	F.Intrinsic.Control.If(V.DataTable.DDemand.RowCount,>,0)
+		'next, create a filtered view of DDemand based LLC > the next level.
+		'merge these records to FcChildren for later
+		f.Intrinsic.String.Build("LLC > {0}",V.Local.iNext,V.Local.sFilter)
+		f.Data.DataView.SetFilter("DDemand","vDDemand",V.Local.sFilter)
+		f.Intrinsic.Control.If(v.DataView.DDemand!vDDemand.RowCount,>,0)
+			F.Data.DataView.ToDataTable("DDemand","vDDemand","TEMP")
+			f.Data.DataTable.Merge("TEMP","FcChildren",True,2)
+			f.Data.DataTable.Close("TEMP")
+		f.Intrinsic.Control.EndIf
+		
+		'create a filtered view of DDemand where LLC = the next level.
+		'merge these records in the MRPPlanning
+		f.Intrinsic.String.Replace(v.Local.sFilter,">","=",v.Local.sFilter)
+		f.Data.DataView.SetFilter("DDemand","vDDemand",v.Local.sFilter)
+		f.Intrinsic.Control.If(v.DataView.DDemand!vDDemand.RowCount,>,0)
+			f.Data.DataView.ToDataTable("DDemand","vDDemand","TEMP")
+			F.Data.DataTable.Merge("TEMP","MRPPlanning",True,2)
+			f.Data.DataTable.Close("TEMP")
+		f.Intrinsic.Control.EndIf
+	f.Intrinsic.Control.EndIf
+	
+	f.Data.DataTable.Close("DDemand")
+f.Intrinsic.Control.EndIf
+'before we move on to the next level, we have to check FcChildren for any records that belong in the next level
+'possibly merged in from a previous loop
+f.Intrinsic.String.Build("LLC = {0}",V.Local.iNext,V.Local.sFilter)
+f.Data.DataView.SetFilter("FcChildren","vFcChildren",v.Local.sFilter)
+f.Intrinsic.Control.If(v.DataView.FcChildren!vFcChildren.RowCount,>,0)
+	f.Data.DataView.ToDataTable("FcChildren","vFcChildren","TEMP")
+	F.Data.DataTable.Merge("TEMP","MRPPlanning",True,2)
+	f.Data.DataTable.Close("TEMP")
+f.Intrinsic.Control.EndIf
+
+
+'close the connection
+F.ODBC.Connection!coredb.Close
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.save_build.End
+
+Program.Sub.build_temprun.Start
+F.Intrinsic.Control.Try
+V.Local.sError.Declare
+
+'this is used a temporary bucket of records as they pass from mrpplanning to run to getchildren
+f.Data.DataTable.Create("TEMPRUN",True)
+f.data.datatable.addcolumn("TEMPRUN","FID","LONG")
+f.data.datatable.addcolumn("TEMPRUN","Reference","STRING")
+f.data.datatable.addcolumn("TEMPRUN","PART","string")
+f.data.datatable.addcolumn("TEMPRUN","Location","string")
+f.data.datatable.addcolumn("TEMPRUN","DateDue","dateTime")
+f.data.datatable.addcolumn("TEMPRUN","SUPPLY","LONG",0)
+f.data.datatable.addcolumn("TEMPRUN","DEMAND","LONG",0)
+f.data.datatable.addcolumn("TEMPRUN","EntryType","string")
+f.data.datatable.addcolumn("TEMPRUN","TypeDesc","string")
+f.data.DataTable.AddColumn("TEMPRUN","Category","string")
+f.data.datatable.addcolumn("TEMPRUN","PID","LONG")
+f.data.datatable.addcolumn("TEMPRUN","Period","LONG")
+f.data.datatable.addcolumn("TEMPRUN","DateStart","dateTime")
+f.data.datatable.addcolumn("TEMPRUN","RUNQTY","FLOAT")
+F.Data.DataTable.SetPK("TEMPRUN","FID")
+
+F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.catch
+f.Intrinsic.Control.CallSub(catching,"sub",v.Ambient.CurrentSubroutine,"errorno",v.Ambient.ErrorNumber,"errordesc",v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.build_temprun.End
+
+
+Program.Sub.comments.Start
+A general overview of this program:  We are using Sales Order, Work Orders, Purchase Orders, Work Order Demand, and Customer Forecast to build an MRP Model without the use of forcast work orders.  Start dates and due dates are generated using lead times on the inventory master. BOM's are required as the children are generated from the BOM Master table.
+In order to use this for single level routers, there must a BOM built to account for the materials used.
+
+
+for each record generate the "type" field is populated with the same values being used in the core MRP database.
+Supply records
+1 - purchase order
+2 - work order
+3 - forecast work order
+4 - inventory in transit (transfer order)*
+5 - work order from quality *
+T - transfer order *
+C - PO Container *
+Demand Records
+6 - sales order
+7 - work order requirements
+8 - sales order line(shipped or consignment if consign flag is set)
+9 - Forecast work order requirement (dependant demand)
+A - Sales Order Bom Parent Line (type B) *
+I - Invoicing Order *
+K - Blanket Sales Order *
+
+* item are not used in this buildup.
+
+the categories we need for the viewer in 3 periods
+Beginning On-Hand
+Sales Forecast
+Customer Orders
+Dependant Demand
+Unconsumed Forecast
+Total Demand
+
+Scheduled Receipts (po's and wo's)
+Planned orders due (forecast order qty)
+Total Supply
+Ending On Hande
+Planned Order Start.
+
+determine period based on today + period width.
+	depend demand all periods
+	sales orders period 1
+	forecast sales period 3
+	sales period 2 is the greater of sales and forecast
+	firm po's in period 1
+	firm wo's in period 1
+
+Program.Sub.comments.End
+
+
+
+
